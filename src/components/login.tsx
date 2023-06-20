@@ -3,6 +3,7 @@ import React from "react";
    return (
      <div>
        <p>login component here</p>
+       <div><span>bla bla</span></div>
      </div>
    );
  };
