@@ -7,7 +7,7 @@ import { fetchAllOrders } from '../redux/actions/orderAction';
   useEffect(() => {
     // Dispatch the fetchAllOrders action when the component mounts
     dispatch(fetchAllOrders());//בעיה עם ההחזרה הוא טוען שהוא מחזיר void...
-  }, [dispatch]);
+  }, []);
     return (
       <div>
         <p> landingPage component here</p>
