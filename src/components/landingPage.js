@@ -9,7 +9,7 @@ const LandingPage = () => {
   useEffect(() => {
     dispatch(fetchAllOrders());
   }, []);
-
+  
   return (
     <div>
       <p>landingPage component here</p>
