@@ -10,6 +10,7 @@ export const fetchAllOrders = () => {
         .then((response) => {
           dispatch(fetchAllOrdersSuccess(response.data));
         })
+        
         .catch((error) => {
           dispatch(fetchAllOrdersFailure(error.message));
         });

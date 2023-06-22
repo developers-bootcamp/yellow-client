@@ -16,6 +16,7 @@ export interface FetchAllOrdersAction {
   type: FETCH_ALL_ORDERS_REQUEST,
 });
 
+
 export const fetchAllOrdersSuccess = (orders: Order[]): FetchAllOrdersAction => ({
   type: FETCH_ALL_ORDERS_SUCCESS,
   payload: orders,
