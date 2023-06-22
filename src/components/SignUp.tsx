@@ -55,7 +55,7 @@ const SignUp: React.FC = () => {
 
     return (
         <div>
-            <h1>SignUp Componnent not finished yet</h1>
+           <p>SignUp Componnent</p>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
