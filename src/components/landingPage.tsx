@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchAllOrders } from '../redux/actions/orderAction';
+import { FetchAllOrdersAction } from '../redux/actions/orderAction';
  const LandingPage: React.FC = () => {
   const dispatch = useDispatch();
 
