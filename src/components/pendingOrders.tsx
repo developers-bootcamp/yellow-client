@@ -1,9 +1,11 @@
 import React from "react";
 
-const pendingOrders: React.FC = () => {
+const PendingOrders: React.FC = () => {
 
  return (
+    
 <p>pending Orders here</p>
-  );
+ 
+ );
 };
-export default pendingOrders;
+export default PendingOrders;

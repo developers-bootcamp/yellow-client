@@ -6,6 +6,6 @@ const UsersManagement: React.FC = () => {
 
 <p>Users Management here</p>
 
-  );
+ );
 };
 export default UsersManagement;
