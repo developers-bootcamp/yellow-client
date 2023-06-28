@@ -8,4 +8,4 @@ const BASE_URL = process.env.BASE_URL;
 // Define the full URL for getting all orders
 const GET_ALL_ORDERS_URL = `${BASE_URL}/orders`;
 
-export { GET_ALL_ORDERS_URL };
+export { BASE_URL,GET_ALL_ORDERS_URL };
