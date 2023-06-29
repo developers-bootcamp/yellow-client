@@ -15,4 +15,6 @@ export const fetchAllOrders = () => {
           dispatch(fetchAllOrdersFailure(error.message));
         });
       }; 
+      
   };
+ 
