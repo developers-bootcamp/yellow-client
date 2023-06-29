@@ -84,7 +84,7 @@ const SignUp: React.FC = () => {
                     }}
                 >
                     <Typography component="h1" variant="h5">
-                    Set up yuor account
+                    Set up your account
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField margin="normal" required fullWidth id="fullName" label="Full Name*" name="fullName" autoFocus onBlur={checkedFiedsValidations} />
