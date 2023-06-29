@@ -9,3 +9,13 @@ const BASE_URL = process.env.BASE_URL;
 const GET_ALL_ORDERS_URL = `${BASE_URL}/orders`;
 
 export { BASE_URL,GET_ALL_ORDERS_URL };
+
+
+export const PALLETE = {
+    BLUE: '#6794CF',
+    YELLOW: '#FAE282',
+    RED: '#EE696A',
+    GREEN: '#7ED787',
+    ORANGE: '#EB9F6E',
+    WHITE: '#FFFFFF',
+}

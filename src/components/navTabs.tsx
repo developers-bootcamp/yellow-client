@@ -2,11 +2,11 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 export default function NavTabs() {
 
-  const [value, setValue] = React.useState("pendingOrders");
+  const [value, setValue] = React.useState("/SignUp");
 
   let navigater=useNavigate()
 
@@ -20,6 +20,7 @@ export default function NavTabs() {
       <Tabs value={value} 
             onChange={handleChange} 
             centered>
+        <NavLink to={'SignUp'}></NavLink>
         <Tab value="pendingOrders" label="Pending Orders" />
         <Tab value="dashboard" label="Dashboard" />
         <Tab value="catalogManager" label="Catalog Manager" />
