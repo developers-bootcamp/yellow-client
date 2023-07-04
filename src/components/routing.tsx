@@ -4,8 +4,13 @@ import UsersManagement from "./usersManagement";
 import CatalogManager from "./catalogManager";
 import Dashboard from "./dashboard";
 
+
 import LandingPage from "../pages/landingPage";
 import NewOrder from "./newOrder";
+
+
+
+
 import SignUp from "./SignUp";
 import Login from "./login";
 const Routing: React.FC = () => {
@@ -23,6 +28,11 @@ return (
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
+       <Route  path ='newOrder' element={<NewOrder/>}> </Route>
+       {/* <Route  path ='landingPage' element={<LandingPage/>}> </Route> */}
+       <Route  path ='signUp' element={<SignUp/>}> </Route>
+
+
       </Route>
       <Route  path ='newOrder' element={<NewOrder/>}> </Route>
       <Route  path ='signUp' element={<SignUp/>}> </Route>
