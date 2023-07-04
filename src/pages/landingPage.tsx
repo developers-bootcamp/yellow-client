@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { FetchAllOrdersAction } from '../redux/actions/orderAction';
 import Box from '@mui/material/Box';
+
+import { Outlet, useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Outlet, useNavigate } from 'react-router-dom';
  const LandingPage: React.FC = () => {
  const [value, setValue] = React.useState("pendingOrders");
        let navigater=useNavigate()
