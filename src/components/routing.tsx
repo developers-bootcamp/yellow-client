@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import PendingOrders from "./pendingOrders"
-import NavTabs from "./navTabs";
 import UsersManagement from "./usersManagement";
 import CatalogManager from "./catalogManager";
 import Dashboard from "./dashboard";
-import { Login } from "@mui/icons-material";
+import LandingPage from "../pages/landingPage";
+// import NewOrder from "./newOrder";
+import Login from "./login";
 import SignUp from "./SignUP/SIgnUp";
 const Routing: React.FC = () => {
 
@@ -14,14 +15,19 @@ return (
 <>
  <BrowserRouter>
    <Routes>
-       <Route  path ='/' element={<NavTabs></NavTabs>}>
-       <Route  path ='login' element={<Login/>}> </Route>
-       <Route  path ='SignUp' element={<SignUp/>}> </Route> 
+       
+       <Route  path ='/' element={<Login/>}> </Route> 
+       <Route  path ='/LandingPageand' element={<LandingPage/>}>
        <Route  path ='pendingOrders' element={<PendingOrders/>}> </Route>
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
+       {/* <Route  path ='newOrder' element={<NewOrder/>}> </Route> */}
+       {/* <Route  path ='landingPage' element={<LandingPage/>}> </Route> */}
+       <Route  path ='signUp' element={<SignUp/>}> </Route>
       </Route>
+     
+    
    </Routes>
  </BrowserRouter>
 </>

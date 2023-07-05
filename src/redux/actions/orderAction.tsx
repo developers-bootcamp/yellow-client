@@ -1,7 +1,6 @@
 
 import {Order} from "../reducer/orderReducer"
 import { GET_ALL_ORDERS_URL } from '../../config/config';
-///לבדוק מה הקשר של redux לכאן
 // Action types
 const FETCH_ALL_ORDERS_REQUEST = 'FETCH_ALL_ORDERS_REQUEST';
 const FETCH_ALL_ORDERS_SUCCESS = 'FETCH_ALL_ORDERS_SUCCESS';

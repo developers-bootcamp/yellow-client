@@ -25,7 +25,6 @@ const initialState: OrdersState = {
 
 const ordersReducer: Reducer<OrdersState, Action> = (state, action) => {
   switch (action.type) {
-   //לכתוב כאן את סוג הפעולה ואז להפעיל אותה
 
     default:
       return state;
