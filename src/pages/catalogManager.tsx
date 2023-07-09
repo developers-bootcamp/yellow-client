@@ -2,10 +2,10 @@ import React from "react";
 
 const CatalogManager: React.FC = () => {
 
-return (
+    return (
 
-<p>catalog Manager here</p>
- 
- );
+        <p>catalog Manager here</p>
+
+    );
 };
 export default CatalogManager;

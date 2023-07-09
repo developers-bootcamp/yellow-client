@@ -2,10 +2,10 @@ import React from "react";
 
 const Dashboard: React.FC = () => {
 
- return (
+    return (
 
-<p>dashboard here</p>
+        <p>dashboard here</p>
 
-); 
+    );
 };
 export default Dashboard;
