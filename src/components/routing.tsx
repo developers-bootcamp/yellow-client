@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import PendingOrders from "./pendingOrders"
-import UsersManagement from "./usersManagement";
-import CatalogManager from "./catalogManager";
-import Dashboard from "./dashboard";
+import PendingOrders from "../pages/pendingOrders"
+import UsersManagement from "../pages/usersManagement";
+import CatalogManager from "../pages/catalogManager";
+import Dashboard from "../pages/dashboard";
 import LandingPage from "../pages/landingPage";
-// import NewOrder from "./newOrder";
-import Login from "./login";
-import SignUp from "./SignUP/SIgnUp";
+import Login from "../pages/login";
+import SignUp from "../pages/SignUP/SIgnUp";
+import NewOrder from "../pages/newOrder";
 const Routing: React.FC = () => {
 
 
@@ -17,16 +17,14 @@ return (
    <Routes>
        
        <Route  path ='/' element={<Login/>}> </Route> 
-       <Route  path ='/LandingPageand' element={<LandingPage/>}>
+       <Route  path ='/landingPage' element={<LandingPage/>}>
        <Route  path ='pendingOrders' element={<PendingOrders/>}> </Route>
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
-       {/* <Route  path ='newOrder' element={<NewOrder/>}> </Route> */}
-       {/* <Route  path ='landingPage' element={<LandingPage/>}> </Route> */}
-       <Route  path ='signUp' element={<SignUp/>}> </Route>
-      </Route>
-     
+       <Route  path ='newOrder' element={<NewOrder/>}> </Route>
+       </Route>
+      <Route  path ='/signUp' element={<SignUp/>}> </Route>
     
    </Routes>
  </BrowserRouter>

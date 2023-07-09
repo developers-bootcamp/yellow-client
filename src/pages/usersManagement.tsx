@@ -2,10 +2,10 @@ import React from "react";
 
 const UsersManagement: React.FC = () => {
 
- return (
+    return (
 
-<p>Users Management here</p>
+        <p>Users Management here</p>
 
- );
+    );
 };
 export default UsersManagement;
