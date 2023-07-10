@@ -1,7 +1,7 @@
 import axios from "axios";
 const BASE_URL = process.env.BASE_URL;
 
-export const useCrud = () => {
+export const UseCrud = () => {
     const getData = async (url:string) => { try {
         const response = await axios.get(`${BASE_URL}/${url}`);
         var x=response.data;

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { FetchAllOrdersAction } from '../redux/actions/orderAction';
 import Box from '@mui/material/Box';
 
 import { Outlet, useNavigate } from 'react-router-dom';
