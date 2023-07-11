@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useCrud } from '../redux/actions/useCrud';
+import { UseCrud } from '../redux/useCrud';
 import { Dispatch } from 'redux';
-import { fetchAllOrders } from '../redux/actions/axios';
-import { FetchAllOrdersAction } from '../redux/actions/orderAction'
 import Button from '@mui/material/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NewOrder: React.FC = () => {
-   const { getData, postData, putData } = useCrud();
+   const { getData, postData, putData } = UseCrud();
 
    const [costumers, setCustomers] = useState([]);
    const [products, setProducts] = useState([]);
