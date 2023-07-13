@@ -8,6 +8,8 @@ import Login from './pages/login';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { PALLETE } from './config/config';
+import GlobalLoader from './components/loader/globalLoader';
+
 function App() {
 
   const theme = createTheme({
@@ -25,6 +27,7 @@ function App() {
   });
 
   return (<>
+  <GlobalLoader/>
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>
