@@ -29,7 +29,6 @@ const validationSchema = yup.object({
 const SignUpForm: React.FC = () => {
   const [isFormValid, setFormValid] = React.useState(true);
   const navigate = useNavigate();
-  const classes = useStyles();
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -75,21 +74,21 @@ const SignUpForm: React.FC = () => {
     <div>
       <form onSubmit={formik.handleSubmit}>
 
-        <TextField className={classes.input} margin='normal' id="fullName" label="Full Name" name="fullName" autoComplete="name"
+        <TextField style={{ width: '80% ' }} margin='normal' id="fullName" label="Full Name" name="fullName" autoComplete="name"
           value={formik.values.fullName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.fullName && Boolean(formik.errors.fullName)}
           helperText={formik.touched.fullName && formik.errors.fullName}
         />
-        <TextField className={classes.input} margin='normal' id="companyName" label="Company Name" name="companyName"
+        <TextField style={{ width: '80% ' }} margin='normal' id="companyName" label="Company Name" name="companyName"
           value={formik.values.companyName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.companyName && Boolean(formik.errors.companyName)}
           helperText={formik.touched.companyName && formik.errors.companyName} />
 
-        <TextField className={classes.input} margin='normal' id="email" label="Email Address" name="email" autoComplete="email"
+        <TextField style={{ width: '80% ' }} margin='normal' id="email" label="Email Address" name="email" autoComplete="email"
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -97,7 +96,7 @@ const SignUpForm: React.FC = () => {
           helperText={formik.touched.email && formik.errors.email} />
 
 
-        <TextField className={classes.input} name="password" label="Password"
+        <TextField style={{ width: '80% ' }} name="password" label="Password"
           type={showPassword ? 'text' : 'password'} autoComplete="current-password"
           margin='normal'
           value={formik.values.password}
@@ -137,7 +136,11 @@ const SignUpForm: React.FC = () => {
         {formik.touched.termsAccepted && formik.errors.termsAccepted ? (
           <div>{formik.errors.termsAccepted}</div>
         ) : null}
-        <Button type="submit" variant="contained" className={classes.signInButton}>Sign Up</Button>
+        <Button type="submit" variant="contained" style={{
+          position: 'absolute',
+          backgroundColor: 'primary',
+          borderRadius: '10px'
+        }}>Sign Up</Button>
         {/* disabled={isFormValid}  */}
       </form>
 
