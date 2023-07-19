@@ -7,7 +7,7 @@ import '../style/Login.styles.css';
 import SignUp from "./SignUP/SIgnUp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Log_In } from "../config/config";
+import { LOGIN_URL } from "../config/config";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,9 +33,8 @@ const Login: React.FC = (): any => {
   };
   const login = async () => {
 
-    console.log({ email }, { password })
     try {
-      const res = await axios.get(`${Log_In}?password=${password}&email=${email}`)
+      const res = await axios.get(`${LOGIN_URL}?password=${password}&email=${email}`)
       console.log({ res })
       if (res.status == 200) {
         console.log(res.data)
