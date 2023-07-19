@@ -1,6 +1,6 @@
-import { AppDispatch } from '../redux/store' 
-import { UseCrud } from '../redux/useCrud';
-import ordersReducer, { getOrders, getOrdersFinished, getOrdersFailed } from '../redux/orderSlice';
+import { AppDispatch } from './store' 
+import { UseCrud } from './useCrud';
+import ordersReducer, { getOrders, getOrdersFinished, getOrdersFailed } from './orderSlice';
 
 
   

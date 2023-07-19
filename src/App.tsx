@@ -10,6 +10,9 @@ import { ThemeProvider } from '@mui/material/styles';
 import { PALLETE } from './config/config';
 import GlobalLoader from './components/loader/globalLoader';
 
+import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
+import { useSelector } from 'react-redux';
+import { RootState,useAppDispatch } from './redux/store';
 function App() {
 
   const theme = createTheme({
@@ -25,10 +28,15 @@ function App() {
       fontFamily: 'Arial, sans-serif',
     },
   });
+  const Orders: IOrdersState = useSelector<RootState, IOrdersState>(state => {
+    return state.ordersReducer
+  })
+  const dispatch = useAppDispatch()
 
   return (<>
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
+    
     <Routing/>
     </ThemeProvider>
  </> );

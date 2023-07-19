@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import  {IOrder}  from '../types/Iorder'
-interface IOrdersState {
+export interface IOrdersState {
   orders: IOrder[],
   errorMessage: string,
   shouldDisplayErrorMessage: boolean
