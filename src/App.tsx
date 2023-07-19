@@ -9,10 +9,12 @@ import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { PALLETE } from './config/config';
 import GlobalLoader from './components/loader/globalLoader';
-
-import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
+import { RootState, useAppDispatch } from './redux/store';
 import { useSelector } from 'react-redux';
-import { RootState,useAppDispatch } from './redux/store';
+import './axios/axiosInterceptors';
+import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
+
+
 function App() {
 
   const theme = createTheme({
@@ -35,10 +37,10 @@ function App() {
 
   return (<>
   <GlobalLoader/>
-  <ThemeProvider theme={theme}>
+  {/* <ThemeProvider theme={theme}> */}
     
     <Routing/>
-    </ThemeProvider>
+    {/* </ThemeProvider> */}
  </> );
 }
 

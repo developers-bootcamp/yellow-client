@@ -1,41 +1,41 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
-import Loader from "./loader";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { styled, keyframes } from '@mui/system';
+
+
+
+const spinAnomation = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const Loader = styled('div')({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 100,
+});
+const LoaderSpinner = styled('div')({
+    border: '4px solid #d8d2d2',
+    borderTop: '4px solid #FAE282',
+    borderRadius: '50%',
+    width: '40px',
+    height: '40px',
+    animation: `${spinAnomation} 1s linear infinite`
+});
 
 const GlobalLoader: React.FC = () => {
 
-    const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        const requestInterceptor = axios.interceptors.request.use(
-            (config) => {
-                setLoading(true);
-                return config;
-            }
-        );
-
-        const responseInterceptor = axios.interceptors.response.use(
-            (response: AxiosResponse) => {
-                setLoading(false);
-                return response;
-            },
-            (error: AxiosError) => {
-                setLoading(false)
-                return Promise.reject(error);
-            }
-        )
-
-        return () => {
-            axios.interceptors.request.eject(requestInterceptor);
-            axios.interceptors.response.eject(responseInterceptor);
-        };
-
-    }, [])
-
-
+    const loading: boolean = useSelector<RootState, boolean>((state) => state.loaderReducer.isLoading);
     return (
         <>
-            {loading && <Loader />}
+            {loading && <Loader>
+                <LoaderSpinner></LoaderSpinner>
+            </Loader>}
         </>
     )
 }
