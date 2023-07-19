@@ -1,9 +1,9 @@
-const BASE_URL = process.env.BASE_URL;
-
+// const BASE_URL = process.env.BASE_URL;
+const BASE_URL = "http://localhost:8080"
 // Define the full URL for getting all orders
 const GET_ALL_ORDERS_URL = `${BASE_URL}/orders`;
-
-export { BASE_URL,GET_ALL_ORDERS_URL };
+const Log_In =`${BASE_URL}/User/login`;
+export { BASE_URL,GET_ALL_ORDERS_URL,Log_In };
 
 
 export const PALLETE = {
