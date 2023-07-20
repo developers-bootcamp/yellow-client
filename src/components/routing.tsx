@@ -15,8 +15,7 @@ return (
 <>
  <BrowserRouter>
    <Routes>
-       
-       <Route  path ='/' element={<Login/>}> </Route> 
+       <Route  path ='/' element={<CatalogManager/>}> </Route> 
        <Route  path ='/landingPage' element={<LandingPage/>}>
        <Route  path ='pendingOrders' element={<PendingOrders/>}> </Route>
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>

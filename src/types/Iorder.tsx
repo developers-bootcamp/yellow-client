@@ -68,23 +68,20 @@ interface ICompany {
     inventory:number,
     companyId:ICompany,
     auditData:IAuditData
-
   } 
+
   enum EDiscount {
     Value1 = 'Percentage',
     Value2 = 'FixedAmount'
   } 
-  interface IProductCatagory {
+
+ export interface IProductCatagory {
     id: string,
     name: string,
     desc:string,
     companyId:ICompany,
     auditData:IAuditData
   } 
+
   export type { IOrder
-
-
-
-
-
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL ="http://localhost:8080";
 
 export const UseCrud = () => {
     const getData = async (url:string) => { try {

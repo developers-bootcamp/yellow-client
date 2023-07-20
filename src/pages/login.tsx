@@ -1,13 +1,9 @@
 import { Link, Button, Dialog, IconButton, Input, InputAdornment, OutlinedInput, Paper } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import '../style/Login.styles.css';
 import SignUp from "./SignUP/SIgnUp";
-
-
-
 
 
 const Login: React.FC = () => {
