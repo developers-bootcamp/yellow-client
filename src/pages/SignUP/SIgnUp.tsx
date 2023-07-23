@@ -12,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue, red } from '@mui/material/colors';
 import { Box, Container, CssBaseline, Dialog, DialogContent, Grid, Link, Paper } from '@mui/material';
-import present from './present.png'
+// import present from './present.png'
 import SignUpForm from './SignUpform';
 import useStyles from './signUp.styles';
 
