@@ -40,6 +40,7 @@ const LandingPage: React.FC = () => {
       </Tabs>
       <Outlet></Outlet>
     </Box>
+    {/* ///cc/// */}
     <Link onClick={handleClickOpen}>order-details</Link>
     <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <OrderDetails onClose={handleClose} />
