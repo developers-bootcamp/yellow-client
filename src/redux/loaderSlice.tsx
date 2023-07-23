@@ -2,10 +2,12 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export interface ILoaderState {
     isLoading: boolean,
+    counter:number,
 
 }
 const initialState: ILoaderState = {
     isLoading: false,
+    counter:0,
 
 }
 
@@ -13,19 +15,24 @@ export const loaderSlice = createSlice({
     name: 'loaderReducer',
     initialState,
     reducers: {
-        on: (state: ILoaderState, action: PayloadAction<void>) => {
-            state.isLoading = true;
+        startLoader: (state: ILoaderState, action: PayloadAction<void>) => {
+            if(state.counter==0){
+                state.isLoading = true;
+                state.counter++;
+            }
+            
         },
-        off:(state: ILoaderState, action: PayloadAction<void>)=>{
+        stopLoader:(state: ILoaderState, action: PayloadAction<void>)=>{
             state.isLoading=false;
+            state.counter=0;
         }
 
     }
 });
 
 export const {
-on,
-off,
+    startLoader,
+    stopLoader,
 } = loaderSlice.actions;
 
 export default loaderSlice.reducer;

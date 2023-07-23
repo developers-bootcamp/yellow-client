@@ -1,21 +1,21 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig, } from 'axios';
-import { off, on } from '../redux/loaderSlice';
+import { stopLoader, startLoader } from '../redux/loaderSlice';
 const Interceptor = (store: any) => {
 
     axios.interceptors.response.use(
         (response: AxiosResponse) => {
-            store.dispatch(off())
+            store.dispatch(stopLoader())
             return response;
         },
         (error: AxiosError) => {
-            store.dispatch(off())
+            store.dispatch(stopLoader())
             return Promise.reject(error);
         }
     );
 
     axios.interceptors.request.use(
         (config: InternalAxiosRequestConfig) => {
-            store.dispatch(on())
+            store.dispatch(startLoader())
             return config;
         }
     );
