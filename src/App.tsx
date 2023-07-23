@@ -8,9 +8,13 @@ import Login from './pages/login';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { PALLETE } from './config/config';
-import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
+import GlobalLoader from './components/loader/globalLoader';
+import { RootState, useAppDispatch } from './redux/store';
 import { useSelector } from 'react-redux';
-import { RootState,useAppDispatch } from './redux/store';
+import './axios/axiosInterceptors';
+import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
+
+
 function App() {
 
   const theme = createTheme({
@@ -32,10 +36,11 @@ function App() {
   const dispatch = useAppDispatch()
 
   return (<>
-  <ThemeProvider theme={theme}>
+  <GlobalLoader/>
+  {/* <ThemeProvider theme={theme}> */}
     
     <Routing/>
-    </ThemeProvider>
+    {/* </ThemeProvider> */}
  </> );
 }
 
