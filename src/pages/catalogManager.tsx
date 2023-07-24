@@ -12,7 +12,7 @@ import { Box, Button, Input, TableFooter, TextField } from "@mui/material";
 import { TableBarOutlined } from "@mui/icons-material";
 
 const CatalogManager: React.FC = () => {
-  const { getData } = UseCrud();
+  const { getData, postData, putData } = UseCrud();
 
   const [categories, setCategories] = useState<IProductCatagory[]>([]);
   const [products, setProducts] = useState([]);
@@ -26,10 +26,9 @@ const CatalogManager: React.FC = () => {
   };
 
   useEffect(() => {
-    // Fetch data when the component mounts
     getFunc("categories");
     getFunc("products");
-  }, []); // Empty dependency array to fetch data only once
+  }, []); 
 
   const tableContainerStyles = {
     maxHeight: "300px",
@@ -41,18 +40,28 @@ const CatalogManager: React.FC = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setNewCategory((prevCategory) => ({ ...prevCategory, [name]: value }));
+    console.log(newCategory);
   };
 
-  const handleAddNewCategory = () => {
-  
+  const handleAddNewCategory = async () => {
+    if (newCategory.name != "")
+      try {
+        const response = await postData("categories", newCategory);
+        console.log("Response:", response);
+        setCategories((prevCategories) => [...prevCategories, response]);
+      } catch (error) {
+        console.error("Error:", error); 
+      }
     console.log("Adding new category:", newCategory);
-   
-    // Clear the form fields after adding the new category
     setNewCategory({ name: "", desc: "" });
-
-    // Hide the form after adding the new category
     setShowForm(false);
   };
+
+  function handleEditCategory(category: IProductCatagory): void {
+    setNewCategory({ name: category.name, desc: category.desc });
+    setShowForm(true);
+    putData("categories", newCategory);
+  }
 
   return (
     <div>
@@ -60,7 +69,11 @@ const CatalogManager: React.FC = () => {
       {categories.length > 0 ? (
         <Paper sx={{ width: "86vw", left: "7vw", position: "relative" }}>
           <TableContainer sx={{ maxHeight: 300 }}>
-            <Table sx={{ backgroundColor: "lightgrey" }} stickyHeader aria-label="sticky table">
+            <Table
+              sx={{ backgroundColor: "lightgrey" }}
+              stickyHeader
+              aria-label="sticky table"
+            >
               <TableHead>
                 <TableRow>
                   <TableCell align="center">product</TableCell>
@@ -72,11 +85,21 @@ const CatalogManager: React.FC = () => {
                   <TableRow key={category.id}>
                     <TableCell align="center">{category.name}</TableCell>
                     <TableCell align="center">{category.desc}</TableCell>
+                    {/* <TableCell align="center">
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleEditCategory(category)}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
               {showForm && (
-                <TableFooter sx={{ position: "sticky", bottom: 0, background: "white" }}>
+                <TableFooter
+                  sx={{ position: "sticky", bottom: 0, background: "white" }}
+                >
                   <TableRow>
                     <TableCell align="center">
                       <TextField
@@ -95,12 +118,7 @@ const CatalogManager: React.FC = () => {
                       />
                     </TableCell>
                     <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        onClick={handleAddNewCategory}
-                      >
-                        Add New
-                      </Button>
+                      <Button onClick={handleAddNewCategory}>Add New</Button>
                     </TableCell>
                   </TableRow>
                 </TableFooter>
@@ -114,8 +132,21 @@ const CatalogManager: React.FC = () => {
 
       {/* Button to show the form */}
       {!showForm && (
-        <Button variant="contained" onClick={() => setShowForm(true)}>
-            add new category
+        <Button
+          sx={{
+            width: "86vw",
+            left: "7vw",
+            position: "relative",
+            backgroundColor: "lightgrey",
+            textAlign: "!important left",
+            "&:hover": {
+              backgroundColor: "lightgrey",
+            },
+          }}
+          variant="contained"
+          onClick={() => setShowForm(true)}
+        >
+          add new category
         </Button>
       )}
     </div>
@@ -123,4 +154,3 @@ const CatalogManager: React.FC = () => {
 };
 
 export default CatalogManager;
-
