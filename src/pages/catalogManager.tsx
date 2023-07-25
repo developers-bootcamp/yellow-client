@@ -13,11 +13,12 @@ import { TableBarOutlined } from "@mui/icons-material";
 
 const CatalogManager: React.FC = () => {
   const { getData, postData, putData } = UseCrud();
-
   const [categories, setCategories] = useState<IProductCatagory[]>([]);
   const [products, setProducts] = useState([]);
   const [newCategory, setNewCategory] = useState({ name: "", desc: "" });
+  const [updatedategory, setUpdatedCategory] = useState<IProductCatagory>();
   const [showForm, setShowForm] = useState(false);
+  const [isNew, setIsNew] = useState(true);
 
   const getFunc = async (url: string) => {
     let result = await getData(url);
@@ -28,7 +29,7 @@ const CatalogManager: React.FC = () => {
   useEffect(() => {
     getFunc("categories");
     getFunc("products");
-  }, []); 
+  }, []);
 
   const tableContainerStyles = {
     maxHeight: "300px",
@@ -40,27 +41,38 @@ const CatalogManager: React.FC = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setNewCategory((prevCategory) => ({ ...prevCategory, [name]: value }));
-    console.log(newCategory);
   };
 
   const handleAddNewCategory = async () => {
+    console.log(updatedategory);
+    if(isNew){
     if (newCategory.name != "")
       try {
         const response = await postData("categories", newCategory);
         console.log("Response:", response);
         setCategories((prevCategories) => [...prevCategories, response]);
       } catch (error) {
-        console.error("Error:", error); 
+        console.error("Error:", error);
       }
     console.log("Adding new category:", newCategory);
     setNewCategory({ name: "", desc: "" });
     setShowForm(false);
-  };
+  }
+  else{
+  }
+
+}
+  ;
 
   function handleEditCategory(category: IProductCatagory): void {
+    setIsNew(false);
     setNewCategory({ name: category.name, desc: category.desc });
     setShowForm(true);
-    putData("categories", newCategory);
+    category.name=newCategory.name;
+    category.desc=newCategory.desc;
+    setUpdatedCategory(category)   
+
+
   }
 
   return (
@@ -78,6 +90,7 @@ const CatalogManager: React.FC = () => {
                 <TableRow>
                   <TableCell align="center">product</TableCell>
                   <TableCell align="center">description</TableCell>
+                  <TableCell align="center"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -85,14 +98,14 @@ const CatalogManager: React.FC = () => {
                   <TableRow key={category.id}>
                     <TableCell align="center">{category.name}</TableCell>
                     <TableCell align="center">{category.desc}</TableCell>
-                    {/* <TableCell align="center">
+                    <TableCell align="center">
                       <Button
                         variant="outlined"
                         onClick={() => handleEditCategory(category)}
                       >
                         Edit
                       </Button>
-                    </TableCell> */}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -144,7 +157,10 @@ const CatalogManager: React.FC = () => {
             },
           }}
           variant="contained"
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            setShowForm(true);
+            setIsNew(true);
+          }}
         >
           add new category
         </Button>
