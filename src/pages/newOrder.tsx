@@ -16,20 +16,18 @@ const NewOrder: React.FC = () => {
    const { getData, postData, putData } = UseCrud();
 
    const [costumers, setCustomers] = useState<object[]>([]);
-   const [products, setProducts] = useState<IProductCategory[]>([]);
+   const [products, setProducts] = useState<IProduct[]>([]);
    const [ShoppingCart, setShoppingCart] = useState<object[]>([]);
    const [sumOfPrice, setSumOfPrice] = useState();
    const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
    let arr = []
    const getFunc = async (url: string) => {
-      console.log(url);
       let result = await getData(url);
-      console.log(result);
+      
       if (url == "User") { }
       setCustomers(result);
-      if (url == "categories") {
-         console.log(result);
+      if (url == "product") {
          setProducts(result);
       }
 
@@ -53,12 +51,12 @@ const NewOrder: React.FC = () => {
    const addToCart = () => {
       let product:any;
       for (let i = 0; i < products.length; i++) {
-         if (products[i].desc == selectedValue) {
+         if (products[i].name == selectedValue) {
             product = products[i]
             break;
          }
       }
-         console.log("proknjh",product);
+         console.log("proknjh",ShoppingCart);
          
       setShoppingCart((prevCart) => [...prevCart, product])
    }
@@ -67,13 +65,13 @@ const NewOrder: React.FC = () => {
       //      getFunc("User")
       //   }
       if (products.length == 0) {
-         getFunc("categories")
+         getFunc("product");
       }
    }, []);
 
    useEffect(() => {
       if (ShoppingCart) {
-         postFunc("order/CalculateOrderAmount", ShoppingCart)
+         postFunc("order/CalculateOrderAmount", {"orderItems":ShoppingCart})
       }
    }, [ShoppingCart])
 
@@ -87,8 +85,8 @@ const NewOrder: React.FC = () => {
               id="combo-box-demo"
               options={products}
               sx={{ width: 300 }}
-              getOptionLabel={(option) => option.desc}
-              onChange={(event, newValue) => setSelectedValue(newValue? newValue.desc : null)}
+              getOptionLabel={(option) => option.name}
+              onChange={(event, newValue) => setSelectedValue(newValue? newValue.name : null)}
               renderInput={(params) => <TextField {...params} label="Products" />}
             />
             <Button   sx={{ width: 300 }} variant="text" onClick={addToCart}>add item</Button>
