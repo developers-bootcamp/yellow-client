@@ -13,6 +13,7 @@ import { RootState, useAppDispatch } from './redux/store';
 import { useSelector } from 'react-redux';
 import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
+import NewOrder from './pages/newOrder';
 
 
 function App() {
@@ -37,10 +38,9 @@ function App() {
 
   return (<>
   <GlobalLoader/>
-  {/* <ThemeProvider theme={theme}> */}
-    
+  <ThemeProvider theme={theme}>
     <Routing/>
-    {/* </ThemeProvider> */}
+    </ThemeProvider>
  </> );
 }
 
