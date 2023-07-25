@@ -39,24 +39,22 @@ const SignUpForm: React.FC = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      // const isFormValid = Object.keys(formik.errors).length === 0;
-      // setFormValid(isFormValid);
 
-      // if (isFormValid) {
       console.log(values);
+      
 
       async function signUpRequest() {
+        
         try {
-          const res = await axios.post(`${BASE_URL}/signIn`, values);
-          swal("you dont have a error", "good", "succes");
+          const res = await axios.get(`${BASE_URL}/User/signUp?fullName=${values.fullName}&companyName=${values.companyName}&email=${values.email}&password=${values.password}`);
           navigate("/LandingPage")
           return (res.data);
-
         } catch (error) {
           swal("you have a error", `${error}`, "error");
-          navigate("/LandingPage")
+
         }
       }
+      signUpRequest()
     }
 
   });
