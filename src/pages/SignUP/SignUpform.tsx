@@ -38,7 +38,7 @@ const SignUpForm: React.FC = () => {
       termsAccepted: false,
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values:any) => {
       // const isFormValid = Object.keys(formik.errors).length === 0;
       // setFormValid(isFormValid);
 

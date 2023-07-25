@@ -17,13 +17,14 @@ return (
    <Routes>
        
        <Route  path ='/' element={<Login/>}> </Route> 
+       <Route  path ='/newOrder' element={<NewOrder/>}> </Route>
        <Route  path ='/landingPage' element={<LandingPage/>}>
        <Route  path ='pendingOrders' element={<PendingOrders/>}> </Route>
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
-       <Route  path ='newOrder' element={<NewOrder/>}> </Route>
        </Route>
+
       <Route  path ='/signUp' element={<SignUp/>}> </Route>
     
    </Routes>
