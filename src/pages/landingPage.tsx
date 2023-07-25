@@ -2,19 +2,17 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 const LandingPage: React.FC = () => {
   const [value, setValue] = React.useState("pendingOrders");
   let navigater = useNavigate()
-  useEffect(() => {
-    navigater(`/${value}`)
-  }, []);
+
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    navigater(`/${newValue}`)
+    navigater(`/landingPage/${newValue}`)
   };
 
   return (
@@ -29,6 +27,7 @@ const LandingPage: React.FC = () => {
       </Tabs>
       <Outlet></Outlet>
     </Box>
+
   );
 };
 

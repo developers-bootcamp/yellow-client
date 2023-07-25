@@ -15,7 +15,7 @@
   }
 
   
-  interface IUsers {
+  export interface IUsers {
     id: string,
     fullName: string,
     password: string,
@@ -23,15 +23,15 @@
     roleId:IRoles,
     companyId:ICompany,
     AuditData:IAuditData
-
   }
-  interface IAddress {
+
+  export interface IAddress {
     telephone: string,
     address: string,
     email:string
     
   }
-  interface IRoles {
+ export  interface IRoles {
     id: string,
     name: EName,
     desc: string,
@@ -42,12 +42,12 @@
     Value2 = 'employee',
     Value3 = 'customer'
   }
-  interface IAuditData {
+ export  interface IAuditData {
     createDate: Date,
     updateDte: Date
   }
   
-interface ICompany {
+export interface ICompany {
     id: string,
     name: string,
     auditData:IAuditData
