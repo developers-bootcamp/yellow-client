@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
 import NewOrder from './pages/newOrder';
+import { Dashboard } from '@mui/icons-material';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>
+    <Dashboard></Dashboard>
  </> );
 }
 
