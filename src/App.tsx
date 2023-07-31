@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
 import NewOrder from './pages/newOrder';
+import BarChart from './pages/barChart';
 
 
 function App() {
@@ -39,7 +40,8 @@ function App() {
   return (<>
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
-    <Routing/>
+    {/* <Routing/> */}
+    <BarChart></BarChart>
     </ThemeProvider>
  </> );
 }
