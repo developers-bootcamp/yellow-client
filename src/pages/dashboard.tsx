@@ -29,8 +29,7 @@ const Dashboard: React.FC = () => {
      
      
             </Grid>
-     
-     
+
             <Grid item xs={6} > <Item>
       <DeliverCancelOrders></DeliverCancelOrders></Item>
       
@@ -50,16 +49,17 @@ const Dashboard: React.FC = () => {
           </Grid>
        );
 };
-export default Dashboard;
+ export default Dashboard;
 
 // import React from "react";
 
 // const Dashboard: React.FC = () => {
 
 //     return (
-
+// <div>
 //         <p>dashboard here</p>
-
+//         <h1>gtttttttttttttttt</h1>
+// </div>
 //     );
 // };
 // export default Dashboard;
