@@ -15,6 +15,9 @@ import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
 import NewOrder from './pages/newOrder';
 import BarChart from './pages/barChart';
+//import { Dashboard } from '@mui/icons-material';
+ import Dashboard from './pages/dashboard';
+
 
 
 function App() {
@@ -43,6 +46,9 @@ function App() {
     {/* <Routing/> */}
     <BarChart></BarChart>
     </ThemeProvider>
+    {/* <LandingPage></LandingPage>
+    {/* <Dashboard></Dashboard> */}
+
  </> );
 }
 
