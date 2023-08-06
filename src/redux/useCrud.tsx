@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IOrder } from "../types/Iorder";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const UseCrud = () => {
@@ -11,7 +12,9 @@ export const UseCrud = () => {
         return error;
   
       }}
-      const postData = async (url:string,body:object) => { try {
+      const postData = async (url:string,body:Object) => { try {
+        console.log(body);
+        
         const response = await axios.post(`${BASE_URL}/${url}`,body);
         var x=response.data;
         return await x;

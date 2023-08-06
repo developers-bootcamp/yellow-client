@@ -7,6 +7,7 @@ import LandingPage from "../pages/landingPage";
 import Login from "../pages/login";
 import SignUp from "../pages/SignUP/SIgnUp";
 import NewOrder from "../pages/newOrder";
+
 const Routing: React.FC = () => {
 
 
