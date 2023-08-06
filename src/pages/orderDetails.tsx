@@ -35,8 +35,11 @@ export default function OrderDetails({ onClose, id }: any) {
                     }} >
                         <h1> Orders' details</h1>
                         <h4>customer</h4>
-                        {/* <h4>{order?.customer}</h4> */}
+                        <label>{order?.customer.fullName}</label>
                         <h4>product</h4>
+                        <label>{order?.customer.fullName}</label>
+                        <h4>price</h4>
+                        <label>{order?.totalAmount}</label>
                     </div>
                     <div style={{
                         width: '15%',
@@ -51,8 +54,6 @@ export default function OrderDetails({ onClose, id }: any) {
                         }}
                             src="gifts.png" alt="dsf" />
                         <h4 >we almost done</h4>
-                        <h4>{order?.id}</h4>
-                        <h4>{order?.totalAmount}</h4>
                     </div>
 
                 </div></DialogContent>
