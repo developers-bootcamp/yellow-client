@@ -15,6 +15,7 @@ import { Box, Container, CssBaseline, Dialog, DialogContent, Grid, Link, Paper }
 import present from './present.png'
 import SignUpForm from './SignUpform';
 import useStyles from './signUp.styles';
+import GlobalModalDialog from '../../components/globalModalDialog';
 
 
 export interface SimpleDialogProps {
@@ -26,16 +27,20 @@ export interface SimpleDialogProps {
 export default function SignUp({ onClose }: any) {
 
     const [open, setOpen] = React.useState(false);
-
     const handleClickOpen = () => {
         setOpen(true);
     };
-
-    const handleClose = (value: string) => {
+    const handleClose = () => {
         setOpen(false);
     };
-    return (<>
-        <DialogContent style={{ padding: '0' }}>
+    return ( 
+        <GlobalModalDialog       
+        isButton={false}
+         title={'Set up your account'} children={<div>
+        <SignUpForm></SignUpForm>  <h4 >Fill in your details so you can log in later</h4>
+        </div>} img={'gifts.png'} ></GlobalModalDialog>          
+/*        
+     <DialogContent style={{ padding: '0' }}>
             <div style={{
                 display: 'flex',
                 position: 'relative',
@@ -63,11 +68,10 @@ export default function SignUp({ onClose }: any) {
                         marginTop: '40%'
                     }}
                      src="gifts.png" alt="dsf" />
-                    <h4 >Fill in your details so you can log in later</h4>
-                </div>
-
-            </div></DialogContent>
-    </>
+                     <h4 >Fill in your details so you can log in later</h4>
+               </div>
+            </div></DialogContent> 
+     </> */
     );
 }
 

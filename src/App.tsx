@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
 import NewOrder from './pages/newOrder';
+import Axios from './axios/axiosInterceptors';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
   const dispatch = useAppDispatch()
 
   return (<>
+  <Axios showError={false}/>
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
     <Routing/>
