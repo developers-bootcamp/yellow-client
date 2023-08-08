@@ -18,7 +18,7 @@ const GlobalErorrModal = (props: any) => {
       <GlobalModalDialog
         title={"Erorr"}
         isButton={true}
-        img={"gifts.png"}
+        img={"error.svg"}
         children={
             <div>
               <Button
@@ -34,8 +34,14 @@ const GlobalErorrModal = (props: any) => {
                 onClick={handleClickClose}
               >
                 close
-              </Button>
+              </Button><h2>
               unexpected error
+              <br/> please try again later
+              <br/>
+              or contact our support team at:
+              <br/>
+              support@myapp.com
+              </h2>
             </div>
         }
       ></GlobalModalDialog>
