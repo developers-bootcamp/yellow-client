@@ -1,31 +1,25 @@
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig, } from 'axios';
-import { stopLoader, startLoader } from '../redux/loaderSlice';
-import React, { useEffect, useState } from 'react';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from '../redux/store';
-
+import axios from "axios";
+import { stopLoader, startLoader } from "../redux/loaderSlice";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/store";
-import GlobalModalDialog from '../components/globalModalDialog';
-import GlobalErorrModal from '../components/globalErorModal';
+import GlobalErorrModal from "../components/globalErorModal";
 
 interface GlobalAxiosState {
-  showError: boolean;
+  Error: boolean;
 }
-
 const Axios: React.FC<GlobalAxiosState> = () => {
-
   const dispatch = useAppDispatch();
-  const [showError, setShowError] = useState(false);
+  const [Error, setError] = useState(false);
   useEffect(() => {
-    setShowError(false);
+    setError(false);
   }, []);
 
   const requestInterceptor = axios.interceptors.request.use(
     (config: any) => {
-      let userToken = localStorage.getItem('accessToken');
-    {
-         config.headers["token"] = userToken;
-     }
+      let accessToken = localStorage.getItem("accessToken");
+      {
+        config.headers["Authorization"] = accessToken;
+      }
       console.log(config);
       dispatch(startLoader());
       return config;
@@ -40,23 +34,18 @@ const Axios: React.FC<GlobalAxiosState> = () => {
       return response;
     },
     (error: any) => {
-       if ( error.response.status == 500){
-        setShowError(true);
-       }
-      
+      if (error.response.status == 500) {
+        setError(true);
+        if (error.response.status == 401 || error.response.status == 403) {
+          alert("you need to relogin");
+        }
+      }
       return Promise.reject(error);
     }
   );
 
   return (
-    <>
-    {showError ? (
-      <GlobalErorrModal
-        // showError={showError}
-        onClose={() => setShowError(false)}
-      />
-    ) : null}
-    </>
+    <>{Error ? <GlobalErorrModal onClose={() => setError(false)} /> : null}</>
   );
 };
 export default Axios;
