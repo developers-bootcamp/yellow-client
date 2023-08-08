@@ -62,10 +62,14 @@ const SignUpForm: React.FC = () => {
           navigate("/LandingPage");
           return res.data;
         } catch (error: any) {
+          if (error.isAxiosError){
           console.log(error);
           if (error.response['status']!==500)
             swal("Sorry", `${error.response['data']}`, "error");
         }
+        else{
+          swal("Server is not connect");
+        }}
       }
       signUpRequest();
     },
