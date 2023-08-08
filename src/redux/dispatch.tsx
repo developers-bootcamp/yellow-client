@@ -7,10 +7,9 @@ import ordersReducer, { getOrders, getOrdersFinished, getOrdersFailed } from './
 export const getAllOrders = () => {
     
 const { getData, postData, putData } = UseCrud();
-
   return async (dispatch: AppDispatch) => {
     try {
-      let orders =  await getData("orders");
+      let orders =  await getData("order/");
       dispatch( getOrders(orders))
     }
     catch (error) {
