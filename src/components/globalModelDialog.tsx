@@ -10,7 +10,7 @@ import {
 } from "./globalModelDialog.style";
 import { PALLETE } from "../config/config";
 
-const GlobalModalDialog = (props: any) => {
+const GlobalModelDialog = (props: any) => {
   const [open, setOpen] = React.useState(false);
   const [isSmall, setIsSmall] = useState(false);
  
@@ -46,4 +46,4 @@ const GlobalModalDialog = (props: any) => {
   );
 };
 
-export default GlobalModalDialog;
+export default GlobalModelDialog;

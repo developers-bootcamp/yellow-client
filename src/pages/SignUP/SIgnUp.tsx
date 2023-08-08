@@ -1,45 +1,58 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import DialogTitle from '@mui/material/DialogTitle';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import Typography from '@mui/material/Typography';
-import { blue, red } from '@mui/material/colors';
-import { Box, Container, CssBaseline, Dialog, DialogContent, Grid, Link, Paper } from '@mui/material';
-import present from './present.png'
-import SignUpForm from './SignUpform';
-import useStyles from './signUp.styles';
-import GlobalModalDialog from '../../components/globalModalDialog';
-
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import DialogTitle from "@mui/material/DialogTitle";
+import PersonIcon from "@mui/icons-material/Person";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
+import { blue, red } from "@mui/material/colors";
+import {
+  Box,
+  Container,
+  CssBaseline,
+  Dialog,
+  DialogContent,
+  Grid,
+  Link,
+  Paper,
+} from "@mui/material";
+import present from "./present.png";
+import SignUpForm from "./SignUpform";
+import useStyles from "./signUp.styles";
+import GlobalModalDialog from "../../components/globalModelDialog";
 
 export interface SimpleDialogProps {
-    open: boolean;
-    selectedValue: string;
-    onClose: (value: string) => void;
+  open: boolean;
+  selectedValue: string;
+  onClose: (value: string) => void;
 }
 
 export default function SignUp({ onClose }: any) {
-
-    const [open, setOpen] = React.useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-    return ( 
-        <GlobalModalDialog       
-        isButton={false}
-         title={'Set up your account'} children={<div>
-        <SignUpForm></SignUpForm>  <h4 >Fill in your details so you can log in later</h4>
-        </div>} img={'gifts.png'} ></GlobalModalDialog>          
-/*        
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return (
+    <GlobalModalDialog
+      isButton={false}
+      title={"Set up your account"}
+      children={
+        <div>
+          <SignUpForm></SignUpForm>{" "}
+          <h4>Fill in your details so you can log in later</h4>
+        </div>
+      }
+      img={"gifts.png"}
+    ></GlobalModalDialog>
+    /*        
      <DialogContent style={{ padding: '0' }}>
             <div style={{
                 display: 'flex',
@@ -72,6 +85,5 @@ export default function SignUp({ onClose }: any) {
                </div>
             </div></DialogContent> 
      </> */
-    );
+  );
 }
-

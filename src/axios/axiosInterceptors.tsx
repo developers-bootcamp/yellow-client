@@ -2,7 +2,7 @@ import axios from "axios";
 import { stopLoader, startLoader } from "../redux/loaderSlice";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/store";
-import GlobalErorrModal from "../components/globalErorModal";
+import GlobalErorrModel from "../components/globalErorModel";
 
 interface GlobalAxiosState {
   Error: boolean;
@@ -45,7 +45,7 @@ const Axios: React.FC<GlobalAxiosState> = () => {
   );
 
   return (
-    <>{Error ? <GlobalErorrModal onClose={() => setError(false)} /> : null}</>
+    <>{Error ? <GlobalErorrModel onClose={() => setError(false)} /> : null}</>
   );
 };
 export default Axios;
