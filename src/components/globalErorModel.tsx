@@ -6,7 +6,6 @@ import { Height } from "@mui/icons-material";
 
 const GlobalErorrModel = (props: any) => {
   interface GlobalErorrModalProps {
-    // showError: boolean;
     onClose: () => void;
   }
   const handleClickClose = () => {
