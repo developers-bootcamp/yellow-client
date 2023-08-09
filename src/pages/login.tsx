@@ -10,6 +10,7 @@ import axios from "axios";
 import { LOGIN_URL } from "../config/config";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GlobalTable from "../components/globalModelTable";
 
 
 const Login: React.FC = (): any => {
