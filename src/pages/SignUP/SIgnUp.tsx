@@ -44,14 +44,11 @@ export default function SignUp({ onClose }: any) {
     <GlobalModalDialog
       isButton={false}
       title={"Set up your account"}
-      children={
-        <div>
-          <SignUpForm></SignUpForm>{" "}
-          <h4>Fill in your details so you can log in later</h4>
-        </div>
-      }
       img={"gifts.png"}
-    ></GlobalModalDialog>
+    > <div>
+    <SignUpForm></SignUpForm>{" "}
+    <h4>Fill in your details so you can log in later</h4>
+  </div></GlobalModalDialog>
     /*        
      <DialogContent style={{ padding: '0' }}>
             <div style={{

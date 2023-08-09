@@ -12,15 +12,10 @@ import { PALLETE } from "../config/config";
 
 const GlobalModelDialog = (props: any) => {
   const [open, setOpen] = React.useState(false);
-  const [isSmall, setIsSmall] = useState(false);
  
  
   const handleClickOpen = () => {
     setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   useEffect(() => {
@@ -35,7 +30,6 @@ const GlobalModelDialog = (props: any) => {
         </DialogTitle>
         <DialogContent style={{ paddingLeft: "2rem" }}>
           {props.children}
-         
         </DialogContent>
       </DetailsDiv>
       <BackImg>

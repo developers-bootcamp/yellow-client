@@ -17,35 +17,31 @@ const GlobalErorrModel = (props: any) => {
     <Dialog open={true} fullWidth sx={{ maxHeight: "60vh", top: "13vh" }}>
       <GlobalModelDialog
         title={"Erorr"}
-        isButton={true}
         img={"error.svg"}
-        children={
-          <div>
-            <Button
-              style={{
-                zIndex: 3,
-                position: "absolute",
-                backgroundColor: PALLETE.ORANGE,
-                borderRadius: "10px",
-                top: "45vh",
-                right: "4vw",
-                color: "black",
-              }}
-              onClick={handleClickClose}
-            >
-              close
-            </Button>
-            <h2>
-              unexpected error
-              <br /> please try again later
-              <br />
-              or contact our support team at:
-              <br />
-              support@myapp.com
-            </h2>
-          </div>
-        }
-      ></GlobalModelDialog>
+      > <div>
+      <Button
+        style={{
+          zIndex: 3,
+          position: "absolute",
+          backgroundColor: PALLETE.ORANGE,
+          borderRadius: "10px",
+          top: "45vh",
+          right: "4vw",
+          color: "black",
+        }}
+        onClick={handleClickClose}
+      >
+        close
+      </Button>
+      <h2>
+        unexpected error
+        <br /> please try again later
+        <br />
+        or contact our support team at:
+        <br />
+        support@myapp.com
+      </h2>
+    </div></GlobalModelDialog>
     </Dialog>
   );
 };
