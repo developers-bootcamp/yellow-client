@@ -20,11 +20,12 @@ return (
        <Route  path ='/' element={<Login/>}> </Route> 
        <Route  path ='/newOrder' element={<NewOrder/>}> </Route>
        <Route  path ='/landingPage' element={<LandingPage/>}>
-       <Route  path ='pendingOrders' element={<PendingOrders/>}> </Route>
+       <Route  path ='pendingOrders' element={<PendingOrders order={undefined}/>}> </Route>
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
        </Route>
+       <Route  path ='/pendingOrders' element={<PendingOrders order={undefined}/>}> </Route>
 
       <Route  path ='/signUp' element={<SignUp/>}> </Route>
     
