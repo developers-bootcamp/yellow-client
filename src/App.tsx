@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Routing from './components/routing';
 import LandingPage from './pages/landingPage';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 import Login from './pages/login';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
 import NewOrder from './pages/newOrder';
+import Axios from './axios/axiosInterceptors';
 //import { Dashboard } from '@mui/icons-material';
  import Dashboard from './pages/dashboard';
 
@@ -40,6 +41,7 @@ function App() {
   const dispatch = useAppDispatch()
 
   return (<>
+  <Axios Error={false} />
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
     <Routing/>
