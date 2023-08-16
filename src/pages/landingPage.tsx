@@ -9,7 +9,7 @@ import OrderDetails from './orderDetails';
 const LandingPage: React.FC = () => {
   const [value, setValue] = React.useState("pendingOrders");
   const [open, setOpen] = React.useState(false);
-const [id,setId]= React.useState("64c6598b193934cc1372c6b3")
+const [id,setId]= React.useState("64d21881f730ac597dc9ac52")
   let navigater = useNavigate()
   // useEffect(() => {
   //   navigater(`/${value}`)

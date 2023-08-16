@@ -1,63 +1,336 @@
 import React from "react";
-import { DialogContent } from "@mui/material";
+import ArrowCircleUpSharpIcon from '@mui/icons-material/ArrowCircleUpSharp';
+import { Divider, Typography } from "@mui/material"
+import { Autocomplete, Button, DialogContent, FormHelperText, Grid, TextField } from "@mui/material";
 import { useEffect, useState, useRef } from 'react';
 import { CssBaseline } from "@mui/material";
 import { UseCrud } from "../redux/useCrud";
-import { IOrder } from "../types/Iorder";
-export default function OrderDetails({ onClose, id }: any) {
-    const [order, setOrder] = useState<IOrder>();
-    const { getData, postData, putData, deleteData } = UseCrud();
+import { IOrder, IProduct, IOrderItems, IProductCatagory } from "../types/Iorder";
+import { useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// import { IProduct } from '../types/Iorder';
+import { getAllOrders } from "../redux/dispatch"
+import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
+// import {balloon} from '../images/baloon.png'
+// import {baloon} from '../../images/baloon.png'
+import InputLabel from '@mui/material/InputLabel';
+import { MyTxtField, MyFieldContainer } from "./NewOrderForm.style";
+import { log } from "console";
+import { PALLETE } from "../config/config";
+import { number } from "yup";
 
+export default function OrderDetails({ onClose, id }: any) {
+    const { getData, postData, putData, deleteData } = UseCrud();
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [costumers, setCustomers] = useState<object[]>([]);
+    const [orderItems, setOrderItems] = useState<IOrderItems[]>([]);
+    const [sumOfPrice, setSumOfPrice] = useState<any>(0);
+    const [selectedValueProduct, setSelectedValueProduct] = useState<string | null>(null);
+    const [selectedValue, setSelectedValue] = useState<string | null>(null);
+    const [order, setOrder] = useState<IOrder>();
+    const [isOpen, setIsOpen] = useState(false);
+    const [creditCardNumber, setCreditCardNumber] = useState()
+    const [cvc, setCvc] = useState("")
+    const [expiryOn, setExpiryOn] = useState<Date>()
+    const [quantity, setQuantity] = useState(1)
+    const [amount, setamount] = useState(0)
+    const toggleOpen = () => {
+        setIsOpen(!isOpen);
+    };
+    let arrey: IProduct[] = []
+    let arr = []
     const getFunc = async (url: string) => {
         let result = await getData(url);
-        setOrder(result);
+        if (url != "product") {
+            console.log("price:", result?.totalAmount)
+            setOrder(result);
+            setOrderItems(result?.orderItems)
+            setSumOfPrice(result?.totalAmount)
+            // setOrderItems(order?.orderItems)
+            // getCurrencyProducts()
+            // console.log(order?.orderItems[0].productId.name)
+        }
+        if (url == "product") {
+            setProducts(result);
+        }
     }
+    const handleInputChange = (type: string, event: React.ChangeEvent<HTMLInputElement>) => {
+        const lable = event.target.value;
+        if (type == "quantity") {
+            const parsedNumber = parseInt(lable, 10);
+            setQuantity(parsedNumber)
+        }
+        if (type == "creditCardNumber") {
+
+            setOrder((prevOrder: any | undefined) => ({
+                ...prevOrder,
+                creditCardNumber: lable,
+            }));
+        }
+        if (type == "expiers on") {
+
+            setOrder((prevOrder: any | undefined) => ({
+                ...prevOrder,
+                expiryOn: lable,
+            }));
+        }
+        if (type == "cvc") {
+
+            setOrder((prevOrder: any | undefined) => ({
+                ...prevOrder,
+                cvc: lable,
+            }));
+        }
+        setOrder((prevOrder: any) => ({
+            ...prevOrder,
+            totalAmount: sumOfPrice,
+            orderItems: orderItems,
+        }));
+    };
+
+
+    const getCurrencyProducts = () => {
+        order?.orderItems.forEach(item => { arrey.push(item.productId) })
+        setProducts(arrey)
+    }
+    const dellProduct = (name: string, amount: number) => {
+        // let updateItems:IOrderItems
+        let prod = orderItems.find(item => item.productId.name == name)
+        const updateItems = orderItems?.filter(item => item.productId.name != name)
+        //    updateItems?.forEach(item => { arrey.push(item.productId) });
+        if (updateItems != undefined) {
+        }
+        console.log("order after change", order)
+        setOrderItems(updateItems)
+        reducePrice(prod?.productId?.price)
+        setOrder((prevOrder: any) => ({
+            ...prevOrder,
+            totalAmount: sumOfPrice,
+            orderItems: orderItems,
+        }));
+    }
+    const reducePrice = (price: number | undefined) => {
+        let summ = order?.totalAmount
+        if (summ != undefined && price != undefined) {
+            let totalSum = summ - price
+            setSumOfPrice(totalSum)
+        }
+
+    }
+    const productList = [
+        { name: "Collage", price: "$10", quantity: "x 2" },
+        { name: "Photo albom", price: "$20", quantity: "x 3" },
+        // ... more items
+    ];
+    const user = [
+        { fullName: "Rachel Livne" },
+        { fullName: "Miryam Rozenbaom" },
+        // ... more items
+    ];
     useEffect(() => {
         getFunc(`order/${id}`)
     }, []);
+    useEffect(() => {
+        if (products.length == 0) {
+            getFunc("product")
 
+        }
+    }, []);
+
+    useEffect(() => {
+        console.log("miryam thank you", orderItems)
+    }, [orderItems]);
+
+
+    const addToCart = () => {
+        let product: any;
+        for (let i = 0; i < products.length; i++) {
+            if (products[i].name == selectedValueProduct) {
+                product = products[i]
+                break;
+            }
+        }
+        let amount = quantity * product.price
+        product = { "productId": product, "quantity": quantity, "amount": amount };
+        setOrderItems((prevCart) => [...prevCart, product])
+        // setPrice(product.amount)
+        setSumOfPrice(sumOfPrice + product.amount)
+        setOrder((prevOrder: any) => ({
+            ...prevOrder,
+            orderItems: orderItems,
+            totalAmount: sumOfPrice
+        }));
+
+    }
+
+    const setPrice = (price: number) => {
+        let sum = order?.totalAmount
+        if (sum != undefined) {
+            let totalSum = sum + price
+            setSumOfPrice(totalSum)
+        }
+    }
+    const saveChanges = async (e: any) => {
+        if (order) {
+            console.log(order)
+            let result = await putData("order", order)
+            console.log(result)
+        }
+
+
+    }
+    const cancelOrder = (id: string | undefined) => { }
+    const changeDetail = (e: any, type: string) => {
+        alert("הפרטים שונו בהצלחה")
+        console.log()
+    }
+    // useEffect(() => {
+    //     getCurrencyProducts()
+    // }, []);
 
     return (
 
-        <>
-            <DialogContent style={{ padding: '0' }}>
-                <div style={{
-                    display: 'flex',
-                    position: 'relative',
-                    width: '100%',
-                    margin: '0',
-                    height: '100%'
-                }}>
-                    <CssBaseline />
-                    <div style={{
-                        width: '70%',
-                        marginLeft: '100px'
-                    }} >
-                        <h1> Orders' details</h1>
-                        <h4>customer</h4>
-                        <label>{order?.customer.fullName}</label>
-                        <h4>product</h4>
-                        <label>{order?.customer.fullName}</label>
-                        <h4>price</h4>
-                        <label>{order?.totalAmount}</label>
-                    </div>
-                    <div style={{
-                        width: '15%',
-                        height: '100%',
-                        backgroundColor: 'rgb(228, 214, 214)',
-                        textAlign: 'center',
-                    }}>
-                        <img style={{
-                            width: '90%',
-                            height: '50%',
-                            marginTop: '40%'
-                        }}
-                            src="gifts.png" alt="dsf" />
-                        <h4 >we almost done</h4>
-                    </div>
+        <div>
+            <Grid
+                container spacing={2}
+                direction="column"
+                justifyContent="center"
+                alignItems="center">
 
-                </div></DialogContent>
-        </>
+                <ToastContainer />
+                {products ? (
+                    <>
 
-    );
+                        {getAllOrders()}
+                        <br></br>
+                        <TextField sx={{ width: 250 }} value={order?.customer.fullName} aria-readonly></TextField>
+                        <br></br>
+                     
+                            <Autocomplete
+                                sx={{ width: 250 }}
+                                disablePortal
+                                id="combo-box-demo"
+                                options={products} getOptionLabel={(option) => option.name}
+                                onChange={(event, newValue) => setSelectedValueProduct(newValue ? newValue.name : null)}
+                                renderInput={(params) => <TextField {...params} label="Products" />}
+                            />
+                             <br></br>
+                            <TextField type="number" label="quantity" sx={{ width: 100 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("quantity", e) }} />
+                     
+                        <br></br>
+
+                        <Button
+                            onClick={() => addToCart()}
+                            sx={{
+                                mt: 2,
+                                backgroundColor: `${PALLETE.BLUE} !important`,
+                                width: "30%",
+                                color: `${PALLETE.WHITE} !important`,
+                            }}
+                            type="submit"
+                        //   disabled={!isValid}
+                        >
+                            ADD
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                    </>
+                )}
+                {sumOfPrice ? (
+                    <div>
+                        price: {sumOfPrice}
+                    </div>
+                ) : (
+                    <></>
+                )}
+            </Grid>
+
+            <div>
+                <Grid container spacing={2}>
+                    <h5>productList:</h5>
+                </Grid>
+                {orderItems ? <>
+                    {console.log("orderrrrr:", orderItems)
+                    }
+                    {orderItems?.map((item, index) => (
+                        <Grid key={index} container spacing={2} sx={{ mb: 2 }}>
+                            <Typography sx={{ mr: 1 }}>{item.productId?.name}</Typography>
+                            <Typography sx={{ mr: 1 }}>{item.amount}</Typography>
+                            <Typography sx={{ mr: 0 }}>{item.quantity}</Typography>
+                            <Button sx={{ mt: 0, p: 0 }} onClick={() => dellProduct(item.productId?.name, item.amount)}>X</Button>
+                        </Grid>
+                    ))}
+                </> : <></>}
+
+            </div>
+            <Divider sx={{ mt: 6 }} />
+            <Typography>Paid with a credit card ending in digits: {order?.creditCardNumber.toString().substring(12)}</Typography>
+
+
+            <Button onClick={toggleOpen}>{isOpen ? 'CHANGE' : ' change credit card details'}
+            </Button>
+            {isOpen && <div>
+
+                <TextField
+                    type="number"
+                    label="creditCardNumber"
+                    sx={{ width: 120, textAlign: 'right' }}
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleInputChange("creditCardNumber", e);
+                    }}
+                />
+                <TextField
+                    type="month"
+                    // label="expiers on"
+                    sx={{ width: 120, textAlign: 'left' }}
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleInputChange("expiers on", e);
+                    }}
+                />
+                <TextField
+                    type="string"
+                    label="cvc"
+                    sx={{ width: 120, textAlign: 'left' }}
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleInputChange("cvc", e);
+                    }}
+                />
+            </div>}
+            <br></br>
+            <Button
+                onClick={() => cancelOrder(order?.id)}
+                sx={{
+                    mt: 2,
+                    backgroundColor: `${PALLETE.ORANGE} !important`,
+                    width: "45%",
+                    color: `${PALLETE.WHITE} !important`,
+                }}
+                type="submit"
+            //   disabled={!isValid}
+            >
+                Cancel Order
+            </Button>
+            <Button
+                sx={{
+                    mt: 2,
+                    left: '10% !important',
+                    backgroundColor: `${PALLETE.GREEN} !important`,
+                    width: "45%",
+                    color: `${PALLETE.WHITE} !important`,
+                }}
+                type="submit"
+                // disabled={!isValid}
+                onClick={(e) => saveChanges(e)}
+            >
+                Save Changes
+            </Button>
+        </div>
+
+    )
 }

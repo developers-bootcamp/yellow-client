@@ -7,7 +7,7 @@
     orderItems : Array<IOrderItems>
     OrderStatusId:string,
     companyId:ICompany,
-    CreditCardNumber:number,
+    creditCardNumber:number,
     expiryOn:Date,
     cvc:string,
     notificationFlag:boolean,
@@ -81,7 +81,7 @@ interface ICompany {
     companyId:ICompany,
     auditData:IAuditData
   } 
-  export type { IOrder
+  export type { IOrder,IProduct,IProductCatagory,IOrderItems
 
 
 
