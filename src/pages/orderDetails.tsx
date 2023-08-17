@@ -1,4 +1,13 @@
 import React from "react";
+import Dialog from "@mui/material/Dialog";
+import { Link, DialogTitle } from "@mui/material";
+import {
+    DetailsDiv,
+    GiftImg,
+    OpenDialog,
+    BackImg,
+    TextSide,
+} from "./globalModelDialog.style";
 import ArrowCircleUpSharpIcon from '@mui/icons-material/ArrowCircleUpSharp';
 import { Divider, Typography } from "@mui/material"
 import { Autocomplete, Button, DialogContent, FormHelperText, Grid, TextField } from "@mui/material";
@@ -191,145 +200,165 @@ export default function OrderDetails({ onClose, id }: any) {
     // }, []);
 
     return (
-
         <div>
-            <Grid
-                container spacing={2}
-                direction="column"
-                justifyContent="center"
-                alignItems="center">
+            <DialogContent sx={{ p: 0, height: "42rem" }}>
+                <DetailsDiv>
+                    <DialogTitle sx={{ fontSize: 35, pl: "3rem", fontWeight: "bold" }}>
+                        Order's details
+                    </DialogTitle>
+                    <DialogContent style={{ paddingLeft: "2rem" }}>
+                        <Grid
+                            container spacing={2}
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center">
 
-                <ToastContainer />
-                {products ? (
-                    <>
+                            <ToastContainer />
+                            {products ? (
+                                <>
 
-                        {getAllOrders()}
-                        <br></br>
-                        <TextField sx={{ width: 250 }} value={order?.customer.fullName} aria-readonly></TextField>
-                        <br></br>
-                     
-                            <Autocomplete
-                                sx={{ width: 250 }}
-                                disablePortal
-                                id="combo-box-demo"
-                                options={products} getOptionLabel={(option) => option.name}
-                                onChange={(event, newValue) => setSelectedValueProduct(newValue ? newValue.name : null)}
-                                renderInput={(params) => <TextField {...params} label="Products" />}
+                                    {getAllOrders()}
+                                    <br></br>
+                                    <div>
+                                        <FormHelperText >customer</FormHelperText>
+                                        {/* <br></br> */}
+                                        <TextField sx={{ width: 250, right: 150 }} value={order?.customer.fullName} aria-readonly></TextField>
+                                    </div>
+                                    <div>
+                                        <FormHelperText>Product</FormHelperText>
+                                        {/* <br></br> */}
+                                        <Autocomplete
+                                            sx={{ width: 250, right: 700 }}
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={products} getOptionLabel={(option) => option.name}
+                                            onChange={(event, newValue) => setSelectedValueProduct(newValue ? newValue.name : null)}
+                                            renderInput={(params) => <TextField {...params} label="Products" />}
+                                        />
+                                    </div>
+                                    <br></br>
+                                    <TextField type="number" label="quantity" sx={{ width: 100 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("quantity", e) }} />
+
+                                    <br></br>
+
+                                    <Button
+                                        onClick={() => addToCart()}
+                                        sx={{
+                                            mt: 2,
+                                            backgroundColor: `${PALLETE.BLUE} !important`,
+                                            width: "30%",
+                                            color: `${PALLETE.WHITE} !important`,
+                                        }}
+                                        type="submit"
+                                    //   disabled={!isValid}
+                                    >
+                                        ADD
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                </>
+                            )}
+                            {sumOfPrice ? (
+                                <div>
+                                    price: {sumOfPrice}
+                                </div>
+                            ) : (
+                                <></>
+                            )}
+                        </Grid>
+                        <div>
+                            <Grid container spacing={2}>
+                                <h5>productList:</h5>
+                            </Grid>
+                            {orderItems ? <>
+                                {console.log("orderrrrr:", orderItems)
+                                }
+                                {orderItems?.map((item, index) => (
+                                    <Grid key={index} container spacing={2} sx={{ mb: 2 }}>
+                                        <Typography sx={{ mr: 1 }}>{item.productId?.name}</Typography>
+                                        <Typography sx={{ mr: 1 }}>{item.amount}</Typography>
+                                        <Typography sx={{ mr: 0 }}>{item.quantity}</Typography>
+                                        <Button sx={{ mt: 0, p: 0 }} onClick={() => dellProduct(item.productId?.name, item.amount)}>X</Button>
+                                    </Grid>
+                                ))}
+                            </> : <></>}
+
+                        </div>
+
+                        <Divider sx={{ mt: 6 }} />
+                        <Typography>Paid with a credit card ending in digits: {order?.creditCardNumber.toString().substring(12)}</Typography>
+
+
+                        <Button onClick={toggleOpen}>{isOpen ? 'CHANGE' : ' change credit card details'}
+                        </Button>
+                        {isOpen && <div>
+
+                            <TextField
+                                type="number"
+                                label="creditCardNumber"
+                                sx={{ width: 120, textAlign: 'right' }}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleInputChange("creditCardNumber", e);
+                                }}
                             />
-                             <br></br>
-                            <TextField type="number" label="quantity" sx={{ width: 100 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("quantity", e) }} />
-                     
-                        <br></br>
+                            <TextField
+                                type="month"
+                                // label="expiers on"
+                                sx={{ width: 120, textAlign: 'left' }}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleInputChange("expiers on", e);
+                                }}
+                            />
+                            <TextField
+                                type="string"
+                                label="cvc"
+                                sx={{ width: 120, textAlign: 'left' }}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleInputChange("cvc", e);
+                                }}
+                            />
+                        </div>}
 
+                        <br></br>
                         <Button
-                            onClick={() => addToCart()}
+                            onClick={() => cancelOrder(order?.id)}
                             sx={{
                                 mt: 2,
-                                backgroundColor: `${PALLETE.BLUE} !important`,
-                                width: "30%",
+                                backgroundColor: `${PALLETE.ORANGE} !important`,
+                                width: "45%",
                                 color: `${PALLETE.WHITE} !important`,
                             }}
                             type="submit"
                         //   disabled={!isValid}
                         >
-                            ADD
+                            Cancel Order
                         </Button>
-                    </>
-                ) : (
-                    <>
-                    </>
-                )}
-                {sumOfPrice ? (
-                    <div>
-                        price: {sumOfPrice}
-                    </div>
-                ) : (
-                    <></>
-                )}
-            </Grid>
 
-            <div>
-                <Grid container spacing={2}>
-                    <h5>productList:</h5>
-                </Grid>
-                {orderItems ? <>
-                    {console.log("orderrrrr:", orderItems)
-                    }
-                    {orderItems?.map((item, index) => (
-                        <Grid key={index} container spacing={2} sx={{ mb: 2 }}>
-                            <Typography sx={{ mr: 1 }}>{item.productId?.name}</Typography>
-                            <Typography sx={{ mr: 1 }}>{item.amount}</Typography>
-                            <Typography sx={{ mr: 0 }}>{item.quantity}</Typography>
-                            <Button sx={{ mt: 0, p: 0 }} onClick={() => dellProduct(item.productId?.name, item.amount)}>X</Button>
-                        </Grid>
-                    ))}
-                </> : <></>}
-
-            </div>
-            <Divider sx={{ mt: 6 }} />
-            <Typography>Paid with a credit card ending in digits: {order?.creditCardNumber.toString().substring(12)}</Typography>
-
-
-            <Button onClick={toggleOpen}>{isOpen ? 'CHANGE' : ' change credit card details'}
-            </Button>
-            {isOpen && <div>
-
-                <TextField
-                    type="number"
-                    label="creditCardNumber"
-                    sx={{ width: 120, textAlign: 'right' }}
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleInputChange("creditCardNumber", e);
-                    }}
-                />
-                <TextField
-                    type="month"
-                    // label="expiers on"
-                    sx={{ width: 120, textAlign: 'left' }}
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleInputChange("expiers on", e);
-                    }}
-                />
-                <TextField
-                    type="string"
-                    label="cvc"
-                    sx={{ width: 120, textAlign: 'left' }}
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleInputChange("cvc", e);
-                    }}
-                />
-            </div>}
-            <br></br>
-            <Button
-                onClick={() => cancelOrder(order?.id)}
-                sx={{
-                    mt: 2,
-                    backgroundColor: `${PALLETE.ORANGE} !important`,
-                    width: "45%",
-                    color: `${PALLETE.WHITE} !important`,
-                }}
-                type="submit"
-            //   disabled={!isValid}
-            >
-                Cancel Order
-            </Button>
-            <Button
-                sx={{
-                    mt: 2,
-                    left: '10% !important',
-                    backgroundColor: `${PALLETE.GREEN} !important`,
-                    width: "45%",
-                    color: `${PALLETE.WHITE} !important`,
-                }}
-                type="submit"
-                // disabled={!isValid}
-                onClick={(e) => saveChanges(e)}
-            >
-                Save Changes
-            </Button>
+                        <Button
+                            sx={{
+                                mt: 2,
+                                left: '10% !important',
+                                backgroundColor: `${PALLETE.GREEN} !important`,
+                                width: "45%",
+                                color: `${PALLETE.WHITE} !important`,
+                            }}
+                            type="submit"
+                            // disabled={!isValid}
+                            onClick={(e) => saveChanges(e)}
+                        >
+                            Save Changes
+                        </Button>
+                    </DialogContent>
+                </DetailsDiv>
+                <BackImg>
+                    <GiftImg src="gift.png"></GiftImg>
+                    <TextSide>we almoste done</TextSide>
+                </BackImg>
+            </DialogContent>
         </div>
 
     )
