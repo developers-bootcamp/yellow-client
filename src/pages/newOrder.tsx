@@ -34,7 +34,6 @@ const NewOrder: React.FC = () => {
             toast.success('Operation was successful!');
             setSumOfPrice(result)
             //add to the panding order list
-
          }
       }
 
