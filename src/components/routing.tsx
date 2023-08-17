@@ -24,7 +24,6 @@ return (
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
        </Route>
-      
 
       <Route  path ='/signUp' element={<SignUp/>}> </Route>
     
