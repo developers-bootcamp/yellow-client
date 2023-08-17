@@ -12,4 +12,5 @@ export const PALLETE = {
     GREEN: '#7ED787',
     ORANGE: '#EB9F6E',
     WHITE: '#FFFFFF',
+    GRAY: '#F2F2F2',
 }
