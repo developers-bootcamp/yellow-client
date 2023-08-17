@@ -22,7 +22,7 @@
     companiId :ICompany,
       auditData:IAuditData
 }
-  interface IUsers {
+   export interface IUsers {
     id: string,
     fullName: string,
     password: string,
