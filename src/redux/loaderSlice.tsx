@@ -19,7 +19,7 @@ export const loaderSlice = createSlice({
         startLoader: (state: ILoaderState, action: PayloadAction<void>) => {
             state.isLoading = true;
             state.counter++;
-                },
+        },
         stopLoader: (state: ILoaderState, action: PayloadAction<void>) => {
             state.counter--;
             state.isLoading = state.counter !== 0;

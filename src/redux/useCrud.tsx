@@ -1,8 +1,10 @@
 import axios from "axios";
-const BASE_URL = process.env.BASE_URL;
+import { IOrder } from "../types/Iorder";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const UseCrud = () => {
-    const getData = async (url:string) => { try {
+    const getData = async (url:string) => { 
+      try {
         const response = await axios.get(`${BASE_URL}/${url}`);
         var x=response.data;
         return await x;
@@ -10,7 +12,9 @@ export const UseCrud = () => {
         return error;
   
       }}
-      const postData = async (url:string,body:object) => { try {
+      const postData = async (url:string,body:Object) => { try {
+        console.log(body);
+        
         const response = await axios.post(`${BASE_URL}/${url}`,body);
         var x=response.data;
         return await x;
