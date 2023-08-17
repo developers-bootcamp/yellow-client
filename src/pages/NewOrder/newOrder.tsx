@@ -304,7 +304,7 @@ const NewOrder: React.FC = () => {
                                     <p >{i}</p>
                                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', top: 300, right: 600 }}>
                                        {Object.entries(innerObj).map(([subKey, value], subIndex) => (
-                                          <div key={subIndex} style={{ display: 'flex', top: 200, right: 500 }}>
+                                          <div key={subIndex} style={{ display: 'flex', top: 200, right: 450 }}>
                                              <p>-{(value / currencyMap.value).toFixed(0)} {(parseInt(subKey) / currencyMap.value).toFixed(0)} {currencyMap.key}</p>
                                              <Button><DeleteIcon onClick={() => { Delete(index) }} /></Button>
                                              {/* {getAmount(i,parseInt(subKey))}  */}
