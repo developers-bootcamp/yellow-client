@@ -5,7 +5,6 @@ import GlobalTable from "../components/globalTable";
 import { PALLETE } from '../config/config'
 import { GridColDef, GridRowsProp } from "@mui/x-data-grid/models";
 import axios from "axios";
-//import { GridRowsProp } from "@mui/x-data-grid";
 
 
 const URL = `User/0`
@@ -13,6 +12,7 @@ const URL = `User/0`
 const UsersManagement: React.FC = () => {
 
   const { getData, postData, putData, deleteData } = UseCrud();
+  const [users,setUsers]=useState<IUser[]>([])
   const [customers, setCustomers] = useState<GridRowsProp<IUser>>([])
 
   useEffect(() => {
@@ -29,7 +29,8 @@ const UsersManagement: React.FC = () => {
   }, []);
 
   const c: GridRowsProp<IUser> = [
-    { id: "1", fullName: "shir", address: "narkis 5", email: "shir@gmail.com", password: "frwx4", telephone: "0506666663" }
+    { id: "1", fullName: "shir", address: "narkis 5", email: "shir@gmail.com", password: "frwx4", telephone: "0506666663" },
+    { id: "2", fullName: "shira", address: "narkis 8", email: "shira@gmail.com", password: "fr895", telephone: "05068956663" }
   ]
   const cols = [{ field: 'fullName', headerName: 'Full Name' },
   { field: 'password', headerName: 'Password' },
@@ -98,52 +99,7 @@ const UsersManagement: React.FC = () => {
       editable: true,
       type: 'string',
     },
-    // {
-    //   field: 'actions',
-    //   type: 'actions',
-    //   headerName: 'Actions',
-    //   width: 100,
-    //   cellClassName: 'actions',
-      // getActions: ({ id }) => {
-      //   const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
-      //   if (isInEditMode) {
-      //     return [
-      //       <GridActionsCellItem
-      //         icon={<SaveIcon />}
-      //         label="Save"
-      //         sx={{
-      //           color: 'primary.main',
-      //         }}
-      //         onClick={handleSaveClick(id)}
-      //       />,
-      //       <GridActionsCellItem
-      //         icon={<CancelIcon />}
-      //         label="Cancel"
-      //         className="textPrimary"
-      //         onClick={handleCancelClick(id)}
-      //         color="inherit"
-      //       />,
-      //     ];
-      //   }
-
-      //   return [
-      //     <GridActionsCellItem
-      //       icon={<EditIcon />}
-      //       label="Edit"
-      //       className="textPrimary"
-      //       onClick={handleEditClick(id)}
-      //       color="inherit"
-      //     />,
-      //     <GridActionsCellItem
-      //       icon={<DeleteIcon />}
-      //       label="Delete"
-      //       onClick={handleDeleteClick(id)}
-      //       color="inherit"
-      //     />,
-      //   ];
-      //  },
-    // },
   ];
 
 //  const onAdminUserChanged = (updatedUserDetails, rowNumber) => {
@@ -153,6 +109,7 @@ const UsersManagement: React.FC = () => {
 
   return (
     <>
+    {/* users.filter(user => user.fullName ==="mika" ) */}
       <GlobalTable data={c} title="Administrators" color={PALLETE.RED} columns={columns} type="User" /*onRowUpdated={onAdminUserChanged}*//>
       <GlobalTable data={c} title="Employees" color={PALLETE.YELLOW} columns={columns} type="User" />
       <GlobalTable data={c} title="Customers" color={PALLETE.BLUE} columns={columns} type="User" />

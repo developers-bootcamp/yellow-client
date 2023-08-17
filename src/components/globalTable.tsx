@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -27,7 +27,7 @@ import {
   randomArrayItem,
 } from '@mui/x-data-grid-generator';
 import { IUser } from '../types/IUser';
-import { useEffect } from 'react';
+
 
 
 
@@ -46,33 +46,35 @@ interface EditToolbarProps {
   ) => void;
 }
 
+function EditToolbar(props: EditToolbarProps) {
+  const { setRows, setRowModesModel } = props;
+
+  const handleClick = () => {
+    const id = randomId();
+    setRows((oldRows) => [...oldRows, { id, fullName: '', password: '', email: '', address: '', phone: '', isNew: true }]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+    }));
+  };
+
+  return (
+    <GridToolbarContainer>
+      <Button style={{ color: 'gray' }} startIcon={<AddIcon />} onClick={handleClick}>
+        Add {/*type*/}
+      </Button>
+    </GridToolbarContainer>
+  );
+}
 
 
 const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, type,/* onRowUpdated */ }) => {
-
-  function EditToolbar(props: EditToolbarProps) {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
-      }));
-    };
-
-    return (
-      <GridToolbarContainer>
-        <Button style={{ color: color }} startIcon={<AddIcon />} onClick={handleClick}>
-          Add {type}
-        </Button>
-      </GridToolbarContainer>
-    );
-  }
+  const [editMode, setEditMode] = useState(false);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
 
-  const addActions = () => {
+
+  const addActions = (isEditMode:boolean) => {
     const newObject = {
       field: 'actions',
       type: 'actions',
@@ -80,9 +82,15 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
       width: 100,
       cellClassName: 'actions',
       getActions: ({ id }: { id: number }) => {
+        console.log( rowModesModel[id]?.mode);
+        
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+        console.log(GridRowModes.Edit);
 
         if (isInEditMode) {
+        //if (isEditMode) {
+          console.log("in edit mode");
+
           return [
             <GridActionsCellItem
               icon={<SaveIcon />}
@@ -101,6 +109,7 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
             />,
           ];
         }
+        console.log("no edit mode");
 
         return [
           <GridActionsCellItem
@@ -119,17 +128,10 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
         ];
       }
     }
-    setColumnsState(prevArray => [...prevArray, newObject]);
+    return newObject;
   }
 
-  const [rows, setRows] = React.useState(data);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-  const [columnsState, setColumnsState] = React.useState(columns);
 
-  useEffect(() => {
-    addActions();
-
-  }, [])
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -138,12 +140,20 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
   };
 
   const handleEditClick = (id: GridRowId) => () => {
+    debugger;
     //onRowUpdated(rowModesModel, id)
+  
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    //setEditMode(true);
+    setAction(addActions(true))
+    console.log(editMode);
+
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    setEditMode(false);
+
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -164,13 +174,62 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
-    //setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    setRows(rows.map((row: any) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
+
+
+  const [currentId, setCurrentId] = useState(-1)
+  //const [isInEditMode, setIsInEditMode] = useState(rowModesModel[currentId]?.mode === GridRowModes.Edit)
+  const [rows, setRows] = useState(data);
+  const [columnsState, setColumnsState] = useState(columns);
+  const [actions, setAction] = React.useState(addActions(false))
+
+
+  // const generateIcons = () => {
+  //   isInEditMode ? [
+  //     <GridActionsCellItem
+  //       icon={<SaveIcon />}
+  //       label="Save"
+  //       sx={{
+  //         color: 'primary.main',
+  //       }}
+  //       onClick={handleSaveClick(currentId)}
+  //     />,
+  //     <GridActionsCellItem
+  //       icon={<CancelIcon />}
+  //       label="Cancel"
+  //       className="textPrimary"
+  //       onClick={handleCancelClick(currentId)}
+  //       color="inherit"
+  //     />,
+  //   ] : [
+  //     <GridActionsCellItem
+  //       icon={<EditIcon />}
+  //       label="Edit"
+  //       className="textPrimary"
+  //       onClick={handleEditClick(currentId)}
+  //       color="inherit"
+  //     />,
+  //     <GridActionsCellItem
+  //       icon={<DeleteIcon />}
+  //       label="Delete"
+  //       onClick={handleDeleteClick(currentId)}
+  //       color="inherit"
+  //     />,
+  //   ]
+  // }
+
+  
+  // useEffect(() => {
+  //   addActions();
+
+  // }, [isInEditMode])
+
 
 
 
@@ -191,7 +250,7 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
       <span style={{ color: color, padding: '7px', verticalAlign: 'super' }}>{title}</span>
       <DataGrid
         rows={rows}
-        columns={columnsState}
+        columns={columnsState.concat(actions)}
         editMode="row"
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
