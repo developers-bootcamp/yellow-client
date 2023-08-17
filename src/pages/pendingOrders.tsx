@@ -4,7 +4,7 @@ import { IOrder } from '../types/Iorder';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 interface PendingOrdersProps {
-    order: IOrder|undefined;
+    order?: IOrder;
   }
 const PendingOrders: React.FC<PendingOrdersProps> = ({ order }) => {
     let navigater = useNavigate()
