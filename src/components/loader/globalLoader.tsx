@@ -17,7 +17,13 @@ const Loader = styled('div')({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
+    height: '100vh', 
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 9999,
 });
 const LoaderSpinner = styled('div')({
     border: '4px solid #d8d2d2',

@@ -20,7 +20,7 @@ const Axios: React.FC<GlobalAxiosState> = () => {
 
   const requestInterceptor = axios.interceptors.request.use(
     (config: any) => {
-      let accessToken = localStorage.getItem("accessToken");
+      let accessToken = sessionStorage.getItem("accessToken");
       {
         config.headers["Authorization"] = accessToken;
       }
