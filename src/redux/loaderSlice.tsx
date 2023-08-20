@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { log } from "console";
 
 export interface ILoaderState {
     isLoading: boolean,
