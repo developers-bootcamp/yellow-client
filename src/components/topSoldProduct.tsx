@@ -1,36 +1,97 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
+import { BASE_URL } from "../config/config";
+import swal from "sweetalert";
 
+interface Product {
+  productName: string;
+  amount: number;
+}
+
+interface TopProduct {
+  month: string;
+  products: Product[];
+}
 export function TopSoldProduct() {
+  const [topProduct, setTopProduct] = useState<TopProduct[]>([]);
+
+
+
+  const graghRequest = async () => {
+    await axios.get(`${BASE_URL}/Graph/topProduct`).then(res => setTopProduct(res.data));
+
+  }
+
+  useEffect(() => {
+    debugger;
+    graghRequest()
+
+  }, []);
+  useEffect(() => {
+    console.log(topProduct);
+  }, [topProduct]);
+
+
+
+  const productsName: string[] = ["Month"];
+
+  topProduct.map((item) => {
+    item.products.forEach((product) => {
+      productsName.push(product.productName);
+
+    });
+  });
+  const chartData = topProduct.map((item) => {
+    const dataRow: any[] = [item.month];
+    const productMap: { [name: string]: number } = {};
+
+    item.products.forEach((product) => {
+      productMap[product.productName] = product.amount;
+    });
+
+    productsName.forEach((productName) => {
+      if (productName != "Month") {
+        const amount = productMap[productName] || 0;
+        dataRow.push(amount);
+      }
+    });
+
+    return dataRow;
+  });
+
+
+
   return (
 
-<Chart
-          width={"100%"}
-          height={"400px"}
-          chartType="ColumnChart"
-          loader={<div>Loading Chart</div>}
-          data={[
-            ["Duration", "Photo Album", "Collage","Framed Image","Video Clip","Blessing Card"],
-            ["04/23", 20, 38, 15, 30, 20],
-            ["05/23", 10, 10, 15, 30, 20],
-            ["06/23", 10, 10, 15, 30, 20],
-          ]}
-          options={{
-            chartArea: { width: "50%" },
-            isStacked: true,
-            vAxis: {
-              title: "",
-              gridlines: { color: "none" },
-              textPosition: "none"
-            },
-            bars: "vertical",
-            backgroundColor: "lightgray",
-          }}
-      
-        />
+    <Chart
+      width={"100%"}
+      height={"400px"}
+      chartType="ColumnChart"
+      loader={<div>Loading Chart</div>}
+
+      data={[
+
+        productsName,
+        ...chartData,
+
+      ]}
+      options={{
+        chartArea: { width: "50%" },
+        isStacked: true,
+        vAxis: {
+          title: "",
+          gridlines: { color: "none" },
+          textPosition: "none"
+        },
+        bars: "vertical",
+        backgroundColor: "lightgray",
+      }}
+
+    />
 
   );
- }
+}
 
 
 
