@@ -5,67 +5,27 @@ import GlobalTable from "../components/globalTable";
 import { PALLETE } from '../config/config'
 import { GridColDef, GridRowsProp } from "@mui/x-data-grid/models";
 import axios from "axios";
-
+import { RATE_TYPE_OPTIONS } from "@mui/x-data-grid-generator/services/static-data";
+import Table from "../components/Table";
 
 const URL = `User/0`
 
 const UsersManagement: React.FC = () => {
 
   const { getData, postData, putData, deleteData } = UseCrud();
-  const [users,setUsers]=useState<IUser[]>([])
-  const [customers, setCustomers] = useState<GridRowsProp<IUser>>([])
+  const [users, setUsers] = useState<GridRowsProp<IUser>>([]);
 
   useEffect(() => {
     getData(URL)
       .then((data) => {
+        setUsers(data);
         console.log(data);
-
-        setCustomers(data);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
 
   }, []);
-
-  const c: GridRowsProp<IUser> = [
-    { id: "1", fullName: "shir", address: "narkis 5", email: "shir@gmail.com", password: "frwx4", telephone: "0506666663" },
-    { id: "2", fullName: "shira", address: "narkis 8", email: "shira@gmail.com", password: "fr895", telephone: "05068956663" }
-  ]
-  const cols = [{ field: 'fullName', headerName: 'Full Name' },
-  { field: 'password', headerName: 'Password' },
-  { field: 'email', headerName: 'Email' },
-  { field: 'address', headerName: 'Address' },
-  { field: 'telephone', headerName: 'Phone' }
-  ]
-
-  const example_for_columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
-    {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 80,
-      align: 'left',
-      headerAlign: 'left',
-      editable: true,
-    },
-    {
-      field: 'joinDate',
-      headerName: 'Join date',
-      type: 'date',
-      width: 180,
-      editable: true,
-    },
-    {
-      field: 'role',
-      headerName: 'Department',
-      width: 220,
-      editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Market', 'Finance', 'Development'],
-    },
-  ];
 
   const columns: GridColDef[] = [
     { field: 'fullName', headerName: 'Full Name', width: 180, editable: true },
@@ -82,7 +42,7 @@ const UsersManagement: React.FC = () => {
       field: 'email',
       headerName: 'Email',
       type: 'string',
-      width:200 ,
+      width: 200,
       editable: true,
     },
     {
@@ -102,19 +62,16 @@ const UsersManagement: React.FC = () => {
 
   ];
 
-//  const onAdminUserChanged = (updatedUserDetails, rowNumber) => {
-//   await axios(update)
-//   users[rowNumber] = 
-//  }
+  //  const onAdminUserChanged = (updatedUserDetails, rowNumber) => {
+  //   await axios(update)
+  //   users[rowNumber] = 
+  //  }
 
   return (
     <>
-    {/* users.filter(user => user.fullName ==="mika" ) */}
-      <GlobalTable data={c} title="Administrators" color={PALLETE.RED} columns={columns} type="User" /*onRowUpdated={onAdminUserChanged}*//>
-      <GlobalTable data={c} title="Employees" color={PALLETE.YELLOW} columns={columns} type="User" />
-      <GlobalTable data={c} title="Customers" color={PALLETE.BLUE} columns={columns} type="User" />
-
-
+      {users?.length > 0 && <GlobalTable data={users.filter(user => user.role === "ADMIN")} title="Administrators" color={PALLETE.RED} columns={columns} type="User" editable={true}/*onRowUpdated={onAdminUserChanged}*/ />}
+      {users?.length > 0 && <GlobalTable data={users.filter(user => user.role === "EMPLOYEE")} title="Employees" color={PALLETE.YELLOW} columns={columns} type="User" editable={true} />}
+      {users?.length > 0 && <GlobalTable data={users.filter(user => user.role === "CUSTOMER")} title="Customers" color={PALLETE.BLUE} columns={columns} type="User" editable={false} />}
     </>
   );
 };

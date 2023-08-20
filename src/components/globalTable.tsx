@@ -37,6 +37,7 @@ interface GlobalTableProps {
   color: string,
   title: string,
   type: string,
+  editable: boolean,
 }
 
 interface EditToolbarProps {
@@ -46,51 +47,53 @@ interface EditToolbarProps {
   ) => void;
 }
 
-function EditToolbar(props: EditToolbarProps) {
-  const { setRows, setRowModesModel } = props;
 
-  const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, fullName: '', password: '', email: '', address: '', phone: '', isNew: true }]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
-    }));
-  };
 
-  return (
-    <GridToolbarContainer>
-      <Button style={{ color: 'gray' }} startIcon={<AddIcon />} onClick={handleClick}>
-        Add {/*type*/}
-      </Button>
-    </GridToolbarContainer>
-  );
+interface RowMode {
+  edit?: boolean,
+  id?: GridRowId,
 }
 
+const GlobalTable: React.FC<GlobalTableProps> = ({ editable, data, title, color, columns, type,/* onDataUpdated */ }) => {
+  useEffect(() => { console.log(data) }, []);
 
-const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, type,/* onRowUpdated */ }) => {
+  const [rowsMode, setRowsMode] = useState<RowMode[]>([])
   const [editMode, setEditMode] = useState(false);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
+  function EditToolbar(props: EditToolbarProps) {
+    const { setRows, setRowModesModel } = props;
+  
+    const handleClick = () => {
+      const id = randomId();
+      setRows((oldRows) => [...oldRows, { id, fullName: '', password: '', email: '', address: '', phone: '', isNew: true }]);
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      }));
+      setAction(addActions(false, id))
+    };
+  
+    return (
+      <GridToolbarContainer>
+        <Button style={{ color: 'gray' }} startIcon={<AddIcon />} onClick={handleClick}>
+          Add {type }
+        </Button>
+      </GridToolbarContainer>
+    );
+  }
 
-
-  const addActions = (isEditMode:boolean) => {
+  const addActions = (isEditMode: boolean, editid: GridRowId) => {
     const newObject = {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: ({ id }: { id: number }) => {
-        console.log( rowModesModel[id]?.mode);
-        
+      getActions: ({ id }: { id: GridRowId }) => {
+
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-        console.log(GridRowModes.Edit);
-
-        if (isInEditMode) {
-        //if (isEditMode) {
-          console.log("in edit mode");
-
+        if (isEditMode && editid === id) {
           return [
             <GridActionsCellItem
               icon={<SaveIcon />}
@@ -109,7 +112,7 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
             />,
           ];
         }
-        console.log("no edit mode");
+
 
         return [
           <GridActionsCellItem
@@ -131,29 +134,24 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
     return newObject;
   }
 
-
-
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
   };
 
-  const handleEditClick = (id: GridRowId) => () => {
-    debugger;
-    //onRowUpdated(rowModesModel, id)
-  
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-    //setEditMode(true);
-    setAction(addActions(true))
-    console.log(editMode);
 
+  const handleEditClick = (id: GridRowId) => () => {
+    //onRowUpdated(rowModesModel, id)
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    setAction(addActions(true, id))
   };
 
-  const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    setEditMode(false);
 
+
+  const handleSaveClick = (id: GridRowId) => () => {
+   setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    setAction(addActions(false, id))
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -170,6 +168,7 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
     if (editedRow!.isNew) {
       setRows(rows.filter((row) => row.id !== id));
     }
+    setAction(addActions(false, id))
   };
 
   const processRowUpdate = (newRow: GridRowModel) => {
@@ -180,64 +179,21 @@ const GlobalTable: React.FC<GlobalTableProps> = ({ data, title, color, columns, 
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
+
   };
 
 
   const [currentId, setCurrentId] = useState(-1)
-  //const [isInEditMode, setIsInEditMode] = useState(rowModesModel[currentId]?.mode === GridRowModes.Edit)
   const [rows, setRows] = useState(data);
   const [columnsState, setColumnsState] = useState(columns);
-  const [actions, setAction] = React.useState(addActions(false))
-
-
-  // const generateIcons = () => {
-  //   isInEditMode ? [
-  //     <GridActionsCellItem
-  //       icon={<SaveIcon />}
-  //       label="Save"
-  //       sx={{
-  //         color: 'primary.main',
-  //       }}
-  //       onClick={handleSaveClick(currentId)}
-  //     />,
-  //     <GridActionsCellItem
-  //       icon={<CancelIcon />}
-  //       label="Cancel"
-  //       className="textPrimary"
-  //       onClick={handleCancelClick(currentId)}
-  //       color="inherit"
-  //     />,
-  //   ] : [
-  //     <GridActionsCellItem
-  //       icon={<EditIcon />}
-  //       label="Edit"
-  //       className="textPrimary"
-  //       onClick={handleEditClick(currentId)}
-  //       color="inherit"
-  //     />,
-  //     <GridActionsCellItem
-  //       icon={<DeleteIcon />}
-  //       label="Delete"
-  //       onClick={handleDeleteClick(currentId)}
-  //       color="inherit"
-  //     />,
-  //   ]
-  // }
-
-  
-  // useEffect(() => {
-  //   addActions();
-
-  // }, [isInEditMode])
-
-
-
+  const [actions, setAction] = React.useState(addActions(false, '-1'))
 
   return (
     <Box
       sx={{
-        height: 250,
-        width: '100%',
+        height: '30%',
+        marginLeft: '10%',
+        width: '80%',
         '& .actions': {
           color: 'text.secondary',
         },

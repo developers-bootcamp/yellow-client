@@ -6,7 +6,8 @@
     telephone: string,
     address:string,
     email:string,
-    password:string,
-    isNew?:boolean
+    password:string,  
+    isNew?:boolean,
+    role?:string
   
   }
