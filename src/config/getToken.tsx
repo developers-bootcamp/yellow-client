@@ -39,8 +39,8 @@ axios.interceptors.response.use(
         return axios(originalRequest);
       });
     }
-
     return Promise.reject(error);
   }
 );
 
+//what is this code? I think it's unnecessary, I don't know who wrote it.
