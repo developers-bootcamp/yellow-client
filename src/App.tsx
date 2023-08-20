@@ -46,8 +46,7 @@ function App() {
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>
-    {/* <LandingPage></LandingPage>
-    {/* <Dashboard></Dashboard> */}
+   
 
  </> );
 }

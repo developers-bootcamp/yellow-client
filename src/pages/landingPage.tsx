@@ -33,6 +33,7 @@ const LandingPage: React.FC = () => {
         <Outlet />
       </div>
     </Box>
+
   );
 };
 
