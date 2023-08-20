@@ -25,6 +25,7 @@ return (
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
        </Route>
       
+       <Route  path ='pendingOrders' element={<PendingOrders />}> </Route>
 
       <Route  path ='/signUp' element={<SignUp/>}> </Route>
     

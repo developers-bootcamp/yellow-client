@@ -39,7 +39,7 @@ const Login: React.FC = (): any => {
       if (res.status == 200) {
         console.log(res.data)
         localStorage.setItem("accessToken", res.data)
-        navigate("/landingPage")
+        navigate("landingPage")
       }
 
     }
