@@ -43,12 +43,9 @@ function App() {
   return (<>
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
-    {/* <Routing/> */}
-    {/* <BarChart></BarChart> */}
-    <Dashboard></Dashboard>
+    <Routing/>
     </ThemeProvider>
-    {/* <LandingPage></LandingPage>
-    {/* <Dashboard></Dashboard> */}
+   
 
  </> );
 }
