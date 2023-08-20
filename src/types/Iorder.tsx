@@ -7,7 +7,7 @@
     orderItems : Array<IOrderItems>
     OrderStatusId:string,
     companyId:ICompany,
-    CreditCardNumber:number,
+    creditCardNumber:number,
     expiryOn:Date,
     cvc:string,
     notificationFlag:boolean,
@@ -23,11 +23,8 @@
     desc:string,
     companiId :ICompany,
       auditData:IAuditData
-}  
-
-export interface IUsers {
- 
-  
+}
+   export interface IUsers {
     id: string,
     fullName: string,
     password: string,

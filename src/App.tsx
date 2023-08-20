@@ -13,7 +13,7 @@ import { RootState, useAppDispatch } from './redux/store';
 import { useSelector } from 'react-redux';
 import './axios/axiosInterceptors';
 import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './redux/orderSlice';
-import NewOrder from './pages/newOrder';
+import NewOrder from './pages/NewOrder/newOrder';
 import Axios from './axios/axiosInterceptors';
 //import { Dashboard } from '@mui/icons-material';
  import Dashboard from './pages/dashboard';
@@ -46,8 +46,7 @@ function App() {
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>
-    {/* <LandingPage></LandingPage>
-    {/* <Dashboard></Dashboard> */}
+   
 
  </> );
 }
