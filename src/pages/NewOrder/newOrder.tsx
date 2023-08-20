@@ -78,8 +78,9 @@ const NewOrder: React.FC = () => {
    const getFunc = async (url: string) => {
 
       let result = await getData(url);
-      if (url == "User/0") { }
-      setCustomers(result);
+      if (url == "User/0") {  
+         setCustomers(result); }
+    
       if (url == "product") {
          setProducts(result);
       }
