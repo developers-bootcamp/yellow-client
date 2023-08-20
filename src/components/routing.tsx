@@ -24,8 +24,11 @@ return (
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
        </Route>
+<<<<<<< HEAD
       
        <Route  path ='pendingOrders' element={<PendingOrders />}> </Route>
+=======
+>>>>>>> 649fe9299246db49572ffe5f68e61eb235fb3278
 
       <Route  path ='/signUp' element={<SignUp/>}> </Route>
     
