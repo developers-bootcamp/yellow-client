@@ -14,8 +14,15 @@
     auditData:IAuditData
   }
 
-  
-  interface IUsers {
+  export interface IProductCategory {
+    
+    id: string ,
+    name:string,
+    desc:string,
+    companiId :ICompany,
+      auditData:IAuditData
+}
+   export interface IUsers {
     id: string,
     fullName: string,
     password: string,
@@ -53,12 +60,12 @@ interface ICompany {
     auditData:IAuditData
     
   }
-  interface IOrderItems {
+ export interface IOrderItems {
     productId: IProduct,
     amount: number,
     quantity:number
   } 
-  interface IProduct {
+   export interface IProduct {
     id:string,
     name: string,
     desc: string,
@@ -82,9 +89,5 @@ interface ICompany {
     auditData:IAuditData
   } 
   export type { IOrder
-
-
-
-
 
 };
