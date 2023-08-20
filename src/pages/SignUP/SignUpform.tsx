@@ -50,6 +50,7 @@ const SignUpForm: React.FC = () => {
           navigate("/LandingPage")
           return (res.data);
         } catch (error) {
+          if(error)
           swal("you have a error", `${error}`, "error");
 
         }

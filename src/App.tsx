@@ -44,7 +44,8 @@ function App() {
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
     {/* <Routing/> */}
-    <BarChart></BarChart>
+    {/* <BarChart></BarChart> */}
+    <Dashboard></Dashboard>
     </ThemeProvider>
     {/* <LandingPage></LandingPage>
     {/* <Dashboard></Dashboard> */}
