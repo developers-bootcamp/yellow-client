@@ -137,7 +137,7 @@ const NewOrder: React.FC = () => {
    }
    const buyNow = () => {
       let product: any;
-      if (order?.cvc! && order?.expiryOn && order?.CreditCardNumber) {
+      if (order?.cvc! && order?.expiryOn && order?.creditCardNumber) {
          console.log(order);
 
          navigate('/pendingOrders', { state: { order: order } });

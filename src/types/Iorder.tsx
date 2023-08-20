@@ -7,7 +7,7 @@
     orderItems : Array<IOrderItems>
     OrderStatusId:string,
     companyId:ICompany,
-    CreditCardNumber:number,
+    creditCardNumber:number,
     expiryOn:Date,
     cvc:string,
     notificationFlag:boolean,

@@ -38,6 +38,7 @@ const Login: React.FC = (): any => {
       console.log({ res })
       if (res.status == 200) {
         console.log(res.data)
+
         sessionStorage.setItem("accessToken", res.data)
         navigate("/landingPage")
       }
