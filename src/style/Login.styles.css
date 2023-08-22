@@ -14,32 +14,38 @@
     border-width: 35px;
   }
 .name-field{
-    margin: 5px;
+    margin: 25px;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
-    width: 20vw;
-    height: 6vh;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-weight: 400;
+    /* width: 20vw;
+    height: 6vh; */
+    /* border-radius: 4px; */
+    width: 260px;
+    /* box-sizing: border-box; */
+    /* font-weight: 400;
     font-size: 1rem;
     padding-left: 14px;
     border:solid 1.5px;
-    border-color: rgb(209, 207, 207);
+    border-color: rgb(209, 207, 207); */
+   
 }
 .name-field::placeholder {
     color: #a9a8a8;
   }
-.name-field:hover{
+/* .name-field:hover{
     border-color:black;
-}
-.name-field:focus {
+} */
+/* .name-field:focus {
     outline: none;
     border-color: #1976D2;
     border-width: 1.8px;
-  }
+  } */
 #password{
   background-color: white !important;
-  height: 0;
+  margin: 15px;
+   /* width: 250px; */
+  /* width: 15vw;
+  height: 0.5px;  */
+  /* box-sizing: border-box; */
 }
 .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root{
     margin-bottom: 5px;
@@ -55,9 +61,12 @@ height: 6vh;
 width: 20vw;
 background-color: #FAE282;
 box-shadow:none;
+margin: 15px;
+width: 260px;
 }
 input:-internal-autofill-selected {
     background-color: white;
+    
 }
 .signIn{
     color: #3498db;

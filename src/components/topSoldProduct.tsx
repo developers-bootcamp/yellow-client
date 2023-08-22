@@ -19,7 +19,7 @@ export function TopSoldProduct() {
 
 
   const graghRequest = async () => {
-    await axios.get(`${BASE_URL}/Graph/topProduct`).then(res => setTopProduct(res.data));
+    await axios.get(`http://localhost:8080/Graph/topProduct`).then(res => setTopProduct(res.data));
 
   }
 
