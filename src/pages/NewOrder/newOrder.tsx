@@ -26,7 +26,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { log } from 'console';
 import { useNavigate } from 'react-router-dom';
 import NewOrderModel from './NewOrderModel';
-import gifts from '../gifts.png';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
@@ -93,6 +92,8 @@ const NewOrder: React.FC = () => {
    }
    const postFunc = async (url: string, body: object) => {
       let result = await postData(url, body);
+      if(url=="order")
+         return;
       setProductResult(result);
       if (url === "order/CalculateOrderAmount") {
          let val = result[-1];
@@ -138,9 +139,11 @@ const NewOrder: React.FC = () => {
    }
    const buyNow = () => {
       let product: any;
-      if (order?.cvc! && order?.expiryOn && order?.creditCardNumber) {
+      console.log(order?.cvc , order?.expiryOn , order?.creditCardNumber);
+      
+      if (order?.cvc && order?.expiryOn && order?.creditCardNumber) {
          console.log(order);
-
+         postFunc("order",order);
          navigate('/pendingOrders', { state: { order: order } });
       };
    }
@@ -159,7 +162,7 @@ const NewOrder: React.FC = () => {
 
          setOrder((prevOrder: any | undefined) => ({
             ...prevOrder,
-            CreditCardNumber: lable,
+            creditCardNumber: lable,
          }));
       }
       if (type == "expiers on") {

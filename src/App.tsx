@@ -42,7 +42,7 @@ function App() {
 
   return (<>
   <Axios Error={false} />
-  <GlobalLoader/>
+  {/* <GlobalLoader/> */}
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>

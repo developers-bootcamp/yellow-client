@@ -34,11 +34,11 @@ const Login: React.FC = (): any => {
   const login = async () => {
 
     try {
-      const res = await axios.get(`${LOGIN_URL}?password=${password}&email=${email}`)
+      console.log(process.env)
+      const res = await axios.get(`http://localhost:8080/User/login?password=${password}&email=${email}`)
       console.log({ res })
       if (res.status == 200) {
-        console.log(res.data)
-
+        console.log(res.data)   
         sessionStorage.setItem("accessToken", res.data)
         navigate("/landingPage")
       }

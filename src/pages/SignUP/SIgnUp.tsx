@@ -21,7 +21,6 @@ import {
   Link,
   Paper,
 } from "@mui/material";
-import present from "./present.png";
 import SignUpForm from "./SignUpform";
 import useStyles from "./signUp.styles";
 import GlobalModalDialog from "../../components/globalModelDialog";
