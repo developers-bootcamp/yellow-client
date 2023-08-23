@@ -35,10 +35,7 @@ import { number } from 'yup';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-interface CurrencyMap {
-   key: string;
-   value: number;
-}
+
 
 const NewOrder: React.FC = () => {
    const { getData, postData, putData, deleteData } = UseCrud();
@@ -61,7 +58,7 @@ const NewOrder: React.FC = () => {
 
    let arr = []
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-   const [currencyMap, setCurrencyMap] = useState<CurrencyMap>({ key: 'ש"ח', value: 1 });
+   const [currencyMap, setCurrencyMap] = useState<string>("SHEKEL");
 
    const open = Boolean(anchorEl);
    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -188,8 +185,7 @@ const NewOrder: React.FC = () => {
    };
    useEffect(() => {
       if (selectedMenuItem == "DOLLAR") {
-         const x: CurrencyMap = { key: "$", value: 3.5 };
-         setCurrencyMap(x);
+         setCurrencyMap(selectedMenuItem);
       }
 
    }, [selectedMenuItem])
@@ -207,8 +203,8 @@ const NewOrder: React.FC = () => {
    }, []);
 
    useEffect(() => {
-
-      postFunc("order/CalculateOrderAmount", { orderItems });
+     
+      postFunc("order/CalculateOrderAmount", { orderItems});
 
    }, [orderItems])
 
@@ -290,7 +286,7 @@ const NewOrder: React.FC = () => {
                      <br></br>
                      <TextField label="quantity" sx={{ width: 250 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("quantity", e) }} />
                      <div style={{ position: 'absolute', top: 150, right: 700 }}>
-                        price: {(sumOfPrice / currencyMap.value).toFixed(0)} {currencyMap.key}
+                        price: {sumOfPrice } 
                      </div>
                      {
 
@@ -309,7 +305,7 @@ const NewOrder: React.FC = () => {
                                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', top: 300, right: 600 }}>
                                        {Object.entries(innerObj).map(([subKey, value], subIndex) => (
                                           <div key={subIndex} style={{ display: 'flex', top: 200, right: 450 }}>
-                                             <p>-{(value / currencyMap.value).toFixed(0)} {(parseInt(subKey) / currencyMap.value).toFixed(0)} {currencyMap.key}</p>
+                                             <p>-{value } {subKey} </p>
                                              <Button><DeleteIcon onClick={() => { Delete(index) }} /></Button>
                                              {/* {getAmount(i,parseInt(subKey))}  */}
 
