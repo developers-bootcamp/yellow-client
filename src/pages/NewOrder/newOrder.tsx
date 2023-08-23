@@ -131,7 +131,7 @@ const NewOrder: React.FC = () => {
             break;
          }
       }
-      product = { "productId": product, "quantity": quantity };
+      product = { "productId": product, "quantity": quantity,"ammount":"" };
       setOrderItems((prevCart) => [...prevCart, product])
    }
    const buyNow = () => {
@@ -181,6 +181,7 @@ const NewOrder: React.FC = () => {
          totalAmount: sumOfPrice,
          customer: user,
          orderItems: orderItems,
+         orderStatusId:"approved"
       }));
    };
    useEffect(() => {
@@ -203,8 +204,13 @@ const NewOrder: React.FC = () => {
    }, []);
 
    useEffect(() => {
-     
-      postFunc("order/CalculateOrderAmount", { orderItems});
+      interface ICalculateOrder {
+         currency: string;
+         orderItems: IOrderItems;
+         customer:IUsers
+      }
+      //let a:ICalculateOrder={currency:currencyMap,orderItems:orderItems,customer:user};
+      postFunc("order/CalculateOrderAmount", { orderItems });
 
    }, [orderItems])
 
