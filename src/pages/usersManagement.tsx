@@ -5,8 +5,8 @@ import GlobalTable from "../components/globalTable";
 import { PALLETE } from '../config/config'
 import { GridColDef, GridRowsProp } from "@mui/x-data-grid/models";
 import axios from "axios";
-import { RATE_TYPE_OPTIONS } from "@mui/x-data-grid-generator/services/static-data";
-import Table from "../components/Table";
+
+
 
 const URL = `User/0`
 

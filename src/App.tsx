@@ -17,12 +17,7 @@ import NewOrder from './pages/NewOrder/newOrder';
 import Axios from './axios/axiosInterceptors';
 //import { Dashboard } from '@mui/icons-material';
  import Dashboard from './pages/dashboard';
-import PendingOrders from './pages/pendingOrders';
-
-
-
 function App() {
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -40,20 +35,13 @@ function App() {
     return state.ordersReducer
   })
   const dispatch = useAppDispatch()
-
   return (<>
   <Axios Error={false} />
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>
-<<<<<<< HEAD
- 
-=======
    
->>>>>>> 736483d95c7c0a1e61e294ac2842eb7caea0d18f
-
  </> );
 }
-
 export default App;
