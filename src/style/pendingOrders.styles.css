@@ -1,20 +1,27 @@
-.pink{
-  background-color: pink;
+.New{
+  background-color: rgb(235,159,110);
 }
-.lightcoral{
-  background-color: lightcoral;
+.approved{
+  background-color:rgb(235,159,110);
 }
-.lightblue{
-  background-color: #48d1cc;
+.cancelled{
+  background-color: rgb(103,148,207);
 }
-.lightgreen{
-  background-color: lightgreen;
+.charging{
+  background-color: rgb(238,105,106);
 }
-.lightyellow{
-  background-color: lightyellow;
+.packing{
+  background-color: rgb(250,226,130);
 }
+.delivered{
+  background-color: rgb(126,215,135);
+}
+/* .delivered{
+  background-color: lightsalmon;
+} */
 
 
 
 
-/* New, cancelled, approved, charging, packing, delivered */
+
+/* New, approved, charging, packing, delivered */

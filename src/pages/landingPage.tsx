@@ -8,13 +8,13 @@ import Tab from '@mui/material/Tab';
 const LandingPage: React.FC = () => {
   const [value, setValue] = React.useState("pendingOrders");
   let navigater = useNavigate()
-  useEffect(() => {
-    navigater(`/${value}`)
-  }, []);
+  // useEffect(() => {
+  //   navigater(`landingPage/${value}`)
+  // }, [])
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    navigater(`/${newValue}`)
+    navigater(`/landingPage/${newValue}`)
   };
 
   return (
@@ -33,3 +33,7 @@ const LandingPage: React.FC = () => {
 };
 
 export default LandingPage
+
+
+
+

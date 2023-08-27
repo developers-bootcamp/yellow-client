@@ -16,6 +16,7 @@ import { IOrdersState, getOrders, getOrdersFinished,getOrdersFailed } from './re
 import NewOrder from './pages/newOrder';
 //import { Dashboard } from '@mui/icons-material';
  import Dashboard from './pages/dashboard';
+import PendingOrders from './pages/pendingOrders';
 
 
 
@@ -44,8 +45,7 @@ function App() {
   <ThemeProvider theme={theme}>
     <Routing/>
     </ThemeProvider>
-    {/* <LandingPage></LandingPage>
-    {/* <Dashboard></Dashboard> */}
+ 
 
  </> );
 }

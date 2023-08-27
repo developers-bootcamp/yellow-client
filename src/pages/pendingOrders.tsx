@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { GET_ALL_ORDERS_URL } from '../config/config';
-import { Button } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import {UseCrud} from "../redux/useCrud"
 import { LocalHospitalTwoTone } from '@mui/icons-material';
 import { array } from 'yup';
@@ -19,6 +19,13 @@ import { IpandingOrder } from '../types/Iorder';
 import { IOrder } from '../types/Iorder';
 import { useEffect, useState } from 'react';
  import '../style/pendingOrders.styles.css';
+ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+ import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
+ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+ import EmailIcon from '@mui/icons-material/Email';
+ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+
+
 
 
 
@@ -27,25 +34,31 @@ import { useEffect, useState } from 'react';
 let orders:IOrder[] = [];
 
 const columns: GridColDef[] = [
-  // { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'products', headerName: 'Products', width:200 },
-  { field: 'customer', headerName: 'Customer', width: 200 },
 
-
-  { field: 'price', headerName: 'Price', width: 70 },
-{field: 'status', type: 'string', headerName: 'Status', width: 200,
+  { field: 'products', headerName: 'Products', width:300 },
+  { field: 'customer', headerName: 'Customer', width: 300 },
+  {field: 'status', type: 'string', headerName: 'Status', width: 300,
 cellClassName: (params: GridCellParams<any, string>) => {
     if (params.value == null) {
         return '';
     }
-    if (params.value == 'approved')
-        return 'lightgreen';
-    if (params.value == 'cancelled')
-        return 'lightcoral';
+    if (params.value == 'charging')
+        return 'charging';
         if (params.value == 'delivered')
-        return 'lightblue';
+        return 'delivered';
+        if (params.value == 'packing')
+        return 'packing';
+        if (params.value == 'approved')
+        return 'approved';
+    if (params.value == 'cancelled')
+        return 'cancelled';
+        if (params.value == 'New')
+        return 'New';
     return ''
 },},
+{ field: 'price', headerName: 'Price', width: 300 },
+
+{ field: 'date', type: 'date',headerName: 'Date', width:200 }
 
 
 
@@ -53,58 +66,96 @@ cellClassName: (params: GridCellParams<any, string>) => {
 
 ];
 const PendingOrders: React.FC = () => {
-const {getData}=UseCrud();
-const myArray = [1];
 let currentRows: any[] = []
 const [Rows, setRows] = useState<any[]>([]);
 const [Rows2, setRows2] = useState<any[]>([]);
-
-
-
-
+const[secondPaginationModel,setsecondPaginationModel]=React.useState({
+  page:0,
+  pageSize:1,
+});
+const[firstPaginationModel,setfirstPaginationModel]=React.useState({
+  page:0,
+  pageSize:1,
+});
 const getOrders = async () => {
 
     try {
 
 
     const config = { headers: { 'Authorization': localStorage.getItem("accessToken")} };
-     const ordersStatus =['delivered']
-    //  const $a = ['delivered',"charging"]
-      const res = await axios.get(`http://localhost:8080/order/delivered/0`,config)
+     const ordersStatus =['cancelled']
+     console.log(firstPaginationModel.page+"first");
+
+      const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${firstPaginationModel.page}`,config)
       if (res.status == 200) {
   
         let orders:IOrder[] = [];
-          orders=res.data;
+        orders=res.data;
         let currentRows: any[] = []
 
         
 
           orders.forEach(e => {
-          
-      
-          console.log( e.orderItems);
-                let StringPrudocts = ""
-                e.orderItems.forEach(prod => {
-                    // if (prod.productId != null)
-                    console.log( prod.quantity+"qqq");
+                let AllPrudocts = ""
+                e.orderItems.forEach(p => {
 
-                    StringPrudocts+= `${prod.quantity} ${prod.productId.name} , `
-                        // p += `${prod.quantity} ${prod.IProduct.name}, `
+                   AllPrudocts+= `${p.quantity} ${p.productId.name} , `
+
 
                 })
-                 
-                console.log(e.employee);
+                console.log(e.customer);
+                
+                currentRows.push({ id: e.id, 'price': e.totalAmount, 'status': e.orderStatusId, 'customer': e.customer.fullName , 'products': AllPrudocts,'date':new Date(e.auditData.createDate)  })
+        }
+        
+        )
 
-                currentRows.push({ id: e.id, 'price': e.totalAmount, 'status': e.orderStatusId, 'customer': e.customer.fullName, 'products': StringPrudocts })
+          setRows(currentRows)
+          
+      }
+    }
+    
+
+    catch (error) {
+      alert(error);
+
+    }
+  }
+
+
+
+
+  const getOrders2 = async () => {
+
+    try {
+
+    const config = { headers: { 'Authorization': localStorage.getItem("accessToken")} };
+     const ordersStatus =['approved','delivered','charging','packing','New',]
+     console.log(secondPaginationModel.page+"second");
+
+     const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${secondPaginationModel.page}`,config)
+     if (res.status == 200) {
+  
+        let orders:IOrder[] = [];
+          orders=res.data;
+        let currentRows: any[] = []
+          orders.forEach(e => {
+                let AllPrudocts = ""
+           
+                e.orderItems.forEach(p=> {
+
+                  AllPrudocts+= `${p.quantity} ${p.productId.name} , `
+
+
+                })
+
+
+
+                currentRows.push({ id: e.id, 'price': e.totalAmount, 'status': e.orderStatusId, 'customer': e.customer.fullName, 'products': AllPrudocts ,'date':new Date(e.auditData.createDate) 
+
+
+              })
                 
-                console.log(currentRows);
-             //   p="";
-              //  console.log(currentRows);
-                
-          // }
-       
-          // currentRows.push({ 'id': e.id, 'price': e.totalAmount, 'status': e.orderStatusId, 'customer':e.customer.fullName})
-         // console.log(currentRows);
         
         }
         
@@ -121,72 +172,103 @@ const getOrders = async () => {
 
     }
   }
-
-
-
-
-  const getOrders2 = async () => {
-
-    try {
-
-
-    const config = { headers: { 'Authorization': localStorage.getItem("accessToken")} };
-     const ordersStatus =['delivered']
-      const res = await axios.get(`http://localhost:8080/order/cancelled/0`,config)
-      if (res.status == 200) {
-  
-        let orders:IOrder[] = [];
-          orders=res.data;
-        let currentRows: any[] = []
-          orders.forEach(e => {
-          console.log( e.orderItems);
-                let StringPrudocts = ""
-                e.orderItems.forEach(prod => {
-                    console.log( prod.quantity+"qqq");
-
-                    StringPrudocts+= `${prod.quantity} ${prod.productId.name} , `
-
-                })
-                 
-                console.log(e.employee);
-
-                currentRows.push({ id: e.id, 'price': e.totalAmount, 'status': e.orderStatusId, 'customer': e.customer.fullName, 'products': StringPrudocts })
-                
-                console.log(currentRows);
-        
-        }
-        
-        )
-
-          setRows(currentRows)
-          
-      }
-    }
+  const getOrdersDeatails =  () =>{
+   getOrders();
+    getOrders2();
+  }
     
 
-    catch (error) {
-      alert(error)
-
-    }
-  }
+  
 
   useEffect(() => {
-    getOrders();
+
+    //getOrdersDeatails();
     getOrders2();
-  }, []);
+    getOrders();
+
+  }, [secondPaginationModel,firstPaginationModel]);
   return (
 <div>
 
-    <DataGrid
-            rows ={Rows}
-            columns={columns}
-        />
-        <br>
-        </br>
- <DataGrid
+     
+
+     
+     
+    
+
+
+     
+ 
+
+     <Box
+            sx={{
+              height: '30%',
+              marginLeft:'10%',
+              width: '80%',
+                '& .actions': {
+                    color: 'text.secondary',
+                },
+                '& .textPrimary': {
+                    color: 'text.primary',
+                },
+            }}
+        >
+
+      
+               <Button
+                   
+                   style={{
+                       backgroundColor: ` rgb(235,159,110)`,
+                       color: `white`,
+                      }}
+                    >
+                   New order
+                    </Button>
+                    <Button     type="submit"  style={ {backgroundColor: `white`}  }><FilterAltOutlinedIcon></FilterAltOutlinedIcon> filter  </Button>
+   
+                    <Button><SortOutlinedIcon> </SortOutlinedIcon> sort </Button>
+                    <br></br>
+                    <br></br>
+
+                    <ArrowCircleDownIcon style={{ color: 'rgb(238,105,106)', paddingLeft: '7px' }}></ArrowCircleDownIcon>
+            <span style={{ color: 'rgb(238,105,106)', padding: '7px', verticalAlign: 'super' }}>{"Top priority"}</span>
+             <br></br>
+
+        <DataGrid style={
+            {backgroundColor: `rgb(231,230,230) `, border: '1px solid white'} 
+    
+            // border: 1px solid white;
+            // border-collapse: collapse;
+         
+           }
+                 rows ={Rows}
+                 columns={columns}
+                 rowCount={7}
+                 paginationModel={firstPaginationModel}
+                 paginationMode="server"
+                 onPaginationModelChange={setfirstPaginationModel}
+          
+             /> 
+<br></br>
+<br></br>        
+<DataGrid style={
+            {backgroundColor: `rgb(231,230,230) `, border: '1px solid white'} 
+           }
             rows ={Rows2}
             columns={columns}
+                   rowCount={1}
+                paginationModel={secondPaginationModel}
+                paginationMode="server"
+                onPaginationModelChange={setsecondPaginationModel}
         />
+
+              </Box>
+
+
+
+
+
+
 
    
     </div>
