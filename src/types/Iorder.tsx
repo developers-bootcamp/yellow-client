@@ -7,7 +7,7 @@
     orderItems : Array<IOrderItems>
     orderStatusId:string,
     companyId:ICompany,
-    CreditCardNumber:number,
+    creditCardNumber:number,
     expiryOn:Date,
     cvc:string,
     notificationFlag:boolean,
@@ -15,7 +15,16 @@
   }
 
   
-  interface IUsers {
+
+  export interface IProductCategory {
+    
+    id: string ,
+    name:string,
+    desc:string,
+    companiId :ICompany,
+      auditData:IAuditData
+}
+   export interface IUsers {
     id: string,
     fullName: string,
     password: string,
@@ -23,15 +32,15 @@
     roleId:IRoles,
     companyId:ICompany,
     AuditData:IAuditData
-
   }
-  interface IAddress {
+
+  export interface IAddress {
     telephone: string,
     address: string,
     email:string
     
   }
-  interface IRoles {
+ export  interface IRoles {
     id: string,
     name: EName,
     desc: string,
@@ -42,23 +51,23 @@
     Value2 = 'employee',
     Value3 = 'customer'
   }
-  interface IAuditData {
+ export  interface IAuditData {
     createDate: Date,
     updateDte: Date
   }
   
-interface ICompany {
+export interface ICompany {
     id: string,
     name: string,
     auditData:IAuditData
     
   }
-  interface IOrderItems {
+ export interface IOrderItems {
     productId: IProduct,
     amount: number,
     quantity:number
   } 
-  interface IProduct {
+   export interface IProduct {
     id:string,
     name: string,
     desc: string,
@@ -109,9 +118,5 @@ interface ICompany {
 
   };
   export type { IOrder
-
-
-
-
 
 };

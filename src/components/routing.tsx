@@ -6,7 +6,8 @@ import Dashboard from "../pages/dashboard";
 import LandingPage from "../pages/landingPage";
 import Login from "../pages/login";
 import SignUp from "../pages/SignUP/SIgnUp";
-import NewOrder from "../pages/newOrder";
+import NewOrder from "../pages/NewOrder/newOrder";
+
 const Routing: React.FC = () => {
 
 
@@ -15,15 +16,17 @@ return (
 <>
  <BrowserRouter>
    <Routes>
-       
        <Route  path ='/' element={<Login/>}> </Route> 
+       <Route  path ='/newOrder' element={<NewOrder/>}> </Route>
        <Route  path ='/landingPage' element={<LandingPage/>}>
-       <Route  path ='pendingOrders' element={<PendingOrders/>}> </Route>
+       <Route  path ='pendingOrders' element={<PendingOrders />}> </Route>
        <Route  path ='usersManagement' element={<UsersManagement/>}> </Route>
        <Route  path ='CatalogManager' element={<CatalogManager/>}> </Route>
        <Route  path ='Dashboard' element={<Dashboard/>}> </Route>
-       <Route  path ='newOrder' element={<NewOrder/>}> </Route>
        </Route>
+
+
+
       <Route  path ='/signUp' element={<SignUp/>}> </Route>
     
    </Routes>
