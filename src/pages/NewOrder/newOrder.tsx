@@ -89,6 +89,7 @@ const NewOrder: React.FC = () => {
    }
    const postFunc = async (url: string, body: object) => {
       let result = await postData(url, body);
+      console.log("efrat")
       if(url=="order")
          return;
       setProductResult(result);
@@ -206,13 +207,15 @@ const NewOrder: React.FC = () => {
    useEffect(() => {
       interface ICalculateOrder {
          currency: string;
-         orderItems: IOrderItems;
+         orderItems?: IOrderItems;
          customer:IUsers
       }
-      //let a:ICalculateOrder={currency:currencyMap,orderItems:orderItems,customer:user};
-      postFunc("order/CalculateOrderAmount", { orderItems });
-
-   }, [orderItems])
+      if(orderItems&&currencyMap ){
+         console.log("hiiiiiii");
+         
+      postFunc("order/CalculateOrderAmount", { currency:currencyMap,orderItems:orderItems });
+   }
+   }, [orderItems, currencyMap,user])
 
    // useEffect(() => {
    //    // Automatically update the amounts when orderItems or products change
