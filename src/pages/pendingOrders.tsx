@@ -188,8 +188,8 @@ const getOrders = async () => {
   useEffect(() => {
 
     //getOrdersDeatails();
-    getOrders2();
-    getOrders();
+    // getOrders2();
+    // getOrders();
 
   }, [secondPaginationModel,firstPaginationModel]);
 
