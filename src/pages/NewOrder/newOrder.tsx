@@ -36,7 +36,6 @@ import { number } from 'yup';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-
 const NewOrder: React.FC = () => {
    const { getData, postData, putData, deleteData } = UseCrud();
    const [costumers, setCustomers] = useState<IUsers[]>([]);
@@ -59,6 +58,7 @@ const NewOrder: React.FC = () => {
    let arr = []
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const [currencyMap, setCurrencyMap] = useState<string>("SHEKEL");
+   const [currencySymbol, setCurrencySymbol] = useState<string>('ש"ח');
 
    const open = Boolean(anchorEl);
    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -74,32 +74,29 @@ const NewOrder: React.FC = () => {
    const getFunc = async (url: string) => {
 
       let result = await getData(url);
-      if (url == "User/0") {  
+      if (url == "User") {  
          setCustomers(result); }
     
       if (url == "product") {
          setProducts(result);
       }
-      // if (url == "User/") {
-      //    setUser(result);
-      // }
       if (url == "GetCurrency") {
          setCurrency(result);
       }
    }
    const postFunc = async (url: string, body: object) => {
+      console.log(body);
+      
       let result = await postData(url, body);
-      console.log("efrat")
       if(url=="order")
          return;
       setProductResult(result);
       if (url === "order/CalculateOrderAmount") {
+         console.log(result);
          let val = result[-1];
          const targetValue = -1;
-
          const targetKey = Object.keys(val).find((key) => val[key] === targetValue);
          setSumOfPrice(targetKey);
-
       }
 
    }
@@ -186,15 +183,18 @@ const NewOrder: React.FC = () => {
       }));
    };
    useEffect(() => {
-      if (selectedMenuItem == "DOLLAR") {
+      if (selectedMenuItem) {
          setCurrencyMap(selectedMenuItem);
+         let a:string='$';
+         if(selectedMenuItem=="DOLLAR")
+              setCurrencySymbol(a);
       }
 
    }, [selectedMenuItem])
 
    useEffect(() => {
       if (costumers.length == 0) {
-         getFunc("User/0")
+         getFunc("User")
       }
       if (products.length == 0) {
          getFunc("product");
@@ -210,9 +210,7 @@ const NewOrder: React.FC = () => {
          orderItems?: IOrderItems;
          customer:IUsers
       }
-      if(orderItems&&currencyMap ){
-         console.log("hiiiiiii");
-         
+      if(orderItems&&currencyMap ){         
       postFunc("order/CalculateOrderAmount", { currency:currencyMap,orderItems:orderItems });
    }
    }, [orderItems, currencyMap,user])
@@ -295,7 +293,7 @@ const NewOrder: React.FC = () => {
                      <br></br>
                      <TextField label="quantity" sx={{ width: 250 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("quantity", e) }} />
                      <div style={{ position: 'absolute', top: 150, right: 700 }}>
-                        price: {sumOfPrice } 
+                        price: {sumOfPrice } {currencySymbol}
                      </div>
                      {
 
@@ -314,7 +312,7 @@ const NewOrder: React.FC = () => {
                                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', top: 300, right: 600 }}>
                                        {Object.entries(innerObj).map(([subKey, value], subIndex) => (
                                           <div key={subIndex} style={{ display: 'flex', top: 200, right: 450 }}>
-                                             <p>-{value } {subKey} </p>
+                                             <p>-{value } {subKey} {currencySymbol}</p>
                                              <Button><DeleteIcon onClick={() => { Delete(index) }} /></Button>
                                              {/* {getAmount(i,parseInt(subKey))}  */}
 

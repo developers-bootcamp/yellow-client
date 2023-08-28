@@ -54,7 +54,6 @@ const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
  // const listCurrencies = useAppSelector(state => state.currencyReducer.listCurrencies);
  useEffect(() => {
-    debugger;
     currencyRequest()
 
   }, []);

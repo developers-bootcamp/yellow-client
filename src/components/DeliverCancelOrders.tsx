@@ -21,7 +21,6 @@ const [orders, setOrders] = useState<any>([]);
   }
 
   useEffect(() => {
-    debugger;
     graghRequest()
 
   }, []);

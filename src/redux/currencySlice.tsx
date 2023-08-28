@@ -12,7 +12,7 @@ export const currencySlice = createSlice({
   name: 'currencyReducer',
   initialState,
   reducers: {
-    setCurrency: (state, action: PayloadAction<Array<string>>) => {debugger;
+    setCurrency: (state, action: PayloadAction<Array<string>>) => {
         state.listCurrencies = action.payload;  
     },
    
