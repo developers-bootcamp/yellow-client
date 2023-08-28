@@ -62,7 +62,7 @@ const Login: React.FC = (): any => {
         <Paper className='paper'>
           <h1>Log in to your account</h1>
           <h3>Enter your email address and password</h3>
-          <input type="email" className="name-field" placeholder='example@gmail.com' onBlur={(e) => setEmail(e.target.value)} />
+          <input type="email" className="name-field" placeholder='example@gmail.com' onChange={(e) => setEmail(e.target.value)} />
 
           <br />
 
