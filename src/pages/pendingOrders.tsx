@@ -13,7 +13,7 @@ const PendingOrders: React.FC<PendingOrdersProps> = ({ order }) => {
 
     let navigater = useNavigate();
     const [open, setOpen] = React.useState(false);
-    const [id, setId] = React.useState("64e21292cf0cd64eb4f2497d")
+    const [id, setId] = React.useState("64d21881f730ac597dc9ac52")
 const nav=()=>{
     navigater(`/newOrder`)
 }       

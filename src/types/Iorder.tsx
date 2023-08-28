@@ -5,7 +5,7 @@
     customer:IUsers,
     totalAmount:number ,
     orderItems : Array<IOrderItems>
-    OrderStatusId:string,
+    orderStatusId:string,
     companyId:ICompany,
     creditCardNumber:number,
     expiryOn:Date,

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { IOrder } from "../types/Iorder";
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+// const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = "http://localhost:8080";
 
 export const UseCrud = () => {
     const getData = async (url:string) => { 

@@ -1,8 +1,9 @@
- const BASE_URL = process.env.REACT_APP_BASE_URL;
+ const BASE_URL =process.env.REACT_APP_BASE_URL
+//  const BASE_URL ="http://localhost:8080"
 // Define the full URL for getting all orders
 const GET_ALL_ORDERS_URL = `${BASE_URL}/orders`;
-const LOGIN_URL=`${BASE_URL}/User/login`;
-export { BASE_URL,GET_ALL_ORDERS_URL,LOGIN_URL };
+const LOGIN_URL = `${BASE_URL}/User/login`;
+export { BASE_URL, GET_ALL_ORDERS_URL, LOGIN_URL };
 
 
 export const PALLETE = {

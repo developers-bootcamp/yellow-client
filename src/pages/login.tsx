@@ -7,7 +7,7 @@ import '../style/Login.styles.css';
 import SignUp from "./SignUP/SIgnUp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { LOGIN_URL } from "../config/config";
+import { BASE_URL, LOGIN_URL } from "../config/config";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,6 +34,7 @@ const Login: React.FC = (): any => {
   const login = async () => {
 
     try {
+      console.log("BASE_URL",process.env)
       const res = await axios.get(`${LOGIN_URL}?password=${password}&email=${email}`)
       console.log({ res })
       if (res.status == 200) {
@@ -58,14 +59,14 @@ const Login: React.FC = (): any => {
         <Paper className='paper'>
           <h1>Log in to your account</h1>
           <h3>Enter your email address and password</h3>
-          <input type="email" className="name-field" placeholder='example@gmail.com' onBlur={(e) => setEmail(e.target.value)} />
+          <input type="email" className="name-field" placeholder='example@gmail.com' onChange={(e) => setEmail(e.target.value)} />
 
           <br />
 
           <OutlinedInput
             placeholder="password"
             id="password"
-            onBlur={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
