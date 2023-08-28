@@ -34,6 +34,10 @@ const Login: React.FC = (): any => {
   const login = async () => {
 
     try {
+      console.log(password)
+      console.log(email)
+
+
       const res = await axios.get(`${LOGIN_URL}?password=${password}&email=${email}`)
       console.log({ res })
       if (res.status == 200) {
@@ -58,14 +62,15 @@ const Login: React.FC = (): any => {
         <Paper className='paper'>
           <h1>Log in to your account</h1>
           <h3>Enter your email address and password</h3>
+
           <TextField
           required
           placeholder='example@gmail.com'
           type="email"
           className="name-field"
-          onBlur={(e) => setEmail(e.target.value)}
+           onChange={(e) => setEmail(e.target.value)}
         />
-        
+
           <br />
           <br />
           <TextField

@@ -1,0 +1,27 @@
+.New{
+  background-color: rgb(235,159,110);
+}
+.approved{
+  background-color:rgb(235,159,110);
+}
+.cancelled{
+  background-color: rgb(103,148,207);
+}
+.charging{
+  background-color: rgb(238,105,106);
+}
+.packing{
+  background-color: rgb(250,226,130);
+}
+.delivered{
+  background-color: rgb(126,215,135);
+}
+/* .delivered{
+  background-color: lightsalmon;
+} */
+
+
+
+
+
+/* New, approved, charging, packing, delivered */

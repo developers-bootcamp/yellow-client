@@ -17,11 +17,7 @@ import NewOrder from './pages/NewOrder/newOrder';
 import Axios from './axios/axiosInterceptors';
 //import { Dashboard } from '@mui/icons-material';
  import Dashboard from './pages/dashboard';
-
-
-
 function App() {
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -39,7 +35,6 @@ function App() {
     return state.ordersReducer
   })
   const dispatch = useAppDispatch()
-
   return (<>
   <Axios Error={false} />
   <GlobalLoader/>
@@ -47,8 +42,6 @@ function App() {
     <Routing/>
     </ThemeProvider>
    
-
  </> );
 }
-
 export default App;

@@ -5,7 +5,7 @@
     customer:IUsers,
     totalAmount:number ,
     orderItems : Array<IOrderItems>
-    OrderStatusId:string,
+    orderStatusId:string,
     companyId:ICompany,
     creditCardNumber:number,
     expiryOn:Date,
@@ -90,6 +90,33 @@ export interface ICompany {
     companyId:ICompany,
     auditData:IAuditData
   } 
+
+  interface IpandingOrder{
+    id: string,
+    price: number,
+    orderStatusId:string,
+    customer:string,
+    product:string
+
+  } 
+
+  // @Id
+  // private String id;
+  // private Users employee;
+  // private Users customer;
+  // private double totalAmount;
+  // private List<Order_Items> orderItems;
+  // private status orderStatusId;
+  // private Company companyId;
+  // private long creditCardNumber;
+  // private LocalDate expiryOn;
+  // private String cvc;
+  // private Boolean notificationFlag;
+  // private AuditData auditData;
+
+  export type { IpandingOrder
+
+  };
   export type { IOrder
 
 };
