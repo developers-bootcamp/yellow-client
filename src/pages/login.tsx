@@ -62,16 +62,24 @@ const Login: React.FC = (): any => {
         <Paper className='paper'>
           <h1>Log in to your account</h1>
           <h3>Enter your email address and password</h3>
-          <input type="email" className="name-field" placeholder='example@gmail.com' onChange={(e) => setEmail(e.target.value)} />
+
+          <TextField
+          required
+          placeholder='example@gmail.com'
+          type="email"
+          className="name-field"
+           onChange={(e) => setEmail(e.target.value)}
+        />
 
           <br />
-
-          <OutlinedInput
+          <br />
+          <TextField
             placeholder="password"
-            id="password"
             onBlur={(e) => setPassword(e.target.value)}
+            
             type={showPassword ? 'text' : 'password'}
-            endAdornment={
+            InputProps={{
+            endAdornment:(
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
@@ -82,13 +90,13 @@ const Login: React.FC = (): any => {
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            }
+            )
+          }}
           />
           <br />
-          <Button variant="contained" color="primary" id='logIn-button' onClick={() => login()}>Log in</Button>
+          <Button variant="contained" color="primary" id='logIn-button'  onClick={() => login()}>Log in</Button>
           <h3>or sign in with</h3>
           <h3>Don't have an account yet?</h3>
-          {/* <Link className="signIn" to={"/signUp"}>Sign in</Link> */}
           <Link onClick={handleClickOpen}>sign Up</Link>
           <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <SignUp onClose={handleClose} />
