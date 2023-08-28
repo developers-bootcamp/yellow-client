@@ -1,76 +1,185 @@
 import React, { useEffect, useState } from "react";
 import { UseCrud } from "../redux/useCrud";
-import { IUser } from "../types/IUser";
 import GlobalTable from "../components/globalTable";
 import { PALLETE } from '../config/config'
-import { GridColDef, GridRowsProp } from "@mui/x-data-grid/models";
-import axios from "axios";
-import { RATE_TYPE_OPTIONS } from "@mui/x-data-grid-generator/services/static-data";
+import { GridColDef, GridRowId, GridRowModel, GridRowsProp } from "@mui/x-data-grid/models";
+import { TextField } from "@mui/material";
 
-const URL = `User/0`
 
-const UsersManagement: React.FC = () => {
 
-  const { getData, postData, putData, deleteData } = UseCrud();
-  const [users, setUsers] = useState<GridRowsProp<IUser>>([]);
-
-  useEffect(() => {
-    getData(URL)
-      .then((data) => {
-        setUsers(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-
-  }, []);
-
+const ROLE = sessionStorage.getItem('role');
+const URL = `User`;
+let TYPE = '';
+const defineColumns = (etitable: boolean) => {
   const columns: GridColDef[] = [
-    { field: 'fullName', headerName: 'Full Name', width: 180, editable: true },
+    { field: 'fullName', headerName: 'Full Name', width: 180, editable: etitable, disableColumnMenu: true },
     {
       field: 'password',
-      headerName: 'Password',
+      headerName: 'password',
       type: 'string',
       width: 200,
+      renderCell: (params) => (
+        <TextField
+          type="password"
+          value={params.value}
+        />
+      ),
       align: 'left',
       headerAlign: 'left',
-      editable: true,
+      editable: false,
     },
     {
       field: 'email',
       headerName: 'Email',
       type: 'string',
       width: 200,
-      editable: true,
+      editable: etitable,
+      disableColumnMenu: true
     },
     {
       field: 'address',
       headerName: 'Address',
       width: 200,
-      editable: true,
+      editable: etitable,
       type: 'string',
+      disableColumnMenu: true
     },
     {
       field: 'telephone',
       headerName: 'Phone',
       width: 200,
-      editable: true,
+      editable: etitable,
       type: 'string',
+      disableColumnMenu: true
     },
 
   ];
+  return columns;
+}
 
-  //  const onAdminUserChanged = (updatedUserDetails, rowNumber) => {
-  //   await axios(update)
-  //   users[rowNumber] = 
-  //  }
+
+const UsersManagement: React.FC = () => {
+
+  const { getData, postData, putData, deleteData } = UseCrud();
+  const [customers, setCustomers] = useState<GridRowsProp>([]);
+  const [employees, setEmployees] = useState<GridRowsProp>([]);
+  const [admins, setAdmins] = useState<GridRowsProp>([]);
+  const [page, setPage] = useState(0);
+  const [users, setUsers] = useState<GridRowsProp>([]);
+
+
+  const getUsers = (role: string) => {
+
+    getData(`${URL}/${role}/${page}`)
+      .then((data) => {
+        switch (role) {
+          case 'ADMIN':
+            setAdmins(data);
+            break;
+          case 'EMPLOYEE':
+            setEmployees(data);
+            break;
+          case 'CUSTOMER':
+            setCustomers(data);
+            break;
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  useEffect(() => {
+    getUsers('ADMIN');
+    getUsers('EMPLOYEE');
+    getUsers('CUSTOMER');
+  }, []);
+
+  useEffect(() => {
+    getUsers(TYPE);
+  }, [page]);
+
+  const pageChange = (num: number, type: string) => {
+    setPage(num);
+    TYPE = type;
+  }
+
+  const addUser = (newUser: GridRowModel, type: string) => {
+    newUser.role = type;
+    postData(URL, newUser)
+      .then((data) => {
+        console.log(data);
+        getUsers(type);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+  const updateUser = (user: GridRowModel) => {
+    console.log(user);
+    putData(URL, user)
+      .then((data) => {
+        console.log(data);
+        getUsers(user.role);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  const deleteUser = (id: GridRowId, type: string) => {
+    deleteData(`${URL}/${id}`)
+      .then((data) => {
+        console.log(data);
+        getUsers(type);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
 
   return (
     <>
-      {users?.length > 0 && <GlobalTable data={users.filter(user => user.role === "ADMIN")} title="Administrators" color={PALLETE.RED} columns={columns} type="User" editable={true}/*onRowUpdated={onAdminUserChanged}*/ />}
-      {users?.length > 0 && <GlobalTable data={users.filter(user => user.role === "EMPLOYEE")} title="Employees" color={PALLETE.YELLOW} columns={columns} type="User" editable={true} />}
-      {users?.length > 0 && <GlobalTable data={users.filter(user => user.role === "CUSTOMER")} title="Customers" color={PALLETE.BLUE} columns={columns} type="User" editable={false} />}
+      {admins?.length >= 0 && <GlobalTable
+        editable={ROLE === 'ADMIN' ? true : false}
+        data={admins}
+        title={"Administrators"}
+        columns={defineColumns(ROLE === 'ADMIN' ? true : false)}
+        color={PALLETE.RED}
+        type={"ADMIN"}
+        onRowAdded={addUser}
+        onRowDeleted={deleteUser}
+        onRowUptated={updateUser}
+        role={'ADMIN'}
+        fetchData={pageChange}></GlobalTable>}
+
+      {employees?.length >= 0 && <GlobalTable
+        editable={ROLE !== 'CUSTOMER' ? true : false}
+        data={employees}
+        title={"Employees"}
+        columns={defineColumns(ROLE !== 'CUSTOMER' ? true : false)}
+        color={PALLETE.YELLOW}
+        type={"EMPLOYEE"}
+        onRowAdded={addUser}
+        onRowDeleted={deleteUser}
+        onRowUptated={updateUser}
+        role={'EMPLOYEE'}
+        fetchData={pageChange}></GlobalTable>}
+
+      {customers?.length >= 0 && <GlobalTable
+        editable={ROLE !== 'CUSTOMER' ? true : false}
+        data={customers}
+        title={"Customers"}
+        columns={defineColumns(ROLE !== 'CUSTOMER' ? true : false)}
+        color={PALLETE.BLUE}
+        type={"CUSTOMER"}
+        onRowAdded={addUser}
+        onRowDeleted={deleteUser}
+        onRowUptated={updateUser}
+        role={'CUSTOMER'}
+        fetchData={pageChange}></GlobalTable>}
     </>
   );
 };
