@@ -29,6 +29,7 @@ const Axios: React.FC<GlobalAxiosState> = () => {
       return config;
     },
     (error: any) => {
+      dispatch(stopLoader());
       return Promise.reject(error);
     }
   );
@@ -38,6 +39,7 @@ const Axios: React.FC<GlobalAxiosState> = () => {
       return response;
     },
     (error: any) => {
+      dispatch(stopLoader());
       if (error.response.status == 500) {
         setError(true);
       }

@@ -4,7 +4,7 @@ import GlobalTable from "../components/globalTable";
 import { PALLETE } from '../config/config'
 import { GridColDef, GridRowId, GridRowModel, GridRowsProp } from "@mui/x-data-grid/models";
 import { TextField } from "@mui/material";
-
+import { IUser } from "../types/IUser";
 
 
 const ROLE = sessionStorage.getItem('role');
@@ -60,6 +60,7 @@ const defineColumns = (etitable: boolean) => {
 
 const UsersManagement: React.FC = () => {
 
+
   const { getData, postData, putData, deleteData } = UseCrud();
   const [customers, setCustomers] = useState<GridRowsProp>([]);
   const [employees, setEmployees] = useState<GridRowsProp>([]);
@@ -93,11 +94,14 @@ const UsersManagement: React.FC = () => {
     getUsers('ADMIN');
     getUsers('EMPLOYEE');
     getUsers('CUSTOMER');
+    
   }, []);
 
   useEffect(() => {
     getUsers(TYPE);
   }, [page]);
+
+
 
   const pageChange = (num: number, type: string) => {
     setPage(num);
@@ -157,7 +161,7 @@ const UsersManagement: React.FC = () => {
 
       {employees?.length >= 0 && <GlobalTable
         editable={ROLE !== 'CUSTOMER' ? true : false}
-        data={employees}
+        data={admins}
         title={"Employees"}
         columns={defineColumns(ROLE !== 'CUSTOMER' ? true : false)}
         color={PALLETE.YELLOW}
@@ -170,7 +174,7 @@ const UsersManagement: React.FC = () => {
 
       {customers?.length >= 0 && <GlobalTable
         editable={ROLE !== 'CUSTOMER' ? true : false}
-        data={customers}
+        data={admins}
         title={"Customers"}
         columns={defineColumns(ROLE !== 'CUSTOMER' ? true : false)}
         color={PALLETE.BLUE}
