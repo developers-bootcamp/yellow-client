@@ -93,6 +93,10 @@ const UsersManagement: React.FC = () => {
     getUsers('ADMIN');
     getUsers('EMPLOYEE');
     getUsers('CUSTOMER');
+    console.log(customers);
+    console.log(employees);
+    
+    
   }, []);
 
   useEffect(() => {

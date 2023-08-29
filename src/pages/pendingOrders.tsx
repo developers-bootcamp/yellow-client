@@ -58,7 +58,7 @@ cellClassName: (params: GridCellParams<any, string>) => {
     if (params.value == 'cancelled')
         return 'cancelled';
         if (params.value == 'New')
-        return 'New';
+        return 'delivered';
     return ''
 },},
 { field: 'price', headerName: 'Price', width: 300 },
@@ -135,11 +135,11 @@ const getOrders = async () => {
     try {
 
     const config = { headers: { 'Authorization': localStorage.getItem("accessToken")} };
-     const ordersStatus =['approved','delivered','charging','packing','New',]
-     console.log(secondPaginationModel.page+"second");
+     const ordersStatus =['approved','charging','packing','New',]
 
      const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${secondPaginationModel.page}`,config)
      if (res.status == 200) {
+  console.log(res.data);
   
         let orders:IOrder[] = [];
           orders=res.data;
@@ -196,7 +196,7 @@ const getOrders = async () => {
 
   let navigater = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const [id, setId] = React.useState("64e21292cf0cd64eb4f2497d")
+  const [id, setId] = React.useState("64edd6335e7964e99a6fa4d8")
 const nav=()=>{
   navigater(`/newOrder`)
 }
@@ -210,15 +210,6 @@ const handleClose = () => {
   return (
 <div>
 
-     
-
-     
-     
-    
-
-
-     
- 
 
      <Box
             sx={{
@@ -241,6 +232,7 @@ const handleClose = () => {
                        backgroundColor: ` rgb(235,159,110)`,
                        color: `white`,
                       }}
+                      onClick={nav}
                     >
                    New order
                     </Button>
@@ -287,17 +279,13 @@ const handleClose = () => {
 
 
               <div>
-        <Button sx={{ width: 150 }} variant="text" onClick={nav}> new order</Button>
         <Link onClick={handleClickOpen}>order-details</Link>
         <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <OrderDetails onClose={handleClose} id={id} />
         </Dialog>
-        <p>pending Orders here</p>
+        
 </div>
 
-
-
-   
     </div>
   );
   }

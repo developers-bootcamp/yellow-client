@@ -17,7 +17,7 @@
 
   
 
-  export interface IProductCategory {
+   interface IProductCategory {
     
     id: string ,
     name:string,
@@ -119,5 +119,8 @@ export interface ICompany {
 
   };
   export type { IOrder
+
+};
+export type { IProductCategory
 
 };
