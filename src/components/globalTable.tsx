@@ -82,8 +82,6 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
     }, [paginationModel])
 
     useEffect(() => { setRows(data) }, [data])
-    useEffect(() => {console.log(data);
-    }, [])
 
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -118,6 +116,9 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
             setRows(rows.filter((row) => row.id !== id));
         }
     };
+    const getRowId = (row:any) => {
+        return row.id
+      };
   
     const processRowUpdate = (newRow: GridRowModel) => {
         if (newRow?.isNew) {
@@ -229,7 +230,6 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
                 slotProps={{
                     toolbar: { setRows, setRowModesModel },
                 }}
-                
                 disableColumnSelector
                 disableRowSelectionOnClick
                 pageSizeOptions={[2]}
