@@ -38,15 +38,16 @@ export function TopSoldProduct() {
 
   topProduct.map((item) => {
     item.products.forEach((product) => {
-      productsName.push(product.productName);
+      const foundProduct = productsName.find((productName) => productName === product.productName);
+      if(foundProduct==undefined)
+       productsName.push(product.productName);
 
     });
   });
   const chartData = topProduct.map((item) => {
     const dataRow: any[] = [item.month];
     const productMap: { [name: string]: number } = {};
-
-    item.products.forEach((product) => {
+     item.products.forEach((product) => {
       productMap[product.productName] = product.amount;
     });
 
@@ -63,7 +64,6 @@ export function TopSoldProduct() {
 
 
   return (
-
     <Chart
       width={"100%"}
       height={"400px"}

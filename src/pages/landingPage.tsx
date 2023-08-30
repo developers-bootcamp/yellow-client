@@ -24,9 +24,9 @@ const LandingPage: React.FC = () => {
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
       <Tabs value={value} onChange={handleChange} centered>
-        <Tab value="pendingOrders" label="Pending Orders" />
-        <Tab value="dashboard" label="Dashboard" />
-        <Tab value="catalogManager" label="Catalog Manager" />
+        <Tab style={{marginRight:"17%"}} value="pendingOrders" label="Pending Orders" />
+        <Tab style={{marginRight:"17%"}} value="dashboard" label="Dashboard" />
+        <Tab style={{marginRight:"17%"}} value="catalogManager" label="Catalog Manager" />
         <Tab value="usersManagement" label="Users' Management" />
       </Tabs>
       <div>

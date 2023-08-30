@@ -44,7 +44,7 @@ function App() {
   <Axios Error={false} />
   <GlobalLoader/>
   <ThemeProvider theme={theme}>
-    <Routing/>
+    <Routing/> 
     </ThemeProvider>
    
 
