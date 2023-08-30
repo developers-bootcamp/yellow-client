@@ -3,7 +3,7 @@ import { stopLoader, startLoader } from "../redux/loaderSlice";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/store";
 import GlobalErorrModel from "../components/globalErorModel";
-import useHistory, { Link } from 'react-router-dom';
+import useHistory, { Link } from "react-router-dom";
 import GlobalModelDialog from "../components/globalModelDialog";
 
 interface GlobalAxiosState {
@@ -46,13 +46,15 @@ const Axios: React.FC<GlobalAxiosState> = () => {
       if (error.response.status == 401) {
         alert("you need to relogin");
       }
+      if (error.response.status == 403) {
+        alert("you are not alowed to do the action!");
+      }
       return Promise.reject(error);
     }
   );
 
   return (
-    <>{Error ? <GlobalErorrModel onClose={() => setError(false)} /> : null}
-    </>
+    <>{Error ? <GlobalErorrModel onClose={() => setError(false)} /> : null}</>
   );
 };
 export default Axios;

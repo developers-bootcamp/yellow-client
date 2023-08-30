@@ -22,10 +22,10 @@ import useStyles from "./signUp.styles";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../config/config";
 import { log } from "console";
-import currencyReducer from '../../redux/currencySlice';
-import { useSelector } from 'react-redux';
-import { RootState, useAppSelector } from '../../redux/store';
-import ICurrencyState from '../../redux/currencySlice';
+import currencyReducer from "../../redux/currencySlice";
+import { useSelector } from "react-redux";
+import { RootState, useAppSelector } from "../../redux/store";
+import ICurrencyState from "../../redux/currencySlice";
 const validationSchema = yup.object({
   fullName: yup.string().required("Name is required"),
   email: yup
@@ -46,16 +46,14 @@ const validationSchema = yup.object({
     .oneOf([true], "You must accept the terms and conditions"),
 });
 const SignUpForm: React.FC = () => {
-  
   const [isFormValid, setFormValid] = React.useState(true);
-  const [listCurrencies, setlistCurrencies] = React.useState([]);  
-  const [currency, setCurrency] = React.useState('');
+  const [listCurrencies, setlistCurrencies] = React.useState([]);
+  const [currency, setCurrency] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const navigate = useNavigate();
- // const listCurrencies = useAppSelector(state => state.currencyReducer.listCurrencies);
- useEffect(() => {
-    currencyRequest()
-
+  // const listCurrencies = useAppSelector(state => state.currencyReducer.listCurrencies);
+  useEffect(() => {
+    currencyRequest();
   }, []);
   useEffect(() => {
     console.log(listCurrencies);
@@ -75,32 +73,32 @@ const SignUpForm: React.FC = () => {
       async function signUpRequest() {
         try {
           const res = await axios.get(
-          `http://localhost:8080/User/signUp?fullName=${values.fullName}&companyName=${values.companyName}&email=${values.email}&password=${values.password}&currency=${currency}`
+            `http://localhost:8080/User/signUp?fullName=${values.fullName}&companyName=${values.companyName}&email=${values.email}&password=${values.password}&currency=${currency}`
           );
-          sessionStorage.setItem("accessToken", res.data)
+          sessionStorage.setItem("accessToken", res.data["token"]);
+          sessionStorage.setItem("role", res.data["role"]);
           navigate("/LandingPage");
-          
+
           return res.data;
         } catch (error: any) {
-          if (error.isAxiosError){
-          console.log(error);
-          if (error.response['status']!==500)
-            swal("Sorry", `${error.response['data']}`, "error");
+          if (error.isAxiosError) {
+            console.log(error);
+            if (error.response["status"] !== 500)
+              swal("Sorry", `${error.response["data"]}`, "error");
+          } else {
+            swal("Server is not connect");
+          }
         }
-        else{
-          swal("Server is not connect");
-        }}
       }
       signUpRequest();
     },
   });
   const currencyRequest = async () => {
-    await axios.get("http://localhost:8080/GetCurrency").then(res => setlistCurrencies(res.data));
+    await axios
+      .get("http://localhost:8080/GetCurrency")
+      .then((res) => setlistCurrencies(res.data));
+  };
 
-  }
-
-  
- 
   const handleChange = (event: SelectChangeEvent) => {
     setCurrency(event.target.value as string);
   };
@@ -126,7 +124,7 @@ const SignUpForm: React.FC = () => {
           helperText={formik.touched.fullName && formik.errors.fullName}
         />
         <TextField
-          style={{ width: "60%",marginRight:"15px" }}
+          style={{ width: "60%", marginRight: "15px" }}
           margin="normal"
           id="companyName"
           label="Company Name"
@@ -139,18 +137,18 @@ const SignUpForm: React.FC = () => {
           }
           helperText={formik.touched.companyName && formik.errors.companyName}
         />
-  <Select
-    style={{ width: "15%",top:"16px" }}
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    placeholder="currency"
-    value={currency}
-    onChange={handleChange}
-  >
-    {listCurrencies.map((currency: string) => 
-    <MenuItem value={currency}>{currency}</MenuItem>
- )}
-  </Select>
+        <Select
+          style={{ width: "15%", top: "16px" }}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          placeholder="currency"
+          value={currency}
+          onChange={handleChange}
+        >
+          {listCurrencies.map((currency: string) => (
+            <MenuItem value={currency}>{currency}</MenuItem>
+          ))}
+        </Select>
         <TextField
           style={{ width: "80% " }}
           margin="normal"
