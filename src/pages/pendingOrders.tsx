@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { GET_ALL_ORDERS_URL } from '../config/config';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, Popover, Typography } from '@mui/material';
 import {UseCrud} from "../redux/useCrud"
 import { LocalHospitalTwoTone } from '@mui/icons-material';
 import { array } from 'yup';
@@ -28,6 +28,9 @@ import { useEffect, useState } from 'react';
  import { Outlet } from 'react-router-dom';
  import { Link,Dialog } from "@mui/material";
  import OrderDetails from "./orderDetails/orderDetails";
+import GlobalPopOver from '../components/GlobalPopOver';
+import AllFilter from './filterPop/AllFilter';
+ 
  interface PendingOrdersProps {
      order?: IOrder;
    }
@@ -71,16 +74,21 @@ cellClassName: (params: GridCellParams<any, string>) => {
 
 ];
 const PendingOrders: React.FC = () => {
+  const filterTables=(filters:any)=>{
+    //כאן אמור ליהיות השליחה לשרת!!!
+        console.log(filters)
+  }
+
 let currentRows: any[] = []
 const [Rows, setRows] = useState<any[]>([]);
 const [Rows2, setRows2] = useState<any[]>([]);
 const[secondPaginationModel,setsecondPaginationModel]=React.useState({
   page:0,
-  pageSize:1,
+  pageSize:3,
 });
 const[firstPaginationModel,setfirstPaginationModel]=React.useState({
   page:0,
-  pageSize:1,
+  pageSize:3,
 });
 const getOrders = async () => {
 
@@ -151,7 +159,6 @@ const getOrders = async () => {
 
                   AllPrudocts+= `${p.quantity} ${p.productId.name} , `
 
-
                 })
 
 
@@ -189,10 +196,13 @@ const getOrders = async () => {
 
     //getOrdersDeatails();
     getOrders2();
+
+  }, [secondPaginationModel]);
+  useEffect(() => {
+
     getOrders();
 
-  }, [secondPaginationModel,firstPaginationModel]);
-
+  }, [firstPaginationModel]);
 
   let navigater = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -210,16 +220,6 @@ const handleClose = () => {
   return (
 <div>
 
-     
-
-     
-     
-    
-
-
-     
- 
-
      <Box
             sx={{
               height: '30%',
@@ -233,8 +233,7 @@ const handleClose = () => {
                 },
             }}
         >
-
-      
+      <div>
                <Button
                    
                    style={{
@@ -244,26 +243,32 @@ const handleClose = () => {
                     >
                    New order
                     </Button>
-                    <Button     type="submit"  style={ {backgroundColor: `white`}  }><FilterAltOutlinedIcon></FilterAltOutlinedIcon> filter  </Button>
-   
-                    <Button><SortOutlinedIcon> </SortOutlinedIcon> sort </Button>
-                    <br></br>
-                    <br></br>
+
+                    <Button><SortOutlinedIcon>
+                       </SortOutlinedIcon> sort </Button>
+
+                    <GlobalPopOver
+            name={"filter"}
+            Pop={AllFilter}
+          //  image={filterImg}
+           filterTables={filterTables}
+          ></GlobalPopOver>
+                     </div>
+<br></br>
 
                     <ArrowCircleDownIcon style={{ color: 'rgb(238,105,106)', paddingLeft: '7px' }}></ArrowCircleDownIcon>
             <span style={{ color: 'rgb(238,105,106)', padding: '7px', verticalAlign: 'super' }}>{"Top priority"}</span>
+
+        
              <br></br>
 
         <DataGrid style={
             {backgroundColor: `rgb(231,230,230) `, border: '1px solid white'} 
-    
-            // border: 1px solid white;
-            // border-collapse: collapse;
          
            }
                  rows ={Rows}
                  columns={columns}
-                 rowCount={7}
+                 rowCount={100}
                  paginationModel={firstPaginationModel}
                  paginationMode="server"
                  onPaginationModelChange={setfirstPaginationModel}
@@ -276,7 +281,7 @@ const handleClose = () => {
            }
             rows ={Rows2}
             columns={columns}
-                   rowCount={1}
+                   rowCount={100}
                 paginationModel={secondPaginationModel}
                 paginationMode="server"
                 onPaginationModelChange={setsecondPaginationModel}
