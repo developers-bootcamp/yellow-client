@@ -458,7 +458,7 @@ export default function OrderDetails({ onClose, id }: any) {
         </DetailsDiv>
         <BackImg sx={{ height: "53vh !important", marginBottom: "0vh !important" }}>
           <GiftImg src="gifts.png" sx={{ height: "100% !imporant", marginBottom: "0vh !important" }}></GiftImg>
-          <TextSide sx={{ position: "absolute", top: "20vh", zIndex: "10", left: "3vw" }}>we almoste done</TextSide>
+          <TextSide sx={{ position: "absolute", top: "20vh", zIndex: "10", left: "3vw" }}>we almost done</TextSide>
         </BackImg>
       </DialogContent>
     </div>
