@@ -222,9 +222,6 @@ const PendingOrders: React.FC = () => {
   };
   return (
     <div>
-         <LandingPage></LandingPage>
-
-
       <Box
         sx={{
           height: '30%',
