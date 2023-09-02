@@ -8,7 +8,7 @@
     orderStatusId:string,
     companyId:ICompany,
     creditCardNumber:number,
-    expiryOn:Date,
+    expiryOn:string,
     cvc:string,
     notificationFlag:boolean,
     auditData:IAuditData

@@ -62,14 +62,13 @@ export default function OrderDetails({ onClose, id }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [creditCardNumber, setCreditCardNumber] = useState();
   const [cvc, setCvc] = useState("");
-  const [expiryOn, setExpiryOn] = useState<Date>();
+  const [expiryOn, setExpiryOn] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [amount, setamount] = useState(0);
   const [currencyMap, setCurrencyMap] = useState<CurrencyMap>({ key: 'ש"ח', value: 1 });
   const [currency, setCurrency] = useState<string[]>([]);
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<string | null>(null);
    
-  //אסתי פרויבירט תקשיבי לי דקה!!!
  interface CurrencyMap {
     key: string;
     value: number;
@@ -248,11 +247,18 @@ export default function OrderDetails({ onClose, id }: any) {
        order.orderStatusId="approved"
        setOrder(order)
       let result = await putData("order", order);
-      // let result = await axios.put("http://localhost:8080/order",order)
       console.log(result);
     }
   };
-  const cancelOrder = (id: string | undefined) => { };
+  const cancelOrder =async (e: any) => {
+    if (order) {
+      console.log(order);
+       order.orderStatusId="cancelled"
+       setOrder(order)
+      let result = await putData("order", order);
+      console.log(result);
+    }
+   };
 
   return (
     <div >
@@ -429,8 +435,8 @@ export default function OrderDetails({ onClose, id }: any) {
                     }}
                   />
                   <TextField
-                    type="month"
-                    // label="expiers on"
+                    type="string"
+                     label="expiers on"
                     sx={{ width: 120, textAlign: "left" }}
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -453,7 +459,7 @@ export default function OrderDetails({ onClose, id }: any) {
               <div style={{ top: "25vh", position: "absolute", width: "100%" }}>
                 <div style={{ position: "absolute" }}>
                   <Button
-                    onClick={() => cancelOrder(order?.id)}
+                    onClick={(e) => cancelOrder(e)}
                     sx={{
                       mt: 2,
                       backgroundColor: `${PALLETE.ORANGE} !important`,
