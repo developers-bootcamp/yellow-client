@@ -24,7 +24,6 @@ import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import EmailIcon from '@mui/icons-material/Email';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import LandingPage from './landingPage';
 
 import { Outlet } from 'react-router-dom';
 import { Link, Dialog } from "@mui/material";
@@ -222,6 +221,8 @@ const PendingOrders: React.FC = () => {
   };
   return (
     <div>
+
+
       <Box
         sx={{
           height: '30%',
