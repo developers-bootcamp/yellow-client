@@ -157,7 +157,7 @@ const UsersManagement: React.FC = () => {
         onRowDeleted={deleteUser}
         onRowUptated={updateUser}
         role={'ADMIN'}
-        fetchData={pageChange}></GlobalTable>}
+        fetchData={pageChange} rowsCount={0} pageSizeOption={0}></GlobalTable>}
 
       {employees?.length >= 0 && <GlobalTable
         editable={ROLE !== 'CUSTOMER' ? true : false}
@@ -170,7 +170,7 @@ const UsersManagement: React.FC = () => {
         onRowDeleted={deleteUser}
         onRowUptated={updateUser}
         role={'EMPLOYEE'}
-        fetchData={pageChange}></GlobalTable>}
+        fetchData={pageChange} rowsCount={0} pageSizeOption={0}></GlobalTable>}
 
       {customers?.length >= 0 && <GlobalTable
         editable={ROLE !== 'CUSTOMER' ? true : false}
@@ -183,7 +183,7 @@ const UsersManagement: React.FC = () => {
         onRowDeleted={deleteUser}
         onRowUptated={updateUser}
         role={'CUSTOMER'}
-        fetchData={pageChange}></GlobalTable>}
+        fetchData={pageChange} rowsCount={0} pageSizeOption={0}></GlobalTable>}
     </>
   );
 };

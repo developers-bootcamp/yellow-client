@@ -52,7 +52,6 @@ const Axios: React.FC<GlobalAxiosState> = () => {
       return Promise.reject(error);
     }
   );
-
   return (
     <>{Error ? <GlobalErorrModel onClose={() => setError(false)} /> : null}</>
   );

@@ -3,6 +3,7 @@ import { UseCrud } from "../redux/useCrud";
 import { IProductCatagory } from "../types/IProductCategories";
 import {
   GridColDef,
+  GridPreProcessEditCellProps,
   GridRowId,
   GridRowModel,
   GridRowsProp,
@@ -35,157 +36,210 @@ const defineColumns = (etitable: boolean) => {
   ];
   return columns;
 };
-const defineColumnsProduct = (etitable: boolean) => {
-  const columns: GridColDef[] = [
-    {
-      field: "name",
-      headerName: "Product",
-      width: 180,
-      editable: etitable,
-      disableColumnMenu: true,
-    },
-    {
-      field: "desc",
-      headerName: "Description",
-      type: "string",
-      width: 200,
-      align: "left",
-      headerAlign: "left",
-      editable: etitable,
-    },
-    {
-      field: "inventory",
-      headerName: "Inventory",
-      type: "number",
-      width: 150,
-      align: "left",
-      headerAlign: "left",
-      editable: etitable,
-    },
-    {
-      field: "discountAmount",
-      headerName: "Discount",
-      type: "number",
-      width: 80,
-      align: "left",
-      headerAlign: "left",
-      editable: etitable,
-    },
-    {
-      field: "discount",
-      headerName: "",
-      type: "String",
-      width: 20,
-      align: "center",
-      headerAlign: "left",
-      editable: etitable,
-      renderCell: (params) => {
-        let symbol = "$";
 
-        if (params.value === "Percentage") {
-          symbol = "%";
-        } else {
-          // Assuming 'currency' is the name of the currency field in your data
-          const currency = params.row.currency;
-
-          // Map currency names to symbols as needed
-          switch (currency) {
-            case "SHEKEL":
-              symbol = "₪";
-              break;
-            case "Euro":
-              symbol = "€";
-              break;
-            case "FRANCE":
-              symbol = "€";
-              break;
-            case "RUBLE":
-              symbol = "₽";
-              break;
-            // Add more cases for other currencies as needed
-            default:
-              // Handle other cases here
-              break;
-          }
-        }
-
-        return <div>{symbol}</div>;
-      },
-
-      renderEditCell: (params) => {
-        // Store the current 'discount' value in a variable
-        const currentValue = params.row.discount;
-
-        return (
-          <Select
-            style={{ width: "80px" }} // Adjust the width as needed
-            value={currentValue}
-            onChange={(e) => {
-              params.api.setEditCellValue({
-                id: params.id,
-                field: "discount",
-                value: e.target.value,
-              });
-            }}
-          >
-            <MenuItem value="Percentage">%</MenuItem>
-            <MenuItem value="FixedAmount">
-              {params.row.currency === "SHEKEL"
-                ? "₪"
-                : params.row.currency === "EURO"
-                ? "€"
-                : params.row.currency === "RUBLE"
-                ? "₽"
-                : params.row.currency === "DOLLAR"
-                ? "$"
-                : "MyCurrency"}
-            </MenuItem>
-          </Select>
-        );
-      },
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      type: "number",
-      width: 80,
-      align: "center",
-      headerAlign: "left",
-      editable: etitable,
-    },
-    {
-      field: "productCategoryId",
-      headerName: "Category",
-      type: "string",
-      width: 200,
-      align: "left",
-      headerAlign: "left",
-      editable: etitable,
-    },
-  ];
-  return columns;
-};
 const CatalogManager: React.FC = () => {
+  const [currency, setCurrency] = useState("");
   const { getData, postData, putData, deleteData } = UseCrud();
   const [categories, setCategories] = useState<GridRowsProp>([]);
   const [products, setProducts] = useState<GridRowsProp>([]);
   const [page, setPage] = useState(0);
 
-  const pageChange = (num: number, type: string) => {
-    setPage(num);
-    TYPE = type;
-  };
-  let currency = "DOLLAR";
-  const getFunc = async (url: string) => {
-    let result = await getData(url);
-    if (url === "categories") setCategories(result);
-    if (url === "product") setProducts(result);
-    console.log(products);
-  };
   useEffect(() => {
     getFunc("categories");
     getFunc("product");
   }, []);
+
+  const defineColumnsProduct = (etitable: boolean) => {
+    const columns: GridColDef[] = [
+      {
+        field: "name",
+        headerName: "Product",
+        width: 180,
+        type: "string",
+        editable: etitable,
+        disableColumnMenu: true,
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+          let hasError=true;
+          if(params.props.value){
+            hasError= params.props.value.length < 0;
+          }
+            return { ...params.props, error: hasError, message: "reqiured" };
+          }
+      },
+      {
+        field: "desc",
+        headerName: "Description",
+        type: "string",
+        width: 200,
+        align: "left",
+        headerAlign: "left",
+        editable: etitable,
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+          let hasError=true;
+          if(params.props.value){
+            hasError= params.props.value.length < 0;
+          }
+            return { ...params.props, error: hasError, message: "reqiured" };
+          }
+      },
+      {
+        field: "inventory",
+        headerName: "Inventory",
+        type: "number",
+        width: 150,
+        align: "left",
+        headerAlign: "left",
+        editable: etitable,
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+          const hasError = params.props.value <0;
+          return { ...params.props, error: hasError, message: "min 0" };
+        }
+      },
+      {
+        field: "discountAmount",
+        headerName: "Discount",
+        type: "number",
+        width: 80,
+        align: "left",
+        headerAlign: "left",
+        editable: etitable,
+      },
+      {
+        field: "discount",
+        headerName: "",
+        type: "String",
+        width: 20,
+        align: "center",
+        headerAlign: "left",
+        editable: etitable,
+        renderCell: (params) => {
+          let symbol = "$";
+
+          if (params.value === "Percentage") {
+            symbol = "%";
+          } else {
+            const currency1 = params.row.currency;
+            
+            switch (currency1) {
+              case "SHEKEL":
+                symbol = "₪";
+                break;
+              case "Euro":
+                symbol = "€";
+                break;
+              case "FRANCE":
+                symbol = "€";
+                break;
+              case "RUBLE":
+                symbol = "₽";
+                break;
+              // Add more cases for other currencies as needed
+              default:
+                // Handle other cases here
+                break;
+            }
+          }
+
+          return <div>{symbol}</div>;
+        },
+
+        renderEditCell: (params) => {
+          // Store the current 'discount' value in a variable
+          const currentValue = params.row.discount;
+
+          return (
+            <Select
+              style={{ width: "80px" }} // Adjust the width as needed
+              value={currentValue}
+              onChange={(e) => {
+                params.api.setEditCellValue({
+                  id: params.id,
+                  field: "discount",
+                  value: e.target.value,
+                });
+              }}
+            >
+              <MenuItem value="Percentage">%</MenuItem>
+              <MenuItem value="FixedAmount">
+                {currency === "SHEKEL"
+                  ? "₪"
+                  : currency === "EURO"
+                  ? "€"
+                  : currency === "RUBLE"
+                  ? "₽"
+                  : currency === "DOLLAR"
+                  ? "$"
+                :"MyCurrency"}
+              </MenuItem>
+            </Select>
+          );
+        },
+      },
+      {
+        field: "price",
+        headerName: "Price",
+        type: "number",
+        width: 80,
+        align: "center",
+        headerAlign: "left",
+        editable: etitable,
+      },
+      {
+        field: "productCategoryId",
+        headerName: "Category",
+        type: "string",
+        width: 200,
+        align: "left",
+        headerAlign: "left",
+        editable: etitable,
+        renderCell: (params) => (
+            <div>{params.row.productCategoryId ? params.row.productCategoryId.name : "N/A"}</div>
+          ),
+        renderEditCell: (params) => {
+          const currentValue = params.row.productCategoryId; // Get the current category object
+  
+          return (
+            <Select
+              style={{ width: "200px" }}
+              value={currentValue ? currentValue.id || '' : ''}  // Assuming the category object has an "id" property
+              onChange={(e) => {
+                const selectedCategoryId = e.target.value;
+                const selectedCategory = categories.find(
+                  (category) => category.id === selectedCategoryId
+                );
+                params.api.setEditCellValue({
+                  id: params.id,
+                  field: "productCategoryId",
+                  value: selectedCategory, // Send the entire category object
+                });
+              }}
+            >
+              {categories.map((category) => (
+                <MenuItem key={category.id} value={category.id}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+          );
+        },
+      },
+    ];
+    return columns;
+  };
+ 
+  const pageChange = (num: number, type: string) => {
+    setPage(num);
+    TYPE = type;
+  };
+
+  const getFunc = async (url: string) => {
+    let result = await getData(url);
+    if (url === "categories") setCategories(result);
+    if (url === "product") setProducts(result);
+    if (products.length > 0) {
+      setCurrency(products[products.length - 1].currency);
+    }
+  };
 
   const addCategory = (newCategory: GridRowModel) => {
     postData("categories", newCategory)
@@ -263,11 +317,9 @@ const CatalogManager: React.FC = () => {
           onRowAdded={addCategory}
           onRowDeleted={deleteCategory}
           onRowUptated={updateCategory}
-          fetchData={pageChange}
           role={""}
-        ></GlobalTable>
+          paginationMode={"client"} rowsCount={7} pageSizeOption={3}        ></GlobalTable>
       }
-
       {
         <GlobalTable
           editable={ROLE === "ADMIN" ? true : false}
@@ -279,9 +331,7 @@ const CatalogManager: React.FC = () => {
           onRowAdded={addProduct}
           onRowDeleted={deleteProduct}
           onRowUptated={updateProduct}
-          fetchData={pageChange}
-          role={""}
-        ></GlobalTable>
+          role={""} paginationMode={"client"} rowsCount={7} pageSizeOption={3}  ></GlobalTable>
       }
     </>
   );

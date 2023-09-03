@@ -46,11 +46,9 @@ const Login: React.FC = (): any => {
         sessionStorage.setItem("role", res.data['role'])
         navigate("/landingPage")
       }
-
     }
     catch (error) {
       toast.error("The user is not in the system, check that the username and password are correct")
-
     }
   }
 
