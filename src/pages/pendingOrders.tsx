@@ -105,9 +105,6 @@ const getOrders = async () => {
         let orders:IOrder[] = [];
         orders=res.data;
         let currentRows: any[] = []
-
-        
-
           orders.forEach(e => {
                 let AllPrudocts = ""
                 e.orderItems.forEach(p => {
@@ -127,17 +124,11 @@ const getOrders = async () => {
           
       }
     }
-    
-
     catch (error) {
       alert(error);
 
     }
   }
-
-
-
-
   const getOrders2 = async () => {
 
     try {
