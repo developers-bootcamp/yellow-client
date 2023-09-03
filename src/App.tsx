@@ -37,9 +37,9 @@ function App() {
   const dispatch = useAppDispatch()
   return (<>
   <Axios Error={false} />
-  <GlobalLoader/>
+  {/* <GlobalLoader/> */}
   <ThemeProvider theme={theme}>
-    <Routing/>
+    <Routing/> 
     </ThemeProvider>
    
  </> );

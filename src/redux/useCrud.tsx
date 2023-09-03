@@ -1,10 +1,12 @@
 import axios from "axios";
 import { IOrder } from "../types/Iorder";
+import { log } from "console";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const UseCrud = () => {
     const getData = async (url:string) => { 
       try {
+        console.log(`${BASE_URL}/${url}`);
         const response = await axios.get(`${BASE_URL}/${url}`);
         var x=response.data;
         return await x;

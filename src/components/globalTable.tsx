@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,218 +8,237 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowEditStopReasons,
+    GridRowsProp,
+    GridRowModesModel,
+    GridRowModes,
+    DataGrid,
+    GridColDef,
+    GridToolbarContainer,
+    GridActionsCellItem,
+    GridEventListener,
+    GridRowId,
+    GridRowModel,
+    GridRowEditStopReasons,
+    GridPaginationModel,
 } from '@mui/x-data-grid';
 import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
+    randomId,
 } from '@mui/x-data-grid-generator';
-import { IUser } from '../types/IUser';
+import { useEffect } from 'react';
 
 
-
-
-interface GlobalTableProps {
-  data: GridRowsProp<IUser>,
-  columns: GridColDef[],
-  color: string,
-  title: string,
-  type: string,
-  editable: boolean,
+interface TableProp {
+    editable?: boolean,
+    data: GridRowsProp,
+    title: string,
+    color: string,
+    columns: GridColDef[],
+    type: string
+    onRowUptated?: (user: GridRowModel) => void,
+    onRowDeleted?: (id: GridRowId, type: string) => void,
+    onRowAdded?: (newUser: GridRowModel, type: string) => void,
+    fetchData?: (num: number, type: string) => void,
+    role: string,
 }
-
 interface EditToolbarProps {
-  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-  setRowModesModel: (
-    newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
-  ) => void;
+    setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+    setRowModesModel: (
+        newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
+    ) => void;
 }
 
 
+const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, color, type, onRowAdded, onRowDeleted, onRowUptated, role, fetchData }) => {
 
-interface RowMode {
-  edit?: boolean,
-  id?: GridRowId,
-}
+    function EditToolbar(props: EditToolbarProps) {
+        const { setRows, setRowModesModel } = props;
 
-const GlobalTable: React.FC<GlobalTableProps> = ({ editable, data, title, color, columns, type,/* onDataUpdated */ }) => {
-  useEffect(() => { console.log(data) }, []);
+        const handleClick = () => {
+            const id = randomId();
+            setRows((oldRows) => [...oldRows, { id, fullName: '', password: '', email: '', address: '', telephone: '', role: '', isNew: true }]);
+            setRowModesModel((oldModel) => ({
+                ...oldModel,
+                [id]: { mode: GridRowModes.Edit, fieldToFocus: 'id' },
+            }));
+        };
+        if (editable)
+            return (
+                <GridToolbarContainer>
+                    <Button color="primary" startIcon={<AddIcon />} onClick={handleClick} style={{color:color}}>
+                        Add {type}
+                    </Button>
+                </GridToolbarContainer>
+            );
+        else
+            return (<></>)
+    }
+    const [rows, setRows] = React.useState(data);
+    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+    const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({ page: 0, pageSize: 2 });
 
-  const [rowsMode, setRowsMode] = useState<RowMode[]>([])
-  const [editMode, setEditMode] = useState(false);
-  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+    useEffect(() => {
+        if (fetchData)
+            fetchData(paginationModel.page, type)
+    }, [paginationModel])
 
-  function EditToolbar(props: EditToolbarProps) {
-    const { setRows, setRowModesModel } = props;
-  
-    const handleClick = () => {
-      const id = randomId();
-      setRows((oldRows) => [...oldRows, { id, fullName: '', password: '', email: '', address: '', phone: '', isNew: true }]);
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
-      }));
-      setAction(addActions(false, id))
-    };
-  
-    return (
-      <GridToolbarContainer>
-        <Button style={{ color: 'gray' }} startIcon={<AddIcon />} onClick={handleClick}>
-          Add {type }
-        </Button>
-      </GridToolbarContainer>
-    );
-  }
+    useEffect(() => { setRows(data) }, [data])
 
-  const addActions = (isEditMode: boolean, editid: GridRowId) => {
-    const newObject = {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 100,
-      cellClassName: 'actions',
-      getActions: ({ id }: { id: GridRowId }) => {
-
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-        if (isEditMode && editid === id) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: 'primary.main',
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
+    const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+        if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+            event.defaultMuiPrevented = true;
         }
+    };
 
+    const handleEditClick = (id: GridRowId) => () => {
+        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    };
 
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
-        ];
-      }
-    }
-    return newObject;
-  }
+    const handleSaveClick = (id: GridRowId) => () => {
+        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    };
 
-  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
+    const handleDeleteClick = (id: GridRowId) => () => {
 
+        if (onRowDeleted) {
+            onRowDeleted(id, type);
+        }
+        setRows(rows.filter((row) => row.id !== id));
+    };
 
-  const handleEditClick = (id: GridRowId) => () => {
-    //onRowUpdated(rowModesModel, id)
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-    setAction(addActions(true, id))
-  };
+    const handleCancelClick = (id: GridRowId) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.View, ignoreModifications: true },
+        });
+        const editedRow = rows.find((row) => row.id === id);
 
+        if (editedRow!.isNew) {
+            setRows(rows.filter((row) => row.id !== id));
+        }
+    };
+    const getRowId = (row:any) => {
+        return row.id
+      };
+  
+    const processRowUpdate = (newRow: GridRowModel) => {
+        if (newRow?.isNew) {
+            if (onRowAdded)
+                onRowAdded(newRow, type);
+        }
+        else {
+            if (onRowUptated) {
+                onRowUptated(newRow);
+            }
+        }
+        const updatedRow = { ...newRow, isNew: false };
+        setRows(rows.map((row: any) => (row.id === newRow.id ? updatedRow : row)));
+        return updatedRow;
+    };
 
+    const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+        setRowModesModel(newRowModesModel);
+    };
 
-  const handleSaveClick = (id: GridRowId) => () => {
-   setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    setAction(addActions(false, id))
-  };
+    const column: GridColDef[] = [
 
-  const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
-  };
+        {
+            field: 'actions',
+            type: 'actions',
+            headerName: editable ? 'Actions' : '',
+            width: 100,
+            cellClassName: 'actions',
+            getActions: ({ id }) => {
 
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
+                const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
-    setAction(addActions(false, id))
-  };
+                if (isInEditMode && editable) {
+                    return [
+                        <GridActionsCellItem
+                            icon={<SaveIcon />}
+                            label="Save"
+                            sx={{
+                                color: 'primary.main',
+                            }}
+                            onClick={handleSaveClick(id)}
+                        />,
+                        <GridActionsCellItem
+                            icon={<CancelIcon />}
+                            label="Cancel"
+                            className="textPrimary"
+                            onClick={handleCancelClick(id)}
+                            color="inherit"
+                        />,
+                    ];
+                }
+                if (editable) {
+                    return [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            className="textPrimary"
+                            onClick={handleEditClick(id)}
+                            color="inherit"
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={handleDeleteClick(id)}
+                            color="inherit"
+                        />,
+                    ];
+                }
+                else {
+                    return [
+                        <></>];
+                }
 
-  const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row: any) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
-
-  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-
-  };
-
-
-  const [currentId, setCurrentId] = useState(-1)
-  const [rows, setRows] = useState(data);
-  const [columnsState, setColumnsState] = useState(columns);
-  const [actions, setAction] = React.useState(addActions(false, '-1'))
-
-  return (
-    <Box
-      sx={{
-        height: '30%',
-        marginLeft: '10%',
-        width: '80%',
-        '& .actions': {
-          color: 'text.secondary',
+            },
         },
-        '& .textPrimary': {
-          color: 'text.primary',
-        },
-      }}
-    >
-      <ArrowCircleDownIcon style={{ color: color, paddingLeft: '7px' }}></ArrowCircleDownIcon>
-      <span style={{ color: color, padding: '7px', verticalAlign: 'super' }}>{title}</span>
-      <DataGrid
-        rows={rows}
-        columns={columnsState.concat(actions)}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        slots={{
-          toolbar: EditToolbar,
-        }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
-      />
-    </Box>
-  );
+    ];
+
+    return (
+        <Box
+            sx={{
+                height: '30%',
+                marginLeft: '10%',
+                width: '80%',
+                '& .actions': {
+                    color: 'text.secondary',
+                },
+                '& .textPrimary': {
+                    color: 'text.primary',
+                },
+            }}
+        >
+            <ArrowCircleDownIcon style={{ color: color, paddingLeft: '7px' }}></ArrowCircleDownIcon>
+            <span style={{ color: color, padding: '7px', verticalAlign: 'super' }}>{title}</span>
+            <DataGrid
+                style={
+                    { backgroundColor: `rgb(231,230,230) ` }
+                }
+                rows={rows}
+                rowCount={20}
+                columns={columns.concat(column)}
+                editMode="row"
+                rowModesModel={rowModesModel}
+                onRowModesModelChange={handleRowModesModelChange}
+                onRowEditStop={handleRowEditStop}
+                processRowUpdate={processRowUpdate}
+                slots={{
+                    toolbar: EditToolbar,
+                }}
+                slotProps={{
+                    toolbar: { setRows, setRowModesModel },
+                }}
+                disableColumnSelector
+                disableRowSelectionOnClick
+                pageSizeOptions={[2]}
+                paginationModel={paginationModel}
+                paginationMode='server'
+                onPaginationModelChange={setPaginationModel}
+            />
+        </Box>
+    );
+
 }
 export default GlobalTable;

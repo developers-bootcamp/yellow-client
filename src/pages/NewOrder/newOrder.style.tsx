@@ -14,12 +14,13 @@ export const DetailsDiv = styled('div')({
 export const BackImg = styled('div')({
     background: `${PALLETE.GRAY}`,
     height: "100% !important",
-    width: "15% !important",
+    width: "30% !important",
     position: "absolute",
     display: 'inline-block',
 })
 
 export const GiftImg = styled('img')({
+    height:"100%",
     width: "100% ",
     marginBottom: "25%",
     marginTop: "70%",

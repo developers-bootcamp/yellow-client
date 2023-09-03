@@ -9,6 +9,7 @@
     companyId:ICompany,
     creditCardNumber:number,
     expiryOn:Date,
+    currency:string,
     cvc:string,
     notificationFlag:boolean,
     auditData:IAuditData
@@ -16,7 +17,7 @@
 
   
 
-  export interface IProductCategory {
+   interface IProductCategory {
     
     id: string ,
     name:string,
@@ -118,5 +119,8 @@ export interface ICompany {
 
   };
   export type { IOrder
+
+};
+export type { IProductCategory
 
 };
