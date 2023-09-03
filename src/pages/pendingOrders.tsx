@@ -12,8 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { GET_ALL_ORDERS_URL } from '../config/config';
 import { Box, Button, Grid, Popover, Typography } from '@mui/material';
 import {UseCrud} from "../redux/useCrud"
-import { Box, Button, Grid } from '@mui/material';
-import { UseCrud } from "../redux/useCrud"
 import { LocalHospitalTwoTone } from '@mui/icons-material';
 import { array } from 'yup';
 import { DataGrid, GridCellParams, GridColDef } from '@mui/x-data-grid';
@@ -33,6 +31,7 @@ import LandingPage from './landingPage';
  import OrderDetails from "./orderDetails/orderDetails";
 import GlobalPopOver from '../components/GlobalPopOver';
 import AllFilter from './filterPop/AllFilter';
+import NewOrder from './NewOrder/newOrder';
  
  interface PendingOrdersProps {
      order?: IOrder;
@@ -105,11 +104,10 @@ const getOrders = async () => {
     try {
 
 
-      const config = { headers: { 'Authorization': localStorage.getItem("accessToken") } };
       const ordersStatus = ['cancelled']
-      console.log(firstPaginationModel.page + "first");
 
-      const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${firstPaginationModel.page}`, config)
+
+      const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${firstPaginationModel.page}`)
       if (res.status == 200) {
 
         let orders: IOrder[] = [];
@@ -142,11 +140,12 @@ const getOrders = async () => {
   const getOrders2 = async () => {
 
     try {
+      console.log("opo");
+      
 
-      const config = { headers: { 'Authorization': localStorage.getItem("accessToken") } };
       const ordersStatus = ['approved', 'charging', 'packing', 'New',]
 
-      const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${secondPaginationModel.page}`, config)
+      const res = await axios.get(`${GET_ALL_ORDERS_URL}/${ordersStatus}/${secondPaginationModel.page}`)
       if (res.status == 200) {
         console.log(res.data);
 
@@ -186,17 +185,13 @@ const getOrders = async () => {
 
     }
   }
-  const getOrdersDeatails = () => {
-    getOrders();
-    getOrders2();
-  }
+
 
 
 
 
   useEffect(() => {
 
-    //getOrdersDeatails();
     getOrders2();
 
   }, [secondPaginationModel]);
@@ -208,6 +203,8 @@ const getOrders = async () => {
 
   let navigater = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
   const [id, setId] = React.useState("64e21292cf0cd64eb4f2497d")
 const nav=()=>{
   navigater(`/newOrder`)
@@ -219,25 +216,15 @@ const handleClose = () => {
   setOpen(false);
 };
 
-  return (
-<div>
-
-  const [id, setId] = React.useState("64edd6335e7964e99a6fa4d8")
-  const nav = () => {
-    navigater(`/newOrder`)
-  }
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  
   const handleClickOpen2 = () => {
     setOpen2(true);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  
   const handleClose2 = () => {
     setOpen2(false);
   };
+
   return (
     <div>
       <Box
@@ -265,11 +252,17 @@ const handleClose = () => {
         <Dialog onClose={handleClose2} fullWidth maxWidth={'md'} open={open2} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
           <NewOrder   />
         </Dialog>
-        <Button type="submit" style={{ backgroundColor: `white` }}><FilterAltOutlinedIcon></FilterAltOutlinedIcon> filter  </Button>
+        {/* <Button type="submit" style={{ backgroundColor: `white` }}><FilterAltOutlinedIcon></FilterAltOutlinedIcon> filter  </Button> */}
 
         <Button><SortOutlinedIcon> </SortOutlinedIcon> sort </Button>
         <br></br>
         <br></br>
+        <GlobalPopOver
+            name={"filter"}
+            Pop={AllFilter}
+          //  image={filterImg}
+           filterTables={filterTables}
+          ></GlobalPopOver>
 
                     <ArrowCircleDownIcon style={{ color: 'rgb(238,105,106)', paddingLeft: '7px' }}></ArrowCircleDownIcon>
             <span style={{ color: 'rgb(238,105,106)', padding: '7px', verticalAlign: 'super' }}>{"Top priority"}</span>
@@ -319,7 +312,7 @@ const handleClose = () => {
 
       </div>
 
-    </div>
+    
   );
 }
 
