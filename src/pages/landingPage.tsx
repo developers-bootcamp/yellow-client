@@ -7,13 +7,13 @@ import Tab from "@mui/material/Tab";
 const LandingPage: React.FC = () => {
   //const [value, setValue] = React.useState("pendingOrders");
   let navigater = useNavigate();
-//   useEffect(() => {
-//     if (sessionStorage.getItem("accessToken") === null){
-//     navigater("/");
-// }
-//   else
-//     navigater(`/landingPage/${value}`);
-//   }, []);
+  useEffect(() => {
+    if (sessionStorage.getItem("accessToken") === null){
+    navigater("/");
+}
+  // else
+  //   navigater(`/landingPage/${value}`);
+  }, []);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     
     
