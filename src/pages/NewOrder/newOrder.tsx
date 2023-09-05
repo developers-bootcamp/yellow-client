@@ -46,13 +46,14 @@ import {
    FormHelperText,
    DialogTitle
 } from "@mui/material";
+import { IUser } from '../../types/IUser';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const NewOrder: React.FC = ({ onClose }: any) => {
    const { getData, postData, putData, deleteData } = UseCrud();
-   const [costumers, setCustomers] = useState<IUsers[]>([]);
+   const [customers, setCustomers] = useState<IUsers[]>([]);
    const [user, setUser] = useState<IUsers>();
 
    const [currency, setCurrency] = useState<string[]>([]);
@@ -152,8 +153,6 @@ const NewOrder: React.FC = ({ onClose }: any) => {
    }
    const buyNow = () => {
       let product: any;
-      console.log(order?.cvc, order?.expiryOn, order?.creditCardNumber);
-
       if (order?.cvc && order?.expiryOn && order?.creditCardNumber) {
          console.log(order);
          postFunc("order", order);
@@ -193,6 +192,7 @@ const NewOrder: React.FC = ({ onClose }: any) => {
             cvc: lable,
          }));
       }
+      
       setOrder((prevOrder: any) => ({
          ...prevOrder,
          totalAmount: sumOfPrice,
@@ -212,7 +212,7 @@ const NewOrder: React.FC = ({ onClose }: any) => {
    }, [selectedMenuItem])
 
    useEffect(() => {
-      if (costumers.length == 0) {
+      if (customers.length == 0) {
          getFunc("User")
       }
       if (products.length == 0) {
@@ -235,15 +235,16 @@ const NewOrder: React.FC = ({ onClose }: any) => {
       }
    }, [orderItems, currencyMap])
 
-   // useEffect(() => {
-   //    // Automatically update the amounts when orderItems or products change
-   //    updateAmountsAutomatically();
-   //  }, [orderItems]);
-   // useEffect(() => {
-
-   //    getFunc("User/");
-
-   // }, [selectedValueCostumer])
+   useEffect(() => {
+let selected:any;
+      for (let i = 0; i < customers.length; i++) {
+         if (customers[i].fullName == selectedValueCostumer) {
+            selected = customers[i]
+            break;
+         }
+      }
+setUser(selected)
+   }, [selectedValueCostumer])
    return (
       <div>
          <DialogContent sx={{ p: 0, height: "150vh" }}>
@@ -266,17 +267,17 @@ const NewOrder: React.FC = ({ onClose }: any) => {
 
                         <br></br>
                         <Autocomplete
-                           sx={{ width: "49%", right: 700 }}
+                           sx={{ width: "45%", right: 700 }}
                            disablePortal
                            id="combo-box-demo"
-                           options={costumers}
+                           options={customers}
                            getOptionLabel={(option) => option.fullName}
                            onChange={(event, newValue) => setSelectedValueCostumer(newValue ? newValue.fullName : null)}
-                           renderInput={(params) => <TextField {...params} label="costumers" />}
+                           renderInput={(params) => <TextField {...params} label="customers" />}
                         />
                         <br></br>
                         <Autocomplete
-                           sx={{ width: "49%", right: 700 }}
+                           sx={{ width: "45%", right: 700 }}
                            disablePortal
                            id="combo-box-demo"
                            options={products}
@@ -319,7 +320,7 @@ const NewOrder: React.FC = ({ onClose }: any) => {
                            <TextField
                               label="quantity"
                               type="number"
-                              sx={{ width: "40%", right: 75 }}
+                              sx={{ width: "40%", right: 105 }}
                               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange('quantity', e) }}
                            />

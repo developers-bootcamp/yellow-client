@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { UseCrud } from "../redux/useCrud";
 import { GridColDef, GridRowId, GridRowModel, GridRowsProp } from "@mui/x-data-grid";
 import GlobalTable from "../components/globalTable";
+import LandingPage from "./landingPage";
 import { PALLETE } from "../config/config";
 import { TextField } from "@mui/material";
     const ROLE = sessionStorage.getItem('role');
@@ -154,9 +155,9 @@ import { TextField } from "@mui/material";
                   });
               }
     return (
-
-        <p>catalog Manager here</p>
-
+<div>
+      <LandingPage></LandingPage>
+</div>
     );
 };
     

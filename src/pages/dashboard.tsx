@@ -5,7 +5,7 @@ import TopEmploeey from '../components/topEmploeey';
 import { DeliverCancelOrders } from '../components/DeliverCancelOrders';
 import { TopSoldProduct } from '../components/topSoldProduct';
 import styled from '@emotion/styled';
-
+import LandingPage from "./landingPage";
 
 const Item = styled('div')({
 padding: 5,
@@ -18,8 +18,8 @@ borderWidth: "0.2",
 
 const Dashboard: React.FC = () => {
 
-    return (
-
+    return (<div>
+<LandingPage></LandingPage>
         <Grid container rowSpacing={1.5} columnSpacing={1.5}>
      
      
@@ -47,6 +47,7 @@ const Dashboard: React.FC = () => {
                 
             </Grid>
           </Grid>
+          </div>
        );
 };
  export default Dashboard;
