@@ -86,13 +86,13 @@ export default function OrderDetails({ onClose, id }: any) {
   let arr = [];
   const postFunc = async (url: string, body: object) => {
     let result = await postData(url, body);
+    
     setProductResult(result);
     if (url === "order/CalculateOrderAmount") {
-      alert(result)
-      // let val = result[-1];
-      // const targetValue = -1;
-      // const targetKey = Object.keys(val).find((key) => val[key] === targetValue);
-      // setSumOfPrice(targetKey);
+      let val = result[-1];
+      const targetValue = -1;
+      const targetKey = Object.keys(val).find((key) => val[key] === targetValue);
+      setSumOfPrice(targetKey);
     }
   }
   const getFunc = async (url: string) => {
@@ -223,6 +223,12 @@ export default function OrderDetails({ onClose, id }: any) {
       }));
     }
   };
+  useEffect(() => {
+    if (order) {
+
+       postFunc("order/CalculateOrderAmount", { currency: order.currency, orderItems: orderItems });
+    }
+ }, [orderItems])
   const saveChanges = async (e: any) => {
     if (order) {
       console.log(order);
@@ -354,26 +360,36 @@ export default function OrderDetails({ onClose, id }: any) {
               <Grid container spacing={2}>
                 <h5>productList:</h5>
               </Grid>
-              {orderItems ? (
+              {productResult ? (
                 <>
-                  {console.log("orderrrrr:", orderItems)}
-                  {orderItems?.map((item, index) => (
-                    <Grid key={index} container spacing={2} sx={{ mb: 2 }}>
-                      <Typography sx={{ mr: 1 }}>
-                        {item.productId?.name}
-                      </Typography>
-                      <Typography sx={{ mr: 1 }}>{item.amount}</Typography>
-                      <Typography sx={{ mr: 0 }}>{item.quantity}</Typography>
-                      <Button
+                      {delete productResult[-1]}
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', top: 200, right: 650 }}>
+                                 {Object.entries(productResult).map(([i, innerObj], index) => (
+                                    <div key={index} style={{ display: 'flex', width: '100%', top: 300, right: 650 }}>
+                                       <p >{i}</p>
+                                       <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', top: 300, right: 600 }}>
+                                          {Object.entries(innerObj).map(([subKey, value], subIndex) => (
+                                             <div key={subIndex} style={{ display: 'flex', top: 200, right: 450 }}>
+                                                <p>-{value} {subKey} </p>
+                                                <Button
                         sx={{ mt: 0, p: 0 }}
-                        onClick={() =>
-                          dellProduct(item.productId?.name, item.amount)
-                        }
+                        // onClick={() =>
+                        //  // dellProduct(orderItems.productId?.name, orderItems.productId?.amount)
+                        // }
                       >
                         X
                       </Button>
-                    </Grid>
-                  ))}
+                                                {/* {getAmount(i,parseInt(subKey))}  */}
+
+                                             </div>
+                                          ))}
+                                       </div>
+                                    </div>
+                                 ))}
+                              </div>
+
+
+                    
                 </>
               ) : (
                 <></>
