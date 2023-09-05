@@ -5,7 +5,7 @@ import { PALLETE } from '../config/config'
 import { GridColDef, GridRowId, GridRowModel, GridRowsProp } from "@mui/x-data-grid/models";
 import { TextField } from "@mui/material";
 import { IUser } from "../types/IUser";
-
+import LandingPage from "./landingPage";
 
 const ROLE = sessionStorage.getItem('role');
 const URL = `User`;
@@ -146,6 +146,7 @@ const UsersManagement: React.FC = () => {
 
   return (
     <>
+    <LandingPage></LandingPage>
       {admins?.length >= 0 && <GlobalTable
         editable={ROLE === 'ADMIN' ? true : false}
         data={admins}

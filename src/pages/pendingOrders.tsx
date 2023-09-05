@@ -25,7 +25,6 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import EmailIcon from '@mui/icons-material/Email';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LandingPage from './landingPage';
-
  import { Outlet } from 'react-router-dom';
  import { Link,Dialog } from "@mui/material";
  import OrderDetails from "./orderDetails/orderDetails";
@@ -227,6 +226,8 @@ const handleClose = () => {
 
   return (
     <div>
+
+    <LandingPage></LandingPage>
       <Box
         sx={{
           height: '30%',
@@ -300,12 +301,11 @@ const handleClose = () => {
 
 
               <div>
-        <Button sx={{ width: 150 }} variant="text" onClick={nav}> new order</Button>
+        
         <Link onClick={handleClickOpen}>order-details</Link>
         <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <OrderDetails onClose={handleClose} id={id} />
         </Dialog>
-        <p>pending Orders here</p>
 </div>
 
 
