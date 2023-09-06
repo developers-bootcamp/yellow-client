@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UseCrud } from "../redux/useCrud";
-import { IProductCatagory } from "../types/IProductCategories";
+import {IProductCatagory } from "../types/IProductCategories";
 import {
   GridColDef,
   GridPreProcessEditCellProps,
@@ -23,6 +23,10 @@ const defineColumns = (etitable: boolean) => {
       width: 180,
       editable: etitable,
       disableColumnMenu: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        params.props.error =  params.props.value === "";
+        return { ...params.props, error: params.props.error, message: "Required" };
+      },
     },
     {
       field: "desc",
@@ -32,22 +36,35 @@ const defineColumns = (etitable: boolean) => {
       align: "left",
       headerAlign: "left",
       editable: etitable,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        params.props.error =  params.props.value === "";
+        return { ...params.props, error: params.props.error, message: "Required" };
+      },
     },
   ];
   return columns;
 };
-
 const CatalogManager: React.FC = () => {
   const [currency, setCurrency] = useState("");
   const { getData, postData, putData, deleteData } = UseCrud();
   const [categories, setCategories] = useState<GridRowsProp>([]);
   const [products, setProducts] = useState<GridRowsProp>([]);
+  const [allCategories, setallCategories] = useState<GridRowsProp>([]);
+  const [allProducts, setallProducts] = useState<GridRowsProp>([]);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
+    getall("categories");
+    getall("product");
     getFunc("categories");
     getFunc("product");
+    
+    
   }, []);
+
+  useEffect(() => {
+    getFunc(TYPE);
+  }, [page]);
 
   const defineColumnsProduct = (etitable: boolean) => {
     const columns: GridColDef[] = [
@@ -59,12 +76,9 @@ const CatalogManager: React.FC = () => {
         editable: etitable,
         disableColumnMenu: true,
         preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-          let hasError=true;
-          if(params.props.value){
-            hasError= params.props.value.length < 0;
-          }
-            return { ...params.props, error: hasError, message: "reqiured" };
-          }
+          params.props.error =  params.props.value === "";
+          return { ...params.props, error: params.props.error, message: "Required" };
+        },
       },
       {
         field: "desc",
@@ -75,12 +89,9 @@ const CatalogManager: React.FC = () => {
         headerAlign: "left",
         editable: etitable,
         preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-          let hasError=true;
-          if(params.props.value){
-            hasError= params.props.value.length < 0;
-          }
-            return { ...params.props, error: hasError, message: "reqiured" };
-          }
+          params.props.error =  params.props.value === "";
+          return { ...params.props, error: params.props.error, message: "Required" };
+        },
       },
       {
         field: "inventory",
@@ -91,7 +102,7 @@ const CatalogManager: React.FC = () => {
         headerAlign: "left",
         editable: etitable,
         preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-          const hasError = params.props.value <0;
+          const hasError = params.props.value < 0;
           return { ...params.props, error: hasError, message: "min 0" };
         }
       },
@@ -103,6 +114,10 @@ const CatalogManager: React.FC = () => {
         align: "left",
         headerAlign: "left",
         editable: etitable,
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+          const hasError = params.props.value < 0;
+          return { ...params.props, error: hasError, message: "min 0" };
+        }
       },
       {
         field: "discount",
@@ -119,7 +134,7 @@ const CatalogManager: React.FC = () => {
             symbol = "%";
           } else {
             const currency1 = params.row.currency;
-            
+
             switch (currency1) {
               case "SHEKEL":
                 symbol = "₪";
@@ -146,7 +161,6 @@ const CatalogManager: React.FC = () => {
         renderEditCell: (params) => {
           // Store the current 'discount' value in a variable
           const currentValue = params.row.discount;
-
           return (
             <Select
               style={{ width: "80px" }} // Adjust the width as needed
@@ -169,7 +183,7 @@ const CatalogManager: React.FC = () => {
                   ? "₽"
                   : currency === "DOLLAR"
                   ? "$"
-                :"MyCurrency"}
+                  : "MyCurrency"}
               </MenuItem>
             </Select>
           );
@@ -183,6 +197,10 @@ const CatalogManager: React.FC = () => {
         align: "center",
         headerAlign: "left",
         editable: etitable,
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+          const hasError = params.props.value < 0;
+          return { ...params.props, error: hasError, message: "min 0" };
+        }
       },
       {
         field: "productCategoryId",
@@ -193,15 +211,19 @@ const CatalogManager: React.FC = () => {
         headerAlign: "left",
         editable: etitable,
         renderCell: (params) => (
-            <div>{params.row.productCategoryId ? params.row.productCategoryId.name : "N/A"}</div>
-          ),
+          <div>
+            {params.row.productCategoryId
+              ? params.row.productCategoryId.name
+              : "N/A"}
+          </div>
+        ),
         renderEditCell: (params) => {
           const currentValue = params.row.productCategoryId; // Get the current category object
-  
+
           return (
             <Select
               style={{ width: "200px" }}
-              value={currentValue ? currentValue.id || '' : ''}  // Assuming the category object has an "id" property
+              value={currentValue ? currentValue.id || "" : ""} // Assuming the category object has an "id" property
               onChange={(e) => {
                 const selectedCategoryId = e.target.value;
                 const selectedCategory = categories.find(
@@ -226,16 +248,21 @@ const CatalogManager: React.FC = () => {
     ];
     return columns;
   };
- 
+
   const pageChange = (num: number, type: string) => {
     setPage(num);
     TYPE = type;
   };
 
   const getFunc = async (url: string) => {
-    let result = await getData(url);
+    let result = await getData(`${url}/${page}`);
     if (url === "categories") setCategories(result);
     if (url === "product") setProducts(result);
+  };
+ const getall = async (url: string) => {
+    let result = await getData(url);
+    if (url === "categories") setallCategories(result);
+    if (url === "product") setallProducts(result);
     if (products.length > 0) {
       setCurrency(products[products.length - 1].currency);
     }
@@ -245,7 +272,9 @@ const CatalogManager: React.FC = () => {
     postData("categories", newCategory)
       .then((data) => {
         console.log(data);
+        getall("categories");
         getFunc("categories");
+      
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -278,6 +307,8 @@ const CatalogManager: React.FC = () => {
       .then((data) => {
         console.log(data);
         getFunc("product");
+        getall("product");
+
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -313,25 +344,34 @@ const CatalogManager: React.FC = () => {
           title={"Categories"}
           columns={defineColumns(ROLE === "ADMIN" ? true : false)}
           color={PALLETE.RED}
-          type={"CATEGORY"}
+          type={"categories"}
           onRowAdded={addCategory}
           onRowDeleted={deleteCategory}
           onRowUptated={updateCategory}
           role={""}
-          paginationMode={"client"} rowsCount={7} pageSizeOption={3}        ></GlobalTable>
+          paginationMode={"server"}
+          rowsCount={allCategories.length}
+          pageSizeOption={3}
+          fetchData={pageChange}
+        ></GlobalTable>
       }
       {
         <GlobalTable
           editable={ROLE === "ADMIN" ? true : false}
           data={products}
-          title={"Products"}
+          title={"product"}
           columns={defineColumnsProduct(ROLE === "ADMIN" ? true : false)}
           color={PALLETE.RED}
-          type={"PRODUCT"}
+          type={"product"}
           onRowAdded={addProduct}
           onRowDeleted={deleteProduct}
           onRowUptated={updateProduct}
-          role={""} paginationMode={"client"} rowsCount={7} pageSizeOption={3}  ></GlobalTable>
+          role={""}
+          paginationMode={"server"}
+          rowsCount={allProducts.length}
+          pageSizeOption={3}
+          fetchData={pageChange}
+        ></GlobalTable>
       }
     </>
   );

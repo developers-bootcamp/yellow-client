@@ -114,7 +114,7 @@ const GlobalTable: React.FC<TableProp> = ({
     {}
   );
   const [paginationModel, setPaginationModel] =
-    React.useState<GridPaginationModel>({ page: 0, pageSize: 2 });
+    React.useState<GridPaginationModel>({ page: 0, pageSize: pageSizeOption });
 
   useEffect(() => {
     if (fetchData) fetchData(paginationModel.page, type);
@@ -200,7 +200,6 @@ const GlobalTable: React.FC<TableProp> = ({
     return <NameEditInputCell {...params} />;
   }
   columns.map((c: any) => { 
-    console.log(c);
     if (c.preProcessEditCellProps) c.renderEditCell = validation;
   });
   const column: GridColDef[] = [
