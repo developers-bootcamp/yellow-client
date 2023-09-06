@@ -78,7 +78,8 @@ const SignUpForm: React.FC = () => {
           const res = await axios.get(
           `http://localhost:8080/User/signUp?fullName=${values.fullName}&companyName=${values.companyName}&email=${values.email}&password=${values.password}&currency=${currency}`
           );
-          sessionStorage.setItem("accessToken", res.data)
+          sessionStorage.setItem("accessToken", res.data['token'])
+          sessionStorage.setItem("role", res.data['role'])
           navigate("/LandingPage");
           
           return res.data;

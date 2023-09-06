@@ -20,11 +20,16 @@ import {
     GridRowModel,
     GridRowEditStopReasons,
     GridPaginationModel,
+    GridRenderEditCellParams,
+    GridEditInputCell,
+    GridPreProcessEditCellProps,
 } from '@mui/x-data-grid';
 import {
     randomId,
 } from '@mui/x-data-grid-generator';
 import { useEffect } from 'react';
+import { IUser } from '../types/IUser';
+import { Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
 
 
 interface TableProp {
@@ -48,12 +53,13 @@ interface EditToolbarProps {
 }
 
 
-const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, color, type, onRowAdded, onRowDeleted, onRowUptated, role, fetchData }) => {
+const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, color, type, onRowAdded, onRowDeleted, onRowUptated, role, fetchData, /*validate*/ }) => {
 
     function EditToolbar(props: EditToolbarProps) {
         const { setRows, setRowModesModel } = props;
 
         const handleClick = () => {
+            setPasswordEditable(true);
             const id = randomId();
             setRows((oldRows) => [...oldRows, { id, fullName: '', password: '', email: '', address: '', telephone: '', role: '', isNew: true }]);
             setRowModesModel((oldModel) => ({
@@ -64,7 +70,7 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
         if (editable)
             return (
                 <GridToolbarContainer>
-                    <Button color="primary" startIcon={<AddIcon />} onClick={handleClick} style={{color:color}}>
+                    <Button color="primary" startIcon={<AddIcon />} onClick={handleClick} style={{ color: color }}>
                         Add {type}
                     </Button>
                 </GridToolbarContainer>
@@ -75,12 +81,16 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
     const [rows, setRows] = React.useState(data);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
     const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({ page: 0, pageSize: 2 });
+    const [columnsArray,setColumnsArray]=React.useState(columns)
 
     useEffect(() => {
         if (fetchData)
             fetchData(paginationModel.page, type)
     }, [paginationModel])
-
+    useEffect(() => {
+      console.log(data);
+      
+    }, [])
     useEffect(() => { setRows(data) }, [data])
 
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
@@ -94,7 +104,8 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
     };
 
     const handleSaveClick = (id: GridRowId) => () => {
-        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+       setPasswordEditable(true);
+        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });//}
     };
 
     const handleDeleteClick = (id: GridRowId) => () => {
@@ -106,6 +117,7 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
     };
 
     const handleCancelClick = (id: GridRowId) => () => {
+        setPasswordEditable(true);
         setRowModesModel({
             ...rowModesModel,
             [id]: { mode: GridRowModes.View, ignoreModifications: true },
@@ -116,26 +128,69 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
             setRows(rows.filter((row) => row.id !== id));
         }
     };
-
+    const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+        <Tooltip {...props} classes={{ popper: className }} />
+      ))(({ theme }) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
+          backgroundColor: color,
+          color: "white",
+        },
+      }));
+      
+    function NameEditInputCell(props: GridRenderEditCellParams) {
+        return (
+          <StyledTooltip open={!!props.error} title={props.message}>
+            <GridEditInputCell {...props} />
+          </StyledTooltip>
+        );
+      }
+    const validation=(params: GridRenderEditCellParams)=> {
+        return <NameEditInputCell {...params} />;
+      }
+      columnsArray.map((c: any) => {
+        if (c.preProcessEditCellProps) c.renderEditCell = validation;
+      });
+      
+  const  preProcessEditCellProps= (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value < 0;
+        return { ...params.props, error: hasError, message: "min 0" };
+      }
     const processRowUpdate = (newRow: GridRowModel) => {
         if (newRow?.isNew) {
-            if (onRowAdded)
-                onRowAdded(newRow, type);
+                if (onRowAdded)
+                    onRowAdded(newRow, type);
         }
         else {
-            if (onRowUptated) {
-                onRowUptated(newRow);
+                if (onRowUptated) {
+                    onRowUptated(newRow);
             }
         }
         const updatedRow = { ...newRow, isNew: false };
         setRows(rows.map((row: any) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
     };
-
+    const getRowId = (row: any) => {
+        return row.id
+    };
     const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
         setRowModesModel(newRowModesModel);
     };
+    const onRowEditStart = (a:any, b: any) => {
+        setPasswordEditable(false);
+    }
+    const setPasswordEditable = (flag:boolean) => {
+        console.log(flag);
+        
+        const updatedArray = columnsArray.map((item) => {
+          if (item.field === 'password') {
+            return { ...item, editable:flag };
+          }
+          return item;
+        });
 
+        setColumnsArray(updatedArray);
+      };
+    
     const column: GridColDef[] = [
 
         {
@@ -195,17 +250,17 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
 
     return (
         <Box
-            sx={{
-                height: '30%',
+        sx={{
+            height: '30%',
                 marginLeft: '10%',
-                width: '80%',
-                '& .actions': {
-                    color: 'text.secondary',
-                },
-                '& .textPrimary': {
-                    color: 'text.primary',
-                },
-            }}
+            width: '80%',
+            '& .actions': {
+              color: 'text.secondary',
+            },
+            '& .textPrimary': {
+              color: 'text.primary',
+            },
+                      }}
         >
             <ArrowCircleDownIcon style={{ color: color, paddingLeft: '7px' }}></ArrowCircleDownIcon>
             <span style={{ color: color, padding: '7px', verticalAlign: 'super' }}>{title}</span>
@@ -215,7 +270,7 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
                 }
                 rows={rows}
                 rowCount={20}
-                columns={columns.concat(column)}
+                columns={columnsArray.concat(column)}
                 editMode="row"
                 rowModesModel={rowModesModel}
                 onRowModesModelChange={handleRowModesModelChange}
@@ -227,12 +282,14 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
                 slotProps={{
                     toolbar: { setRows, setRowModesModel },
                 }}
+                getRowId={getRowId}
                 disableColumnSelector
-                disableRowSelectionOnClick
                 pageSizeOptions={[2]}
                 paginationModel={paginationModel}
                 paginationMode='server'
                 onPaginationModelChange={setPaginationModel}
+                disableRowSelectionOnClick={false}
+                onRowEditStart={onRowEditStart}
             />
         </Box>
     );
