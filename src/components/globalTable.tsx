@@ -20,11 +20,15 @@ import {
     GridRowModel,
     GridRowEditStopReasons,
     GridPaginationModel,
+    GridRenderEditCellParams,
+    GridEditInputCell,
 } from '@mui/x-data-grid';
 import {
     randomId,
 } from '@mui/x-data-grid-generator';
 import { useEffect } from 'react';
+import { log } from 'console';
+import { Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
 
 
 interface TableProp {
@@ -74,15 +78,54 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
     }
     const [rows, setRows] = React.useState(data);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-    const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({ page: 0, pageSize: 2 });
+    const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({ page: 0, pageSize: 3 });
+    
+    const [columnsArray,setColumnsArray]=React.useState(columns)
 
+    const onRowEditStart = (a:any, b: any) => {
+        console.log("Ftg");
+        setPasswordEditable(false);
+    }
+    const setPasswordEditable = (flag:boolean) => {
+        console.log(flag);
+        const updatedArray = columnsArray.map((item) => {
+          if (item.field === 'password') {
+            return { ...item, editable:flag };
+          }
+          return item;
+        });
+        setColumnsArray(updatedArray);
+      };
+useEffect(()=>{console.log(rows);
+},[])
     useEffect(() => {
         if (fetchData)
             fetchData(paginationModel.page, type)
     }, [paginationModel])
 
     useEffect(() => { setRows(data) }, [data])
-
+    const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+        <Tooltip {...props} classes={{ popper: className }} />
+      ))(({ theme }) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
+          backgroundColor: color,
+          color: "white",
+        },
+      }));
+      
+    function NameEditInputCell(props: GridRenderEditCellParams) {
+        return (
+          <StyledTooltip open={!!props.error} title={props.message}>
+            <GridEditInputCell {...props} />
+          </StyledTooltip>
+        );
+      }
+    const validation=(params: GridRenderEditCellParams)=> {
+        return <NameEditInputCell {...params} />;
+      }
+      columnsArray.map((c: any) => {
+        if (c.preProcessEditCellProps) c.renderEditCell = validation;
+      });
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
             event.defaultMuiPrevented = true;
@@ -232,10 +275,11 @@ const GlobalTable: React.FC<TableProp> = ({ editable, data, title, columns, colo
                 }}
                 disableColumnSelector
                 disableRowSelectionOnClick
-                pageSizeOptions={[2]}
+                pageSizeOptions={[3]}
                 paginationModel={paginationModel}
                 paginationMode='server'
                 onPaginationModelChange={setPaginationModel}
+                onRowEditStart={onRowEditStart}
             />
         </Box>
     );

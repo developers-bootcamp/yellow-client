@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
+import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
 import { GET_ALL_ORDERS_URL } from '../config/config';
 import { Box, Button, Grid, Popover, Typography } from '@mui/material';
@@ -45,12 +46,39 @@ interface PendingOrdersProps {
 
 let orders: IOrder[] = [];
 
+
+const PendingOrders: React.FC = () => {
+  const filterTables=(filters:any)=>{
+    //כאן אמור ליהיות השליחה לשרת!!!
+        console.log(filters)
+  }
+
+let currentRows: any[] = []
+
+
+const [Rows, setRows] = useState<any[]>([]);
+const [Rows2, setRows2] = useState<any[]>([]);
+const [id, setId] = React.useState("");
+const[secondPaginationModel,setsecondPaginationModel]=React.useState({
+  page:0,
+  pageSize:3,
+});
+const[firstPaginationModel,setfirstPaginationModel]=React.useState({
+  page:0,
+  pageSize:3,
+});
+const handleButtonClick = (id:any) => {
+  // Handle the button click event here. You can perform any action you want.
+  setId(id)
+  handleClickOpen()
+  console.log(`Button clicked for row with ID ${id}`);
+};
 const columns: GridColDef[] = [
 
   { field: 'products', headerName: 'Products', width: 300 },
-  { field: 'customer', headerName: 'Customer', width: 300 },
+  { field: 'customer', headerName: 'Customer', width: 200 },
   {
-    field: 'status', type: 'string', headerName: 'Status', width: 300,
+    field: 'status', type: 'string', headerName: 'Status', width: 100,
     cellClassName: (params: GridCellParams<any, string>) => {
       if (params.value == null) {
         return '';
@@ -70,34 +98,23 @@ const columns: GridColDef[] = [
       return ''
     },
   },
-  { field: 'price', headerName: 'Price', width: 300 },
+  { field: 'price', headerName: 'Price', width: 100 },
 
   { field: 'date', type: 'date', headerName: 'Date', width: 200 }
 
-
+,{ field: 'actions', headerName: 'UPDATE', width: 150, renderCell: (params) => {
+  return (
+    <EditIcon
+    style={{ cursor: 'pointer' }}
+    onClick={() => handleButtonClick(params.row.id)}
+  />
+    // <button onClick={() => handleButtonClick(params.row.id)}>Update Order</button>
+  );
+}},
 
 
 
 ];
-const PendingOrders: React.FC = () => {
-  const filterTables=(filters:any)=>{
-    //כאן אמור ליהיות השליחה לשרת!!!
-        console.log(filters)
-  }
-
-let currentRows: any[] = []
-
-
-const [Rows, setRows] = useState<any[]>([]);
-const [Rows2, setRows2] = useState<any[]>([]);
-const[secondPaginationModel,setsecondPaginationModel]=React.useState({
-  page:0,
-  pageSize:3,
-});
-const[firstPaginationModel,setfirstPaginationModel]=React.useState({
-  page:0,
-  pageSize:3,
-});
 const getOrders = async () => {
 
     try {
@@ -117,8 +134,6 @@ const getOrders = async () => {
                 e.orderItems.forEach(p => {
 
             AllPrudocts += `${p.quantity} ${p.productId.name} , `
-
-
           })
           console.log(e.customer);
 
@@ -204,7 +219,6 @@ const getOrders = async () => {
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
 
-  const [id, setId] = React.useState("64edd4215e7964e99a6fa4d7")
 const nav=()=>{
   navigater(`/newOrder`)
 }
@@ -302,14 +316,11 @@ const handleClose = () => {
 
               <div>
         
-        <Link onClick={handleClickOpen}>order-details</Link>
+        {/* <Link onClick={handleClickOpen}>order-details</Link> */}
         <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <OrderDetails onClose={handleClose} id={id} />
         </Dialog>
 </div>
-
-
-
       </div>
 
     
