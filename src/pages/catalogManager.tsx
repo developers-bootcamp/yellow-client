@@ -134,7 +134,7 @@ const CatalogManager: React.FC = () => {
             symbol = "%";
           } else {
             const currency1 = params.row.currency;
-
+            console.log(currency1);
             switch (currency1) {
               case "SHEKEL":
                 symbol = "₪";
@@ -349,7 +349,6 @@ const CatalogManager: React.FC = () => {
           onRowDeleted={deleteCategory}
           onRowUptated={updateCategory}
           role={""}
-          paginationMode={"server"}
           rowsCount={allCategories.length}
           pageSizeOption={3}
           fetchData={pageChange}
@@ -367,7 +366,6 @@ const CatalogManager: React.FC = () => {
           onRowDeleted={deleteProduct}
           onRowUptated={updateProduct}
           role={""}
-          paginationMode={"server"}
           rowsCount={allProducts.length}
           pageSizeOption={3}
           fetchData={pageChange}

@@ -44,7 +44,6 @@ interface TableProp {
   onRowAdded?: (newUser: GridRowModel, type: string) => void;
   fetchData?: (num: number, type: string) => void;
   role: string;
-  paginationMode?: GridFeatureMode;
   rowsCount: number;
   pageSizeOption: number;
 }
@@ -67,7 +66,6 @@ const GlobalTable: React.FC<TableProp> = ({
   onRowUptated,
   role,
   fetchData,
-  paginationMode,
   rowsCount,
   pageSizeOption,
 }) => {
@@ -294,7 +292,7 @@ const GlobalTable: React.FC<TableProp> = ({
         disableRowSelectionOnClick
         pageSizeOptions={[pageSizeOption]}
         paginationModel={paginationModel}
-        paginationMode={paginationMode}
+        paginationMode={'server'}
         onPaginationModelChange={setPaginationModel}
       />
     </Box>
