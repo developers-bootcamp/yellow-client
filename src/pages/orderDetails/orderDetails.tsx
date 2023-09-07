@@ -203,6 +203,7 @@ export default function OrderDetails({ onClose, id }: any) {
     }))
     flag = true
   }
+  
   const addToCart = () => {
     
     let product: any;
