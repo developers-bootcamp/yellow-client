@@ -172,7 +172,7 @@ const NewOrder: React.FC = ({ onClose }: any) => {
       if (type == "quantity")
          setQuantity(parseInt(lable));
       if (type == "credit card number") {
-
+            
          setOrder((prevOrder: any | undefined) => ({
             ...prevOrder,
             creditCardNumber: lable,
@@ -371,8 +371,7 @@ setUser(selected)
                         )}
                         <br></br>
                         <br></br>
-  
-                        <TextField label="credit card number" sx={{ width: 250 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("credit card number", e) }} />
+                        <TextField label="credit card number"  sx={{ width: 250 }} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleInputChange("credit card number", e) }} />
                         <br></br>
                         <br></br>
 

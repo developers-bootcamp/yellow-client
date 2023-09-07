@@ -151,6 +151,7 @@ export default function OrderDetails({ onClose, id }: any) {
     setAnchorEl(null);
   };
   const dellProduct = (name: string, amount: number) => {
+
     // let updateItems:IOrderItems
     let prod = orderItems.find((item) => item.productId.name == name);
     const updateItems = orderItems?.filter(
@@ -186,6 +187,11 @@ export default function OrderDetails({ onClose, id }: any) {
     }
   }, []);
   useEffect(() => {
+    if(orderItems.length>0){
+    setOrder((prevOrder: any) => ({
+      ...prevOrder,
+      orderItems: orderItems,
+    }));}
     console.log("miryam thank you", orderItems);
   }, [orderItems]);
   const sameProd = (i: IOrderItems, quantuty: number) => {
@@ -198,6 +204,7 @@ export default function OrderDetails({ onClose, id }: any) {
     flag = true
   }
   const addToCart = () => {
+    
     let product: any;
     for (let i = 0; i < products.length; i++) {
       if (products[i].name == selectedValueProduct) {
@@ -206,14 +213,21 @@ export default function OrderDetails({ onClose, id }: any) {
       }
     }
     // let amount = quantity * product.price;
-    product = { productId: product, quantity: quantity };
-    orderItems.forEach(item => {
-      if (item.productId.name == selectedValueProduct) {
-        sameProd(item, product.quantity);
-      }
-    })
-    if (!flag) {
-      setOrderItems((prevCart) => [...prevCart, product]);
+    // product = { productId: product, quantity: quantity };
+    // orderItems.forEach(item => {
+    //   if (item.productId.name == selectedValueProduct) {
+    //     sameProd(item, product.quantity);
+    //   }
+    // })
+    
+    product = { "productId": product, "quantity": quantity, "ammount": "" };
+    console.log(product);
+    
+      setOrderItems((prevCart) => [...prevCart, product])
+      
+
+    //if (!flag) {
+      //setOrderItems((prevCart) => [...prevCart, product]);
       // setPrice(product.amount)
       // setSumOfPrice(sumOfPrice + product.amount);
       setOrder((prevOrder: any) => ({
@@ -221,7 +235,7 @@ export default function OrderDetails({ onClose, id }: any) {
         orderItems: orderItems,
         totalAmount: sumOfPrice,
       }));
-    }
+    //}
   };
   useEffect(() => {
     if (order) {
@@ -464,6 +478,7 @@ export default function OrderDetails({ onClose, id }: any) {
                     type="submit"
                     // disabled={!isValid}
                     onClick={(e) => saveChanges(e)}
+                    
                   >
                     Save Changes
                   </Button>

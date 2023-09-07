@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { UseCrud } from "../redux/useCrud";
 import GlobalTable from "../components/globalTable";
 import { PALLETE } from '../config/config'
-import { GridColDef, GridRowId, GridRowModel, GridRowsProp } from "@mui/x-data-grid/models";
+import { GridColDef, GridPreProcessEditCellProps, GridRowId, GridRowModel, GridRowsProp } from "@mui/x-data-grid/models";
 import { TextField } from "@mui/material";
 import { IUser } from "../types/IUser";
 import LandingPage from "./landingPage";
 
+
+const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+const phonePattern = /^[0-9]{7,15}$/;
 const ROLE = sessionStorage.getItem('role');
 const URL = `User`;
 let TYPE = '';
-const defineColumns = (etitable: boolean) => {
+const defineColumns = (editable: boolean) => {
   const columns: GridColDef[] = [
-    { field: 'fullName', headerName: 'Full Name', width: 180, editable: etitable, disableColumnMenu: true },
+    { field: 'fullName', headerName: 'Full Name', width: 180, editable: editable, disableColumnMenu: true },
     {
       field: 'password',
       headerName: 'password',
@@ -26,31 +29,48 @@ const defineColumns = (etitable: boolean) => {
       ),
       align: 'left',
       headerAlign: 'left',
-      editable: false,
+      editable: editable,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length < 8;
+        return { ...params.props, error: hasError, message: "password not strong" };
+      }
     },
     {
       field: 'email',
       headerName: 'Email',
       type: 'string',
       width: 200,
-      editable: etitable,
-      disableColumnMenu: true
+      editable: editable,
+      disableColumnMenu: true,
+      cellClassName: 'super-app-theme--header',
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = !emailPattern.test(params.props.value);
+        return { ...params.props, error: hasError, message: "email not valid" };
+      }
     },
     {
       field: 'address',
       headerName: 'Address',
       width: 200,
-      editable: etitable,
+      editable: editable,
       type: 'string',
-      disableColumnMenu: true
+      disableColumnMenu: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value == "";
+        return { ...params.props, error: hasError, message: "required" };
+      }
     },
     {
       field: 'telephone',
       headerName: 'Phone',
       width: 200,
-      editable: etitable,
+      editable: editable,
       type: 'string',
-      disableColumnMenu: true
+      disableColumnMenu: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = !phonePattern.test(params.props.value);
+        return { ...params.props, error: hasError, message: "phone not valid" };
+      }
     },
 
   ];
@@ -151,7 +171,7 @@ const UsersManagement: React.FC = () => {
         editable={ROLE === 'ADMIN' ? true : false}
         data={admins}
         title={"Administrators"}
-        columns={defineColumns(ROLE === 'ADMIN' ? true : false)}
+        columns={defineColumns( ROLE=== 'ADMIN' ? true : false)}
         color={PALLETE.RED}
         type={"ADMIN"}
         onRowAdded={addUser}
@@ -161,10 +181,10 @@ const UsersManagement: React.FC = () => {
         fetchData={pageChange}></GlobalTable>}
 
       {employees?.length >= 0 && <GlobalTable
-        editable={ROLE !== 'CUSTOMER' ? true : false}
-        data={admins}
+        editable={ROLE=== 'ADMIN' ? true : false}
+        data={employees}
         title={"Employees"}
-        columns={defineColumns(ROLE !== 'CUSTOMER' ? true : false)}
+        columns={defineColumns(ROLE=== 'ADMIN' ? true : false)}
         color={PALLETE.YELLOW}
         type={"EMPLOYEE"}
         onRowAdded={addUser}
@@ -175,7 +195,7 @@ const UsersManagement: React.FC = () => {
 
       {customers?.length >= 0 && <GlobalTable
         editable={ROLE !== 'CUSTOMER' ? true : false}
-        data={admins}
+        data={customers}
         title={"Customers"}
         columns={defineColumns(ROLE !== 'CUSTOMER' ? true : false)}
         color={PALLETE.BLUE}
