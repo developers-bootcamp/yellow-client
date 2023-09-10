@@ -16,7 +16,10 @@ export const data = [
   ["Eli", 7],
 ];
 export const options = {
-  backgroundColor:"lightGray"
+  backgroundColor:"lightGray",
+  title: "Top Employee",
+
+
   };
 export default function TopEmploeey() {
 const [topEmploeey, settopEmploeey] = useState<any[]>([]);

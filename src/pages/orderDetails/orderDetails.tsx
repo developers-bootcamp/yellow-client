@@ -45,7 +45,11 @@ import { PALLETE } from "../../config/config";
 import { number } from "yup";
 import { left } from "@popperjs/core";
 import axios from "axios";
-export default function OrderDetails({ onClose, id }: any) {
+interface OrderDetailsProps{
+  onClose?: () => void;
+  
+}
+export default function OrderDetails({ onCloseO, id }: any) {
   const { getData, postData, putData, deleteData } = UseCrud();
   const [products, setProducts] = useState<IProduct[]>([]);
   const [costumers, setCustomers] = useState<object[]>([]);
@@ -247,11 +251,13 @@ export default function OrderDetails({ onClose, id }: any) {
   const saveChanges = async (e: any) => {
     if (order) {
       console.log(order);
-       order.orderStatusId="approved"
+       order.orderStatusId="Approved"
        setOrder(order)
       let result = await putData("order", order);
       // let result = await axios.put("http://localhost:8080/order",order)
       console.log(result);
+      if(onCloseO){
+        onCloseO();}
     }
   };
   const cancelOrder = (id: string | undefined) => { };

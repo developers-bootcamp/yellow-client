@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -50,8 +48,13 @@ import { IUser } from '../../types/IUser';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+interface NewOrderProps{
+  handleClose2?: () => void;
+  
+}
 
-const NewOrder: React.FC = ({ onClose }: any) => {
+
+const NewOrder: React.FC<NewOrderProps> = ({ handleClose2}) => {
    const { getData, postData, putData, deleteData } = UseCrud();
    const [customers, setCustomers] = useState<IUsers[]>([]);
    const [user, setUser] = useState<IUsers>();
@@ -73,7 +76,7 @@ const NewOrder: React.FC = ({ onClose }: any) => {
    let arr = []
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const [currencyMap, setCurrencyMap] = useState<string>("SHEKEL");
-   const [currencySymbol, setCurrencySymbol] = useState<string>('ש"ח');
+   const [currencySymbol, setCurrencySymbol] = useState<string>('₪');
 
    const open = Boolean(anchorEl);
    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -156,7 +159,8 @@ const NewOrder: React.FC = ({ onClose }: any) => {
       if (order?.cvc && order?.expiryOn && order?.creditCardNumber) {
          console.log(order);
          postFunc("order", order);
-         navigate('/pendingOrders', { state: { order: order } });
+         if(handleClose2){
+         handleClose2();}
       };
    }
    const Delete = (i: number) => {
@@ -198,7 +202,7 @@ const NewOrder: React.FC = ({ onClose }: any) => {
          totalAmount: sumOfPrice,
          customer: user,
          orderItems: orderItems,
-         orderStatusId: "approved"
+         orderStatusId: "Approved"
       }));
    };
    useEffect(() => {

@@ -76,12 +76,14 @@ export function TopSoldProduct() {
 
       ]}
       options={{
+        title: "Top Sold Products",
         chartArea: { width: "50%" },
         isStacked: true,
         vAxis: {
           title: "",
           gridlines: { color: "none" },
           textPosition: "none"
+          
         },
         bars: "vertical",
         backgroundColor: "lightgray",
