@@ -8,10 +8,11 @@
     width: 90%;
     height: 70%;
     text-align: center;
-    border-top: solid;
-    border-color: rgb(238, 236, 236);
+    box-shadow: none !important;
+    /* border-top: solid; */
+    /* border-color: rgb(238, 236, 236); */
     padding: 3%;
-    border-width: 35px;
+    /* border-width: 35px; */
   }
 .name-field{
     margin: 25px;
@@ -63,6 +64,11 @@ background-color: #FAE282;
 box-shadow:none;
 margin: 15px;
 width: 260px;
+}
+
+.register {
+  background-color: #FAE282 !important;
+  box-shadow: none !important;
 }
 input:-internal-autofill-selected {
     background-color: white;

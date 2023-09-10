@@ -60,8 +60,7 @@ const Login: React.FC = (): any => {
       <ToastContainer />
       <div className='container'>
         <Paper className='paper'>
-          <h1>Log in to your account</h1>
-          <h3>Enter your email address and password</h3>
+          <h1>Order Manager</h1>
 
           <TextField
           required
@@ -95,9 +94,10 @@ const Login: React.FC = (): any => {
           />
           <br />
           <Button variant="contained" color="primary" id='logIn-button'  onClick={() => login()}>Log in</Button>
-          <h3>or sign in with</h3>
+         <br></br>
+         <img style={{height:"55px", width:"270px",margin:"10px"}} src="Google.jpg"></img>
           <h3>Don't have an account yet?</h3>
-          <Link onClick={handleClickOpen}>sign Up</Link>
+          <Button variant="contained" color="primary" className="register" onClick={handleClickOpen}>Register</Button> 
           <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <SignUp onClose={handleClose} />
 
