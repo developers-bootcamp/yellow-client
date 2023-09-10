@@ -28,9 +28,9 @@ const LandingPage: React.FC = () => {
         
         <Box sx={{ width: "80%", bgcolor: "background.paper", marginLeft: "10%", }}>
       <Tabs  value={pathname} onChange={handleChange} centered>
-        <Tab style={{marginRight:"17%"}} value="pendingOrders" label="Pending Orders" />
-        <Tab style={{marginRight:"17%"}} value="dashboard" label="Dashboard" />
-        <Tab style={{marginRight:"17%"}} value="catalogManager" label="Catalog Manager" />
+        <Tab style={{marginRight:"15%"}} value="pendingOrders" label="Pending Orders" />
+        <Tab style={{marginRight:"15%"}} value="dashboard" label="Dashboard" />
+        <Tab style={{marginRight:"15%"}} value="catalogManager" label="Catalog Manager" />
         <Tab value="usersManagement" label="User Management" />
       </Tabs>
     
