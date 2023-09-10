@@ -1,19 +1,19 @@
 .New{
   background-color: rgb(235,159,110);
 }
-.approved{
+.Approved{
   background-color:rgb(235,159,110);
 }
-.cancelled{
+.Cancelled{
   background-color: rgb(103,148,207);
 }
-.charging{
+.Charging{
   background-color: rgb(238,105,106);
 }
-.packing{
+.Packing{
   background-color: rgb(250,226,130);
 }
-.delivered{
+.Delivered{
   background-color: rgb(126,215,135);
 }
 /* .delivered{

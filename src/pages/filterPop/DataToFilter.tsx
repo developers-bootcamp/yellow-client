@@ -7,13 +7,13 @@ export const DataToFilter: FilterItem[] = [
   {
     fieldName: "status",
     value: [
-      "new",
-      "cancelled",
-      "delivered",
-      "processing",
-      "charging",
-      "approved",
-      "packing",
+      "New",
+      "Cancelled",
+      "Delivered",
+      "Processing",
+      "Charging",
+      "Approved",
+      "Packing",
     ],
   },
  // public enum status {New, cancelled, approved, charging, packing, delivered}

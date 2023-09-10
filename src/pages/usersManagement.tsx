@@ -171,27 +171,27 @@ const UsersManagement: React.FC = () => {
         editable={ROLE === 'ADMIN' ? true : false}
         data={admins}
         title={"Administrators"}
-        columns={defineColumns( ROLE=== 'ADMIN' ? true : false)}
+        columns={defineColumns(ROLE === 'ADMIN' ? true : false)}
         color={PALLETE.RED}
         type={"ADMIN"}
         onRowAdded={addUser}
         onRowDeleted={deleteUser}
         onRowUptated={updateUser}
         role={'ADMIN'}
-        fetchData={pageChange}></GlobalTable>}
+        fetchData={pageChange} rowsCount={100} pageSizeOption={4}></GlobalTable>}
 
       {employees?.length >= 0 && <GlobalTable
-        editable={ROLE=== 'ADMIN' ? true : false}
+        editable={ROLE === 'ADMIN' ? true : false}
         data={employees}
         title={"Employees"}
-        columns={defineColumns(ROLE=== 'ADMIN' ? true : false)}
+        columns={defineColumns(ROLE === 'ADMIN' ? true : false)}
         color={PALLETE.YELLOW}
         type={"EMPLOYEE"}
         onRowAdded={addUser}
         onRowDeleted={deleteUser}
         onRowUptated={updateUser}
         role={'EMPLOYEE'}
-        fetchData={pageChange}></GlobalTable>}
+        fetchData={pageChange} rowsCount={100} pageSizeOption={4}></GlobalTable>}
 
       {customers?.length >= 0 && <GlobalTable
         editable={ROLE !== 'CUSTOMER' ? true : false}
@@ -204,7 +204,7 @@ const UsersManagement: React.FC = () => {
         onRowDeleted={deleteUser}
         onRowUptated={updateUser}
         role={'CUSTOMER'}
-        fetchData={pageChange}></GlobalTable>}
+        fetchData={pageChange} rowsCount={100} pageSizeOption={4}></GlobalTable>}
     </>
   );
 };
