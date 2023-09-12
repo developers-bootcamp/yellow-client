@@ -74,7 +74,7 @@ export interface ICompany {
     desc: string,
     price:number,
     discount:EDiscount,
-    categoryId:IProductCatagory,
+    productCategoryId:IProductCatagory,
     inventory:number,
     companyId:ICompany,
     auditData:IAuditData

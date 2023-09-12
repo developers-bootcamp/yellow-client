@@ -10,8 +10,6 @@ import axios from "axios";
 import { LOGIN_URL } from "../config/config";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
 const Login: React.FC = (): any => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,47 +20,36 @@ const Login: React.FC = (): any => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
   const login = async () => {
-
     try {
       console.log(password)
       console.log(email)
-
-
       const res = await axios.get(`${LOGIN_URL}?password=${password}&email=${email}`)
       console.log({ res })
       if (res.status == 200) {
         console.log(res.data)
         sessionStorage.setItem("accessToken", res.data["token"]);
-         sessionStorage.setItem("role", res.data["role"]);      
+         sessionStorage.setItem("role", res.data["role"]);
            navigate("/pendingOrders")
       }
-
     }
     catch (error) {
       toast.error("The user is not in the system, check that the username and password are correct")
-
     }
   }
-
   return (
     <div>
-
       <ToastContainer />
       <div className='container'>
         <Paper className='paper'>
-          <h1>Log in to your account</h1>
-          <h3>Enter your email address and password</h3>
-
+          <h1>Order Manager</h1>
           <TextField
           required
           placeholder='example@gmail.com'
@@ -70,13 +57,11 @@ const Login: React.FC = (): any => {
           className="name-field"
            onChange={(e) => setEmail(e.target.value)}
         />
-
           <br />
           <br />
           <TextField
             placeholder="password"
             onBlur={(e) => setPassword(e.target.value)}
-            
             type={showPassword ? 'text' : 'password'}
             InputProps={{
             endAdornment:(
@@ -95,17 +80,16 @@ const Login: React.FC = (): any => {
           />
           <br />
           <Button variant="contained" color="primary" id='logIn-button'  onClick={() => login()}>Log in</Button>
-          <h3>or sign in with</h3>
+         <br></br>
+         <img style={{height:"55px", width:"270px",margin:"10px"}} src="Google.jpg"></img>
           <h3>Don't have an account yet?</h3>
-          <Link onClick={handleClickOpen}>sign Up</Link>
+          <Button variant="contained" color="primary" className="register" onClick={handleClickOpen}>Register</Button>
           <Dialog onClose={handleClose} fullWidth maxWidth={'md'} open={open} PaperProps={{ sx: { width: "80%", height: "80%", padding: '0', margin: '0' } }}>
             <SignUp onClose={handleClose} />
-
           </Dialog>
         </Paper>
       </div>
     </div>
   );
 };
-
 export default Login;
